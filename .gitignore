@@ -1,6 +1,6 @@
 .volumes/**/*volume/
 
-client/node_modules/
-client/dist/
+tai-client/node_modules/
+tai-client/dist/
 
 server/.log/
