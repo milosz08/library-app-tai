@@ -1,0 +1,36 @@
+services:
+  tai-mysql-db:
+    container_name: tai-mysql-db
+    image: mysql:8.0.32
+    restart: always
+    ports:
+      - '${TAI_MYSQL_PORT}:3306'
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=${TAI_MYSQL_PASSWORD}'
+      - 'MYSQL_DATABASE=library-db'
+    volumes:
+      - ./.volumes/mysql/mysql-volume:/var/lib/mysql
+    healthcheck:
+      test: "mysqladmin ping -u root -p${TAI_MYSQL_PASSWORD}"
+    networks:
+      - tai-network
+
+  tai-phpmyadmin:
+    container_name: tai-phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    ports:
+      - ${TAI_PHPMYADMIN_PORT}:80
+    environment:
+      PMA_HOST: tai-mysql-db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${TAI_MYSQL_PASSWORD}
+    depends_on:
+      - tai-mysql-db
+    networks:
+      - tai-network
+
+networks:
+  tai-network:
+    driver: bridge
