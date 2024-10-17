@@ -1,1 +1,6 @@
 .volumes/**/*volume/
+
+client/node_modules/
+client/dist/
+
+server/.log/

@@ -22,7 +22,7 @@ This monorepo includes library management app as client and server applications.
 
 To run client, you must have:
 * Free `9673` port at your machine.
-* Node (at least v18).
+* Node (at least v20).
 * Yarn (see `setup client` section).
 
 To run server, you must have:
@@ -48,13 +48,16 @@ $ yarn install --frozen-lockfile
 > NOTE: If you do not have yarn, install via: `npm i -g yarn` or use via
 > npx command: `npx yarn install --frozen-lockfile`.
 
-2. Run client via:
+2. Activate ESLint server via `Restart ESLint server` command (`Ctrl+Shift+P`). Check output console, if has no errors.
+Set default formatter by: `Right click` -> `Format document with` -> `Select default formatter` and select `ESLint`.
+
+3. Run client via:
 
 ```bash
 $ yarn run dev
 ```
 
-3. Alternatively to run development server, type:
+4. Alternatively to run development server, type:
 
 ```bash
 $ yarn run preview
