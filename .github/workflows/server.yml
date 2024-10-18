@@ -7,6 +7,9 @@ on:
       - ".github/workflows/server.yml"
       - "tai-server/**"
 
+env:
+  SUBPROJECT_ROOT: "tai-server"
+
 jobs:
   build:
     runs-on: self-hosted
@@ -22,13 +25,13 @@ jobs:
           check-latest: false
 
       - name: Change wrapper permissions
-        run: chmod +x ./mvnw
+        run: cd $SUBPROJECT_ROOT && chmod +x ./mvnw
 
       - name: Clean build dir
-        run: ./mvnw clean
+        run: cd $SUBPROJECT_ROOT && ./mvnw clean
 
       - name: Package to JAR
-        run: ./mvnw package
+        run: cd $SUBPROJECT_ROOT && ./mvnw package
 
   deploy:
     runs-on: self-hosted
@@ -47,7 +50,7 @@ jobs:
         run: |
           rm -rf /var/www/$ROOT_PATH/*
           rm -rf /var/www/$ROOT_PATH/{*,.[!.]*,..?*} 2> /dev/null
-          cp tai-server/target/tai-server.jar /var/www/$ROOT_PATH
+          cp $SUBPROJECT_ROOT/target/tai-server.jar /var/www/$ROOT_PATH
 
       - name: Re-create config file
         run: |
