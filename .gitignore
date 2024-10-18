@@ -3,4 +3,7 @@
 tai-client/node_modules/
 tai-client/dist/
 
-server/.log/
+tai-server/.bin/
+tai-server/.logs/
+tai-server/target/
+tai-server/.idea/

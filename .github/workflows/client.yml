@@ -5,7 +5,7 @@ on:
     branches: ["master"]
     paths:
       - ".github/workflows/client.yml"
-      - "client/**"
+      - "tai-client/**"
 
 jobs:
   build:
@@ -27,10 +27,20 @@ jobs:
         run: npm install -g yarn
 
       - name: Install dependencies
-        run: cd client && yarn install --frozen-lockfile
+        run: cd tai-client && yarn install --frozen-lockfile
 
       - name: Build
-        run: cd client && yarn run build
+        run: cd tai-client && yarn run build
 
-      - name: Deploy
-        run: cp -r client/dist/* /var/www/tai-library-client/
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    env:
+      ROOT_PATH: "tai-library-client"
+
+    steps:
+      - name: Copy compiled static files
+        run: |
+          rm -rf /var/www/$ROOT_PATH/*
+          rm -rf /var/www/$ROOT_PATH/{*,.[!.]*,..?*} 2> /dev/null
+          cp -r tai-client/dist/* /var/www/$ROOT_PATH/

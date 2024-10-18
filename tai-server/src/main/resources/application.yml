@@ -1,0 +1,14 @@
+spring:
+  mvc:
+    log-resolved-exception: false
+  main:
+    banner-mode: off
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  liquibase:
+    database-change-log-lock-table: _liquibase_changelog_lock
+    database-change-log-table: _liquibase_changelog
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+  jpa:
+    hibernate:
+      ddl-auto: none

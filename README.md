@@ -98,6 +98,16 @@ $ mvnw.cmd spring-boot:run
 if you can run project via command line. Alternatively you can run via prepared Intellij run configuration (only for
 Intellij Ultimate edition).
 
+3. Check application state via endpoint: [/actuator/health](http://localhost:9672/actuator/health). If response show
+this:
+
+```json
+{
+  "status": "UP"
+}
+```
+application is running and waiting for http requests.
+
 ## Tech stack
 * React 18,
 * Vite,
