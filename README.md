@@ -106,6 +106,7 @@ this:
   "status": "UP"
 }
 ```
+
 application is running and waiting for http requests.
 
 ## Tech stack
