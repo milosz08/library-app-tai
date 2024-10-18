@@ -40,7 +40,7 @@ $ git clone https://github.com/milosz08/library-app-tai
 
 ## Setup client
 
-1. Go to client directory (`$ cd client`) and install all dependencies via:
+1. Go to client directory (`$ cd tai-client`) and install all dependencies via:
 
 ```bash
 $ yarn install --frozen-lockfile
@@ -81,7 +81,7 @@ This command should create 2 docker containers:
 > NOTE: If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To omit, create only
 > MySQL db container via: `$ docker compose up -d tai-mysql-db`.
 
-2. Go to server directory (`$ cd server`) and type (for UNIX):
+2. Go to server directory (`$ cd tai-server`) and type (for UNIX):
 
 ```
 $ ./mvnw clean install
