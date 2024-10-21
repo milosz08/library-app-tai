@@ -5,6 +5,10 @@ import MainLayout from './MainLayout';
 
 const RootPage = React.lazy(() => import('./pages/root'));
 const NotFoundPage = React.lazy(() => import('./pages/not-found'));
+const LoginPage = React.lazy(() => import('./pages/common/LoginPage'));
+const RegistrationPage = React.lazy(
+  () => import('./pages/common/RegistrationPage')
+);
 
 const router = createBrowserRouter([
   {
@@ -13,6 +17,8 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <RootPage /> },
       { path: '*', element: <NotFoundPage /> },
+      { path: '/logowanie', element: <LoginPage /> },
+      { path: '/rejestracja', element: <RegistrationPage /> },
     ],
   },
 ]);
