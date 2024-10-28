@@ -61,7 +61,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            pm2 stop /${{ secrets.SSH_USERNAME }}/ecosystem.config.js --only ${{ env.PM2_API_NAME }} --silent
+            pm2 stop /home/${{ secrets.SSH_USERNAME }}/ecosystem.config.js --only ${{ env.PM2_API_NAME }} --silent
             pm2 save
 
       - name: Move files to server
@@ -97,5 +97,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            pm2 start /${{ secrets.SSH_USERNAME }}/ecosystem.config.js --only ${{ env.PM2_API_NAME }} --silent
+            pm2 start /home/${{ secrets.SSH_USERNAME }}/ecosystem.config.js --only ${{ env.PM2_API_NAME }} --silent
             pm2 save

@@ -34,7 +34,7 @@ jobs:
       - name: Upload generated dist files
         uses: actions/upload-artifact@v4
         with:
-          name: output-build
+          name: build
           path: dist/
 
   deploy:
@@ -47,7 +47,7 @@ jobs:
       - name: Download generated dist files
         uses: actions/download-artifact@v4
         with:
-          name: output-build
+          name: build
           path: dist
 
       - name: Move files to server
