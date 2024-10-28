@@ -61,8 +61,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            pm2 stop ~/ecosystem.config.js --only ${{ env.PM2_API_NAME }} --silent
-            pm2 save
+            ~/exec/process stop ${{ env.PM2_API_NAME }}
 
       - name: Move files to server
         uses: appleboy/scp-action@v0.1.7
@@ -97,5 +96,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            pm2 start ~/ecosystem.config.js --only ${{ env.PM2_API_NAME }} --silent
-            pm2 save
+            ~/exec/process start ${{ env.PM2_API_NAME }}
