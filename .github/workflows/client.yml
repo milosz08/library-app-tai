@@ -47,8 +47,8 @@ jobs:
       - name: Download generated dist files
         uses: actions/download-artifact@v4
         with:
-          name: build
-          path: dist-output
+          name: dist-output
+          path: dist
 
       - name: Move files to server
         uses: appleboy/scp-action@v0.1.7
