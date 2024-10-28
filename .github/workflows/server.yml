@@ -60,8 +60,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            ~/exec/process stop ${{ env.PM2_API_NAME }}
+          script: ~/exec/process stop ${{ env.PM2_API_NAME }}
 
       - name: Move files to server
         uses: appleboy/scp-action@v0.1.7
@@ -83,9 +82,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            touch ${{ env.SERVER_OUTPUT }}/.env
-            echo "${{ secrets.CONFIG_FILE_CONTENT }}" > ${{ env.SERVER_OUTPUT }}/.env
+          script: ~/exec/make-conf ${{ env.SERVER_OUTPUT }} ${{ secrets.CONFIG_FILE_CONTENT }}
 
       - name: Start process
         uses: appleboy/ssh-action@v1.1.0
@@ -95,5 +92,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            ~/exec/process start ${{ env.PM2_API_NAME }}
+          script: ~/exec/process start ${{ env.PM2_API_NAME }}
