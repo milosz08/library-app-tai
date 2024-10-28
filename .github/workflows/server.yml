@@ -1,4 +1,4 @@
-name: Deploy server
+name: Build and deploy server
 
 on:
   push:
@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -25,39 +25,77 @@ jobs:
           check-latest: false
 
       - name: Change wrapper permissions
-        run: cd $SUBPROJECT_ROOT && chmod +x ./mvnw
+        run: cd ${{ env.SUBPROJECT_ROOT }} && chmod +x ./mvnw
 
       - name: Clean build dir
-        run: cd $SUBPROJECT_ROOT && ./mvnw clean
+        run: cd ${{ env.SUBPROJECT_ROOT }} && ./mvnw clean
 
       - name: Package to JAR
-        run: cd $SUBPROJECT_ROOT && ./mvnw package
+        run: cd ${{ env.SUBPROJECT_ROOT }} && ./mvnw package
+
+      - name: Upload generated JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: output-jar
+          path: ${{ env.SUBPROJECT_ROOT }}/target/tai-server.jar
 
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: build
     env:
       PM2_API_NAME: "TAIProjectAPI"
-      ROOT_PATH: "tai-library-server"
+      SERVER_OUTPUT: "/var/www/tai-library-server"
 
     steps:
-      - name: Stop existing process
-        run: |
-          pm2 stop /root/ecosystem.config.js --only $PM2_API_NAME --silent
-          pm2 save
+      - name: Download generated JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: output-jar
 
-      - name: Copy compiled executable files
-        run: |
-          rm -rf /var/www/$ROOT_PATH/*
-          rm -rf /var/www/$ROOT_PATH/{*,.[!.]*,..?*} 2> /dev/null
-          cp $SUBPROJECT_ROOT/target/tai-server.jar /var/www/$ROOT_PATH
+      - name: Stop existing process
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            pm2 stop /${{ secrets.SSH_USERNAME }}/ecosystem.config.js --only ${{ env.PM2_API_NAME }} --silent
+            pm2 save
+
+      - name: Move files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          source: "tai-server.jar"
+          target: ${{ env.SERVER_OUTPUT }}
+          rm: true
 
       - name: Re-create config file
-        run: |
-          touch /var/www/$ROOT_PATH/.env
-          echo "${{ secrets.CONFIG_FILE_CONTENT }}" > /var/www/$ROOT_PATH/.env
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            touch ${{ env.SERVER_OUTPUT }}/.env
+            echo "${{ secrets.CONFIG_FILE_CONTENT }}" > ${{ env.SERVER_OUTPUT }}/.env
 
       - name: Start process
-        run: |
-          pm2 start /root/ecosystem.config.js --only $PM2_API_NAME --silent
-          pm2 save
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            pm2 start /${{ secrets.SSH_USERNAME }}/ecosystem.config.js --only ${{ env.PM2_API_NAME }} --silent
+            pm2 save
