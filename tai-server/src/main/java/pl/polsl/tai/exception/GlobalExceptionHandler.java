@@ -1,14 +1,42 @@
 package pl.polsl.tai.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	@ExceptionHandler(NoResourceFoundException.class)
 	public ResponseEntity<Void> handleNotFound() {
 		return ResponseEntity.notFound().build();
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+		final Map<String, String> errors = new HashMap<>();
+		for (final FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+			errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+		}
+		return ResponseEntity.badRequest().body(errors);
+	}
+
+	@ExceptionHandler(RestServerException.class)
+	ResponseEntity<ErrorDto> handleRestServerException(RestServerException ex) {
+		return new ResponseEntity<>(new ErrorDto(ex.getMessage()), ex.getStatus());
+	}
+
+	@ExceptionHandler(Exception.class)
+	ResponseEntity<ErrorDto> handleUnknownException() {
+		return new ResponseEntity<>(
+			new ErrorDto(RestServerException.UNEXPECTED_EXCEPTION_MESSAGE),
+			HttpStatus.INTERNAL_SERVER_ERROR
+		);
 	}
 }
