@@ -1,3 +1,17 @@
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        same-site: strict
+        name: ${application.session.cookie.name}
+        max-age: 60m
+      tracking-modes: cookie
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
+
 spring:
   mvc:
     log-resolved-exception: false
@@ -12,3 +26,15 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+    properties:
+      hibernate:
+        physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+
+application:
+  session:
+    cookie:
+      name: JSESSIONID
+  locale: pl
+  ota:
+    length: 10
+    expired-min: 10

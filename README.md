@@ -10,6 +10,8 @@ This monorepo includes library management app as client and server applications.
 | Server (Java)  | [9672](http://localhost:9672) | [api.tai.miloszgilga.pl](https://api.tai.miloszgilga.pl) |
 | PHPMyAdmin     | [9671](http://localhost:9671) | -                                                        |
 
+Postman REST API collection: [link](https://www.postman.com/navigation-architect-44725773/tai/collection/ufvyq5e/tai-rest-api?action=share&creator=18508721&active-environment=18508721-6412bbb5-8c07-400c-a6e5-1650938115d7&tab=overview).
+
 ## Table of content
 
 * [Prerequisites](#prerequisites)

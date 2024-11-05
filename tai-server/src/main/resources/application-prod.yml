@@ -1,5 +1,9 @@
 server:
   port: 9076
+  servlet:
+    session:
+      cookie:
+        secure: true
 
 spring:
   datasource:
@@ -14,3 +18,8 @@ management:
     web:
       exposure:
         include: health
+
+application:
+  cors:
+    urls:
+      - https://tai.miloszgilga.pl
