@@ -1,5 +1,6 @@
 package pl.polsl.tai.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	@ExceptionHandler(NoResourceFoundException.class)
@@ -24,16 +26,19 @@ public class GlobalExceptionHandler {
 		for (final FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
 			errors.put(fieldError.getField(), fieldError.getDefaultMessage());
 		}
+		log.error("Invalid method argument exception. Cause: {}", ex.getMessage());
 		return ResponseEntity.badRequest().body(errors);
 	}
 
 	@ExceptionHandler(RestServerException.class)
 	ResponseEntity<ErrorDto> handleRestServerException(RestServerException ex) {
+		log.error("Server rest exception. Cause: {}", ex.getMessage());
 		return new ResponseEntity<>(new ErrorDto(ex.getMessage()), ex.getStatus());
 	}
 
 	@ExceptionHandler(Exception.class)
-	ResponseEntity<ErrorDto> handleUnknownException() {
+	ResponseEntity<ErrorDto> handleUnknownException(Exception ex) {
+		log.error("Unknown server exception. Cause: {}", ex.getMessage());
 		return new ResponseEntity<>(
 			new ErrorDto(RestServerException.UNEXPECTED_EXCEPTION_MESSAGE),
 			HttpStatus.INTERNAL_SERVER_ERROR
