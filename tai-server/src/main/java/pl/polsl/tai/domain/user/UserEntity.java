@@ -3,6 +3,7 @@ package pl.polsl.tai.domain.user;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.polsl.tai.domain.EntityBase;
+import pl.polsl.tai.domain.address.AddressEntity;
 import pl.polsl.tai.domain.role.RoleEntity;
 
 import java.io.Serializable;
@@ -30,6 +31,9 @@ public class UserEntity extends EntityBase implements Serializable {
 	@ManyToOne
 	@JoinColumn
 	private RoleEntity role;
+
+	@OneToOne(mappedBy = "user")
+	private AddressEntity address;
 
 	@Override
 	public String toString() {
