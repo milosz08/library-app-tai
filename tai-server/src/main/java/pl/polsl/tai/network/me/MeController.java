@@ -1,22 +1,37 @@
 package pl.polsl.tai.network.me;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pl.polsl.tai.network.me.dto.MeDetailsResDto;
+import org.springframework.web.bind.annotation.*;
+import pl.polsl.tai.network.me.dto.*;
 import pl.polsl.tai.security.LoggedUser;
 
 @RestController
-@RequestMapping("/api/v1/@me")
+@RequestMapping("/v1/@me")
 @RequiredArgsConstructor
 public class MeController {
 	private final MeService meService;
 
-	@GetMapping("/details")
+	@GetMapping
 	ResponseEntity<MeDetailsResDto> details(@AuthenticationPrincipal LoggedUser loggedUser) {
 		return ResponseEntity.ok(meService.getMeDetails(loggedUser));
+	}
+
+	@PatchMapping
+	ResponseEntity<UpdatedUserDetailsResDto> updateDetails(
+		@RequestBody @Valid UpdateUserDetailsReqDto reqDto,
+		@AuthenticationPrincipal LoggedUser loggedUser
+	) {
+		return ResponseEntity.ok(meService.updateDetails(reqDto, loggedUser));
+	}
+
+	@PatchMapping("/address")
+	ResponseEntity<UserAddressDto> updateAddress(
+		@RequestBody @Valid UpdateUserAddressReqDto reqDto,
+		@AuthenticationPrincipal LoggedUser loggedUser
+	) {
+		return ResponseEntity.ok(meService.updateAddress(reqDto, loggedUser));
 	}
 }

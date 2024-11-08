@@ -26,12 +26,18 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import pl.polsl.tai.config.AppCorsConfiguration;
+import pl.polsl.tai.domain.role.UserRole;
 import pl.polsl.tai.i18n.FixedOneLocaleFilter;
 import pl.polsl.tai.security.resolver.CustomAccessDeniedResolver;
 import pl.polsl.tai.security.resolver.CustomAuthResolver;
 import pl.polsl.tai.security.resolver.CustomLogoutHandlerResolver;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
+
+import static org.springframework.http.HttpMethod.*;
+import static pl.polsl.tai.domain.role.UserRole.ADMIN;
+import static pl.polsl.tai.domain.role.UserRole.CUSTOMER;
 
 @Configuration
 @EnableWebSecurity
@@ -57,16 +63,19 @@ class SecurityConfig {
 				config.accessDeniedHandler(accessDeniedResolver);
 			})
 			.authorizeHttpRequests(auth -> {
-				auth.requestMatchers(HttpMethod.GET, "/actuator/**").permitAll();
-				auth.requestMatchers(HttpMethod.GET, "/api/v1/csrf/token").permitAll();
-				auth.requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll();
-				auth.requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll();
-				auth.requestMatchers(HttpMethod.PATCH, "/api/v1/auth/activate/**").permitAll();
-				auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+				auth.requestMatchers(GET, "/actuator/**").permitAll();
+				auth.requestMatchers(GET, "/v1/csrf/token").permitAll();
+				auth.requestMatchers(POST, "/v1/auth/login").permitAll();
+				auth.requestMatchers(POST, "/v1/auth/register").permitAll();
+				auth.requestMatchers(PATCH, "/v1/auth/activate/**").permitAll();
+				auth.requestMatchers(PATCH, "/v1/auth/@me").hasAnyRole(mapRoles(CUSTOMER, ADMIN));
+				auth.requestMatchers(PATCH, "/v1/auth/@me/address").hasAnyRole(mapRoles(CUSTOMER));
+				auth.requestMatchers(DELETE, "/v1/auth/@me").hasAnyRole(mapRoles(CUSTOMER, ADMIN));
+				auth.requestMatchers(OPTIONS, "/**").permitAll();
 				auth.anyRequest().authenticated();
 			})
 			.logout(config -> {
-				config.logoutRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/logout", HttpMethod.DELETE.name()));
+				config.logoutRequestMatcher(new AntPathRequestMatcher("/v1/auth/logout", HttpMethod.DELETE.name()));
 				config.addLogoutHandler(new HeaderWriterLogoutHandler(
 					new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.COOKIES))
 				);
@@ -76,6 +85,10 @@ class SecurityConfig {
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable);
 		return http.build();
+	}
+
+	private String[] mapRoles(UserRole... roles) {
+		return Arrays.stream(roles).map(UserRole::name).toArray(String[]::new);
 	}
 
 	@Bean
