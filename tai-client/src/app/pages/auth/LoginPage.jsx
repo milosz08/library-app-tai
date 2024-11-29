@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import FormRedirectBox from '../../../components/common/FormRedirectBox';
 import FormTextField from '../../../components/common/FormTextField';
+import { useAlert } from '../../../hooks/useAlert';
+import { useAuth } from '../../../hooks/useAuth';
 
 const LoginPage = () => {
   const [form, setForm] = useState({
@@ -9,13 +12,31 @@ const LoginPage = () => {
     password: '',
   });
 
+  const { handleLogin } = useAuth();
+  const { addAlert } = useAlert();
+  const navigate = useNavigate();
+
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log(form);
+
+    const result = await handleLogin(form.email, form.password);
+    if (result.success) {
+      addAlert('Zalogowano pomyślnie!', 'success');
+      navigate('/');
+    } else if (result.token) {
+      const activationLink =
+        window.location.origin + '/aktywacja/' + result.token;
+      const activationMessage =
+        'Twoje konto wymaga aktywacji. Kliknij poniższy link, aby je aktywować:' +
+        activationLink;
+      addAlert(activationMessage, 'info');
+    } else {
+      addAlert(result.error || 'Nieprawidłowe dane logowania.', 'error');
+    }
   };
 
   return (
@@ -51,6 +72,7 @@ const LoginPage = () => {
             type="email"
             value={form.email}
             onChange={handleChange}
+            autoComplete="email"
           />
           <FormTextField
             label="Hasło"
@@ -58,6 +80,7 @@ const LoginPage = () => {
             type="password"
             value={form.password}
             onChange={handleChange}
+            autoComplete="new-password"
           />
           <Button
             type="submit"

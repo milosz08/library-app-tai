@@ -1,5 +1,5 @@
-const RootPage = () => {
+const HomePage = () => {
   return <div>SERVER URL: {import.meta.env.VITE_SERVER_URL}</div>;
 };
 
-export default RootPage;
+export default HomePage;

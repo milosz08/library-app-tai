@@ -7,7 +7,8 @@ const FormTextField = ({
   type = 'text',
   value,
   onChange,
-  required = true,
+  required = false,
+  ...props
 }) => {
   return (
     <TextField
@@ -19,6 +20,7 @@ const FormTextField = ({
       value={value}
       onChange={onChange}
       required={required}
+      {...props}
       sx={{
         bgcolor: 'custom.700',
         input: { color: 'white' },

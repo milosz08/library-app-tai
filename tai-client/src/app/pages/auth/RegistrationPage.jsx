@@ -1,28 +1,66 @@
 import { useState } from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { register } from '../../../api/authApi';
 import FormRedirectBox from '../../../components/common/FormRedirectBox';
 import FormTextField from '../../../components/common/FormTextField';
+import { useAlert } from '../../../hooks/useAlert';
 
 const RegistrationPage = () => {
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
     city: '',
-    postalCode: '',
     street: '',
-    houseNumber: '',
+    buildingNumber: '',
     apartmentNumber: '',
     email: '',
     password: '',
+    confirmedPassword: '',
   });
+
+  const { addAlert } = useAlert();
+  const navigate = useNavigate();
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log(form);
+
+    if (form.password !== form.confirmedPassword) {
+      addAlert('Hasła nie są zgodne.', 'error');
+      return;
+    }
+
+    const response = await register({
+      firstName: form.firstName,
+      lastName: form.lastName,
+      city: form.city,
+      street: form.street,
+      buildingNumber: form.buildingNumber,
+      apartmentNumber: form.apartmentNumber || null,
+      email: form.email,
+      password: form.password,
+      confirmedPassword: form.confirmedPassword,
+    });
+
+    if (response.token) {
+      const activationLink =
+        window.location.origin + '/aktywacja/' + response.token;
+      const alertMessage =
+        'Rejestracja zakończona sukcesem! Kliknij tutaj, aby aktywować swoje konto: ' +
+        activationLink;
+
+      navigate('/logowanie');
+      addAlert(alertMessage, 'info');
+    } else {
+      addAlert(
+        response?.error || 'Rejestracja nie powiodła się. Spróbuj ponownie.',
+        'error'
+      );
+    }
   };
 
   return (
@@ -76,31 +114,23 @@ const RegistrationPage = () => {
             </Box>
             <Box flexBasis="49%">
               <FormTextField
-                label="Kod pocztowy"
-                name="postalCode"
-                value={form.postalCode}
-                onChange={handleChange}
-              />
-            </Box>
-            <Box flexBasis="49%">
-              <FormTextField
                 label="Ulica"
                 name="street"
                 value={form.street}
                 onChange={handleChange}
               />
             </Box>
-            <Box flexBasis="23.5%">
+            <Box flexBasis="49%">
               <FormTextField
-                label="Numer domu"
-                name="houseNumber"
-                value={form.houseNumber}
+                label="Numer budynku"
+                name="buildingNumber"
+                value={form.buildingNumber}
                 onChange={handleChange}
               />
             </Box>
-            <Box flexBasis="23.5%">
+            <Box flexBasis="49%">
               <FormTextField
-                label="Numer mieszkania"
+                label="Numer apartamentu (opcjonalne)"
                 name="apartmentNumber"
                 value={form.apartmentNumber}
                 onChange={handleChange}
@@ -113,15 +143,27 @@ const RegistrationPage = () => {
                 type="email"
                 value={form.email}
                 onChange={handleChange}
+                autoComplete="email"
               />
             </Box>
-            <Box flexBasis="100%">
+            <Box flexBasis="49%">
               <FormTextField
                 label="Hasło"
                 name="password"
                 type="password"
                 value={form.password}
                 onChange={handleChange}
+                autoComplete="new-password"
+              />
+            </Box>
+            <Box flexBasis="49%">
+              <FormTextField
+                label="Potwierdź hasło"
+                name="confirmedPassword"
+                type="password"
+                value={form.confirmedPassword}
+                onChange={handleChange}
+                autoComplete="new-password"
               />
             </Box>
           </Box>
