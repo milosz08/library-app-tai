@@ -55,7 +55,7 @@ class OtaServiceImpl implements OtaService {
 	@Override
 	public OtaTokenEntity validateToken(OtaType otaType, String token) {
 		return otaTokenRepository
-			.findAndValidateTokenByType(token, otaType)
+			.findAndValidateTokenByType(token, otaType, LocalDateTime.now())
 			.orElseThrow(() -> new RestServerException("Podano nieprawidłowy token."));
 	}
 }
