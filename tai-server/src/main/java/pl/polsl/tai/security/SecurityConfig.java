@@ -76,7 +76,7 @@ class SecurityConfig {
 				auth.requestMatchers(POST, "/v1/auth/register").permitAll();
 				auth.requestMatchers(PATCH, "/v1/auth/activate/**").permitAll();
 				auth.requestMatchers(PATCH, "/v1/@me").hasAnyRole(mapRoles(CUSTOMER, ADMIN));
-				auth.requestMatchers(PATCH, "/v1/@me/address").hasRole("CUSTOMER");
+				auth.requestMatchers(PATCH, "/v1/@me/address").hasAnyRole(mapRoles(CUSTOMER));
 				auth.requestMatchers(DELETE, "/v1/@me").hasAnyRole(mapRoles(CUSTOMER));
 				auth.requestMatchers(OPTIONS, "/**").permitAll();
 				auth.anyRequest().authenticated();
