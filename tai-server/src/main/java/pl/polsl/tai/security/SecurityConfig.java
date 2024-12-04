@@ -78,6 +78,9 @@ class SecurityConfig {
 				auth.requestMatchers(PATCH, "/v1/@me").hasAnyRole(mapRoles(CUSTOMER, ADMIN));
 				auth.requestMatchers(PATCH, "/v1/@me/address").hasAnyRole(mapRoles(CUSTOMER));
 				auth.requestMatchers(DELETE, "/v1/@me").hasAnyRole(mapRoles(CUSTOMER));
+				auth.requestMatchers(GET, "/v1/logs").hasAnyRole(mapRoles(ADMIN));
+				auth.requestMatchers(DELETE, "/v1/logs/**").hasAnyRole(mapRoles(ADMIN));
+				auth.requestMatchers(DELETE, "/v1/logs").hasAnyRole(mapRoles(ADMIN));
 				auth.requestMatchers(OPTIONS, "/**").permitAll();
 				auth.anyRequest().authenticated();
 			})
