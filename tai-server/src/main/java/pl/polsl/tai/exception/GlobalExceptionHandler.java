@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
 		for (final FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
 			errors.put(fieldError.getField(), fieldError.getDefaultMessage());
 		}
-		log.error("Invalid method argument exception. Cause: {}", ex.getMessage());
+		log.error("Invalid method argument exception. Cause(s): {}", errors);
 		return ResponseEntity.badRequest().body(errors);
 	}
 
