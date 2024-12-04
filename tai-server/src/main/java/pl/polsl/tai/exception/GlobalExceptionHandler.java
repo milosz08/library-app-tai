@@ -3,6 +3,8 @@ package pl.polsl.tai.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,6 +30,16 @@ public class GlobalExceptionHandler {
 		}
 		log.error("Invalid method argument exception. Cause(s): {}", errors);
 		return ResponseEntity.badRequest().body(errors);
+	}
+
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<String> handleAuthenticationException() {
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<String> handleAccessDeniedException() {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
 
 	@ExceptionHandler(RestServerException.class)
