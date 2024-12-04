@@ -57,7 +57,10 @@ class SecurityConfig {
 			.addFilterBefore(fixedOneLocaleFilter, UsernamePasswordAuthenticationFilter.class)
 			.csrf(Customizer.withDefaults())
 			.cors(config -> config.configurationSource(appCorsConfiguration))
-			.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+			.sessionManagement(config -> {
+				config.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+				config.sessionFixation().migrateSession();
+			})
 			.exceptionHandling(config -> {
 				config.authenticationEntryPoint(authResolver);
 				config.accessDeniedHandler(accessDeniedResolver);
