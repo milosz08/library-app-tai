@@ -1,15 +1,15 @@
 package pl.polsl.tai.network.auth.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class LoginReqDto {
-	@NotBlank(message = "Pole adresu email nie może być puste.")
+	@NotNull(message = "Pole adresu email musi istnieć.")
 	private String email;
 
-	@NotBlank(message = "Pole hasła nie może być puste.")
+	@NotNull(message = "Pole hasła musi istnieć.")
 	private String password;
 }
