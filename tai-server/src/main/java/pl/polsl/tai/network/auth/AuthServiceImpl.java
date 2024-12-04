@@ -21,6 +21,7 @@ import pl.polsl.tai.domain.role.UserRole;
 import pl.polsl.tai.domain.user.UserEntity;
 import pl.polsl.tai.domain.user.UserRepository;
 import pl.polsl.tai.exception.RestServerException;
+import pl.polsl.tai.log.LogPersistService;
 import pl.polsl.tai.network.auth.dto.LoginReqDto;
 import pl.polsl.tai.network.auth.dto.RegisterReqDto;
 import pl.polsl.tai.security.LoggedUser;
@@ -34,6 +35,7 @@ class AuthServiceImpl implements AuthService {
 	private final AuthenticationManager authenticationManager;
 	private final PasswordEncoder passwordEncoder;
 	private final OtaService otaService;
+	private final LogPersistService logPersistService;
 
 	private final UserRepository userRepository;
 	private final AddressRepository addressRepository;
@@ -56,6 +58,7 @@ class AuthServiceImpl implements AuthService {
 		final SecurityContext context = SecurityContextHolder.getContext();
 		context.setAuthentication(authentication);
 		log.info("User: {} was logged in", user);
+		logPersistService.info("Użytkownik: %s zalogował się do serwisu.", user.getEmail());
 		return Optional.empty();
 	}
 
@@ -88,6 +91,7 @@ class AuthServiceImpl implements AuthService {
 		otaTokenRepository.save(otaToken);
 
 		log.info("Created new customer account: {}", user);
+		logPersistService.info("Utworzono nowe konto klienckie na adres email: %s.", user.getEmail());
 		return otaToken.getToken();
 	}
 
@@ -103,5 +107,6 @@ class AuthServiceImpl implements AuthService {
 		user.setActive(true);
 
 		log.info("Activated account for user: {}", user);
+		logPersistService.info("Konto z adresem email: %s zostało aktywowane.", user.getEmail());
 	}
 }

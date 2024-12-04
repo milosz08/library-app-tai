@@ -7,14 +7,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
+import pl.polsl.tai.log.LogPersistService;
 
 import java.io.IOException;
 
 @Slf4j
 @Component
 public class CustomAccessDeniedResolver extends ResponseResolverBase implements AccessDeniedHandler {
-	public CustomAccessDeniedResolver(ObjectMapper objectMapper) {
+	private final LogPersistService logPersistService;
+
+	public CustomAccessDeniedResolver(ObjectMapper objectMapper, LogPersistService logPersistService) {
 		super(objectMapper);
+		this.logPersistService = logPersistService;
 	}
 
 	@Override
@@ -23,7 +27,10 @@ public class CustomAccessDeniedResolver extends ResponseResolverBase implements 
 		HttpServletResponse res,
 		AccessDeniedException ex
 	) throws IOException {
-		log.error("Exception at: {}. Cause: {}", req.getServletPath(), ex.getMessage());
+		final String path = req.getServletPath();
+		final String principal = req.getRemoteAddr();
+		log.error("Exception at: {} invoked by: {}. Cause: {}", path, principal, ex.getMessage());
+		logPersistService.error("Wystąpiła próba nieuprawnionego dostęp do chronionego zasobu: %s przez: %s.", path, principal);
 		sendResponse(res, "Nieautoryzowany dostęp do zasobu.");
 	}
 

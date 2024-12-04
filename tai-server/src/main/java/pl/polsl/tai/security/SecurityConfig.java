@@ -49,6 +49,7 @@ class SecurityConfig {
 	private final FixedOneLocaleFilter fixedOneLocaleFilter;
 	private final AppCorsConfiguration appCorsConfiguration;
 	private final RenewCookieFilter renewCookieFilter;
+	private final CustomLogoutHandlerResolver logoutHandlerResolver;
 
 	@Value("${application.session.cookie.name}")
 	private String sessionCookieName;
@@ -86,7 +87,7 @@ class SecurityConfig {
 					new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.COOKIES))
 				);
 				config.deleteCookies(sessionCookieName);
-				config.logoutSuccessHandler(new CustomLogoutHandlerResolver());
+				config.logoutSuccessHandler(logoutHandlerResolver);
 			})
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable);

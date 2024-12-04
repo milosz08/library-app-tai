@@ -7,6 +7,7 @@ import pl.polsl.tai.domain.address.AddressEntity;
 import pl.polsl.tai.domain.address.AddressRepository;
 import pl.polsl.tai.domain.user.UserEntity;
 import pl.polsl.tai.domain.user.UserRepository;
+import pl.polsl.tai.log.LogPersistService;
 import pl.polsl.tai.network.me.dto.*;
 import pl.polsl.tai.security.LoggedUser;
 
@@ -14,6 +15,8 @@ import pl.polsl.tai.security.LoggedUser;
 @Service
 @RequiredArgsConstructor
 public class MeServiceImpl implements MeService {
+	private final LogPersistService logPersistService;
+
 	private final UserRepository userRepository;
 	private final AddressRepository addressRepository;
 
@@ -33,6 +36,8 @@ public class MeServiceImpl implements MeService {
 
 		final var resDto = new UpdatedUserDetailsResDto(user);
 		log.info("Updated user: {} details. Details: {}", user.getEmail(), resDto);
+		logPersistService.info("Użytkownik: %s zmienił imię i/lub nazwisko swojego konta. Nowe dane: %s.",
+			user.getEmail(), resDto);
 		return resDto;
 	}
 
@@ -49,6 +54,7 @@ public class MeServiceImpl implements MeService {
 
 		final var resDto = new UserAddressDto(address);
 		log.info("Updated costumer {} address. New address: {}", user.getEmail(), address);
+		logPersistService.info("Użytkownik: %s zmienił dane adresowe swojego konta. Nowe dane: %s.", user.getEmail(), resDto);
 		return resDto;
 	}
 }
