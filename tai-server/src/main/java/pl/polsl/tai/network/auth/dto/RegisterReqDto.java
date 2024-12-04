@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import pl.polsl.tai.network.auth.validator.EmailExists;
 import pl.polsl.tai.network.auth.validator.MatchPasswords;
 import pl.polsl.tai.util.Regex;
 
@@ -24,6 +25,7 @@ public class RegisterReqDto {
 	@NotBlank(message = "Adres email jest wymagany.")
 	@Size(max = 150, message = "Adres email może mieć maksymalnie 150 znaków.")
 	@Email(message = "Adres email jest niepoprawny.")
+	@EmailExists(message = "Podany adres email jest już zajęty.")
 	private String email;
 
 	@NotBlank(message = "Hasło jest wymagane.")

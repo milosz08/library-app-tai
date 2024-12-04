@@ -62,9 +62,6 @@ class AuthServiceImpl implements AuthService {
 	@Override
 	@Transactional
 	public String register(RegisterReqDto reqDto) {
-		if (userRepository.existsByEmail(reqDto.getEmail())) {
-			throw new RestServerException("Użytkownik z tym adresem email już istnieje.");
-		}
 		final RoleEntity role = roleRepository
 			.findByName(UserRole.CUSTOMER)
 			.orElseThrow(RestServerException::new);
