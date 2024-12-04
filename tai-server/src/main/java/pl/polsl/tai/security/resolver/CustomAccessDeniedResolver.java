@@ -19,12 +19,12 @@ public class CustomAccessDeniedResolver extends ResponseResolverBase implements 
 
 	@Override
 	public void handle(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		AccessDeniedException accessDeniedException
+		HttpServletRequest req,
+		HttpServletResponse res,
+		AccessDeniedException ex
 	) throws IOException {
-		log.error(accessDeniedException.getMessage());
-		sendResponse(response, "Nieautoryzowany dostęp do zasobu.");
+		log.error("Exception at: {}. Cause: {}", req.getServletPath(), ex.getMessage());
+		sendResponse(res, "Nieautoryzowany dostęp do zasobu.");
 	}
 
 	@Override

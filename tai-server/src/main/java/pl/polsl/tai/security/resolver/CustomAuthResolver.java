@@ -19,12 +19,12 @@ public class CustomAuthResolver extends ResponseResolverBase implements Authenti
 
 	@Override
 	public void commence(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		AuthenticationException authException
+		HttpServletRequest req,
+		HttpServletResponse res,
+		AuthenticationException ex
 	) throws IOException {
-		log.error("Authentication exception: {}", authException.getMessage());
-		sendResponse(response, authException.getMessage());
+		log.error("Authentication exception: {}", ex.getMessage());
+		sendResponse(res, ex.getMessage());
 	}
 
 	@Override
