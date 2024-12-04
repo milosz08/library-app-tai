@@ -5,8 +5,9 @@ server:
         http-only: true
         same-site: strict
         name: ${application.session.cookie.name}
-        max-age: 60m
+        max-age: ${server.servlet.session.timeout}
       tracking-modes: cookie
+      timeout: 3600
     encoding:
       enabled: true
       charset: UTF-8

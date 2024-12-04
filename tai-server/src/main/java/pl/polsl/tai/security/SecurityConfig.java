@@ -31,6 +31,7 @@ import pl.polsl.tai.i18n.FixedOneLocaleFilter;
 import pl.polsl.tai.security.resolver.CustomAccessDeniedResolver;
 import pl.polsl.tai.security.resolver.CustomAuthResolver;
 import pl.polsl.tai.security.resolver.CustomLogoutHandlerResolver;
+import pl.polsl.tai.security.resolver.RenewCookieFilter;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -47,6 +48,7 @@ class SecurityConfig {
 	private final CustomAccessDeniedResolver accessDeniedResolver;
 	private final FixedOneLocaleFilter fixedOneLocaleFilter;
 	private final AppCorsConfiguration appCorsConfiguration;
+	private final RenewCookieFilter renewCookieFilter;
 
 	@Value("${application.session.cookie.name}")
 	private String sessionCookieName;
@@ -55,6 +57,7 @@ class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.addFilterBefore(fixedOneLocaleFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterAfter(renewCookieFilter, UsernamePasswordAuthenticationFilter.class)
 			.csrf(Customizer.withDefaults())
 			.cors(config -> config.configurationSource(appCorsConfiguration))
 			.sessionManagement(config -> {

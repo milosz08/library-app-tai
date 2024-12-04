@@ -45,5 +45,10 @@ public class AuthController {
 		authService.activateAccount(token);
 		return ResponseEntity.noContent().build();
 	}
+
+	@PatchMapping("/session/revalidate")
+	ResponseEntity<Void> refreshSession() {
+		return ResponseEntity.noContent().build();
+	}
 }
 
