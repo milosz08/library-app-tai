@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+import pl.polsl.tai.dto.TokenResDto;
 import pl.polsl.tai.network.auth.dto.LoginReqDto;
 import pl.polsl.tai.network.auth.dto.RegisterReqDto;
-import pl.polsl.tai.network.auth.dto.TokenResDto;
 
-import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -22,17 +22,16 @@ public class AuthController {
 	private final SecurityContextRepository securityContextRepository;
 
 	@PostMapping("/login")
-	ResponseEntity<?> login(
+	ResponseEntity<Map<String, Object>> login(
 		@RequestBody @Valid LoginReqDto reqDto,
 		HttpServletRequest request,
 		HttpServletResponse response
 	) {
-		final Optional<TokenResDto> token = authService.login(reqDto);
-		if (token.isPresent()) {
-			return ResponseEntity.ok(token);
+		final Map<String, Object> results = authService.login(reqDto);
+		if (results.containsKey("role")) {
+			securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
 		}
-		securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok(results);
 	}
 
 	@PostMapping("/register")

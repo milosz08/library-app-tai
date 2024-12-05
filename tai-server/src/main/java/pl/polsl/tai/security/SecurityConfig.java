@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -111,11 +112,21 @@ class SecurityConfig {
 
 	@Bean
 	AuthenticationManager authenticationManager(MessageSource messageSource, UserDetailsService userDetailsService) {
+		// global
 		final DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setMessageSource(messageSource);
 		provider.setPasswordEncoder(passwordEncoder());
 		provider.setUserDetailsService(userDetailsService);
-		return new ProviderManager(provider);
+
+		// only for first login
+		final DaoAuthenticationProvider loginProvider = new DaoAuthenticationProvider();
+		loginProvider.setMessageSource(messageSource);
+		loginProvider.setPasswordEncoder(passwordEncoder());
+		loginProvider.setUserDetailsService(userDetailsService);
+		loginProvider.supports(FirstLoginPasswordAuthenticationToken.class);
+		loginProvider.setPostAuthenticationChecks(new LoginPostAuthenticationCheck());
+
+		return new ProviderManager(provider, loginProvider);
 	}
 
 	@Bean

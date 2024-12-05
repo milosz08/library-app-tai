@@ -1,13 +1,13 @@
 package pl.polsl.tai.network.auth;
 
+import pl.polsl.tai.dto.TokenResDto;
 import pl.polsl.tai.network.auth.dto.LoginReqDto;
 import pl.polsl.tai.network.auth.dto.RegisterReqDto;
-import pl.polsl.tai.network.auth.dto.TokenResDto;
 
-import java.util.Optional;
+import java.util.Map;
 
 interface AuthService {
-	Optional<TokenResDto> login(LoginReqDto reqDto);
+	Map<String, Object> login(LoginReqDto reqDto);
 
 	TokenResDto register(RegisterReqDto reqDto);
 
