@@ -17,8 +17,10 @@ public class CustomLogoutHandlerResolver implements LogoutSuccessHandler {
 
 	@Override
 	public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) {
-		log.info("User: {} was logged out", auth.getName());
-		logPersistService.info("Użytkownik: %s wylogował się z konta.", auth.getName());
+		if (auth != null) {
+			log.info("User: {} was logged out", auth.getName());
+			logPersistService.info("Użytkownik: %s wylogował się z serwisu.", auth.getName());
+		}
 		res.setStatus(HttpServletResponse.SC_NO_CONTENT);
 	}
 }

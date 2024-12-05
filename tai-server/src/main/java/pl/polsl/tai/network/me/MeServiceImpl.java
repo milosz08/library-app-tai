@@ -35,7 +35,7 @@ public class MeServiceImpl implements MeService {
 		userRepository.save(user);
 
 		final var resDto = new UpdatedUserDetailsResDto(user);
-		log.info("Updated user: {} details. Details: {}", user.getEmail(), resDto);
+		log.info("Updated user: {} details. Details: {}.", user.getEmail(), resDto);
 		logPersistService.info("Użytkownik: %s zmienił imię i/lub nazwisko swojego konta. Nowe dane: %s.",
 			user.getEmail(), resDto);
 		return resDto;
@@ -53,8 +53,8 @@ public class MeServiceImpl implements MeService {
 		addressRepository.save(address);
 
 		final var resDto = new UserAddressDto(address);
-		log.info("Updated costumer {} address. New address: {}", user.getEmail(), address);
-		logPersistService.info("Użytkownik: %s zmienił dane adresowe swojego konta. Nowe dane: %s.", user.getEmail(), resDto);
+		log.info("Updated customer: {} address. New address: {}.", user.getEmail(), address);
+		logPersistService.info("Klient: %s zmienił dane adresowe swojego konta. Nowe dane: %s.", user.getEmail(), resDto);
 		return resDto;
 	}
 }
