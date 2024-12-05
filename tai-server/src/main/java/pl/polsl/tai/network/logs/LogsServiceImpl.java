@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.tai.domain.log.LogEntity;
 import pl.polsl.tai.domain.log.LogRepository;
 import pl.polsl.tai.dto.PageableContainerResDto;
@@ -44,9 +45,23 @@ public class LogsServiceImpl implements LogsService {
 	}
 
 	@Override
+	public DeletedLogRowsCountResDto deleteLogsChunk(Integer chunkSize, LoggedUser loggedUser) {
+		final int chunkSizeSave = chunkSize == null ? 1 : chunkSize;
+
+		final List<LogEntity> logsFromEnd = logRepository
+			.findAllBy(PageRequest.of(0, chunkSizeSave, Sort.by(Sort.Direction.ASC, "id")));
+
+		logRepository.deleteAll(logsFromEnd);
+		log.info("Delete logs chunk (size: {}) by: {}.", chunkSize, loggedUser.getUsername());
+		return new DeletedLogRowsCountResDto(chunkSizeSave);
+	}
+
+	@Override
+	@Transactional
 	public DeletedLogRowsCountResDto deleteAllLogs(LoggedUser loggedUser) {
 		final long affectedRows = logRepository.count();
 		logRepository.deleteAll();
+		logRepository.resetSequence(0);
 		log.info("Delete all logs. Flushed: {} log rows by: {}.", affectedRows, loggedUser.getUsername());
 		return new DeletedLogRowsCountResDto(affectedRows);
 	}

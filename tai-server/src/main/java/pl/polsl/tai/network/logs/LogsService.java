@@ -11,5 +11,7 @@ public interface LogsService {
 
 	void deleteLogById(Long id, LoggedUser loggedUser);
 
+	DeletedLogRowsCountResDto deleteLogsChunk(Integer chunkSize, LoggedUser loggedUser);
+
 	DeletedLogRowsCountResDto deleteAllLogs(LoggedUser loggedUser);
 }

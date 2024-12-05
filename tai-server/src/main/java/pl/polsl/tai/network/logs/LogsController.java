@@ -30,6 +30,14 @@ public class LogsController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@DeleteMapping("/chunk/{size}")
+	ResponseEntity<DeletedLogRowsCountResDto> deleteLogsInChunk(
+		@PathVariable Integer size,
+		@AuthenticationPrincipal LoggedUser loggedUser
+	) {
+		return ResponseEntity.ok(logsService.deleteLogsChunk(size, loggedUser));
+	}
+
 	@DeleteMapping
 	ResponseEntity<DeletedLogRowsCountResDto> deleteAllLogs(@AuthenticationPrincipal LoggedUser loggedUser) {
 		return ResponseEntity.ok(logsService.deleteAllLogs(loggedUser));
