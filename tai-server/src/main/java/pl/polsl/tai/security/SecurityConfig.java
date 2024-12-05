@@ -124,9 +124,4 @@ class SecurityConfig {
 	SecurityContextRepository securityContextRepository() {
 		return new HttpSessionSecurityContextRepository();
 	}
-
-	@Bean
-	SecureRandom secureRandom() {
-		return new SecureRandom();
-	}
 }
