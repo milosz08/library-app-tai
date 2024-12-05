@@ -1,6 +1,7 @@
 package pl.polsl.tai.i18n;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ class FixedOneLocaleResolver extends AcceptHeaderLocaleResolver {
 	private String locale;
 
 	@Override
-	public Locale resolveLocale(HttpServletRequest request) {
+	public @NotNull Locale resolveLocale(@NotNull HttpServletRequest req) {
 		final Locale localeObj = createLocale();
 		LocaleContextHolder.setLocale(localeObj);
 		return localeObj;

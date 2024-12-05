@@ -2,6 +2,7 @@ package pl.polsl.tai.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
@@ -16,7 +17,7 @@ public class AppCorsConfiguration implements CorsConfigurationSource {
 	private final CorsProperties corsProperties;
 
 	@Override
-	public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+	public CorsConfiguration getCorsConfiguration(@NotNull HttpServletRequest req) {
 		final CorsConfiguration config = new CorsConfiguration();
 		final List<String> allowedMethods = Arrays.stream(HttpMethod.values())
 			.map(HttpMethod::name)

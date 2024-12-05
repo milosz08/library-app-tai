@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -20,11 +21,11 @@ public class FixedOneLocaleFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(
-		HttpServletRequest request,
-		HttpServletResponse response,
+		@NotNull HttpServletRequest req,
+		@NotNull HttpServletResponse res,
 		FilterChain filterChain
 	) throws ServletException, IOException {
 		LocaleContextHolder.setLocale(Locale.forLanguageTag(locale));
-		filterChain.doFilter(request, response);
+		filterChain.doFilter(req, res);
 	}
 }
