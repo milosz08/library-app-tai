@@ -8,12 +8,15 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.polsl.tai.util.Regex;
 import pl.polsl.tai.validator.EmailExists;
-import pl.polsl.tai.validator.MatchPasswords;
+import pl.polsl.tai.validator.MatchValues;
+import pl.polsl.tai.validator.MatchValuesDto;
+
+import java.util.List;
 
 @Getter
 @Setter
-@MatchPasswords(message = "Hasło oraz potwierdzenie hasła nie są takie same.")
-public class RegisterReqDto {
+@MatchValues(message = "Hasło oraz potwierdzenie hasła nie są takie same.")
+public class RegisterReqDto implements MatchValuesDto {
 	@NotBlank(message = "Imię jest wymagane.")
 	@Size(min = 2, max = 100, message = "Imię musi mieć od 2 do 100 znaków.")
 	private String firstName;
@@ -51,4 +54,9 @@ public class RegisterReqDto {
 	@NotBlank(message = "Miasto jest wymagane.")
 	@Size(min = 2, max = 100, message = "Miasto musi mieć od 2 do 100 znaków.")
 	private String city;
+
+	@Override
+	public List<String> getMatchValues() {
+		return List.of(password, confirmedPassword);
+	}
 }
