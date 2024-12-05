@@ -1,4 +1,4 @@
-package pl.polsl.tai.network.auth.dto;
+package pl.polsl.tai.dto;
 
 public record TokenResDto(String token, long expiredSeconds) {
 }
