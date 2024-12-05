@@ -8,6 +8,8 @@ import lombok.*;
 import pl.polsl.tai.domain.EntityBase;
 import pl.polsl.tai.domain.user.UserEntity;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Entity
@@ -15,7 +17,7 @@ import pl.polsl.tai.domain.user.UserEntity;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class AddressEntity extends EntityBase {
+public class AddressEntity extends EntityBase implements Serializable {
 
 	private String street;
 

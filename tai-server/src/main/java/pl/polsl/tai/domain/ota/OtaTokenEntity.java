@@ -5,6 +5,7 @@ import lombok.*;
 import pl.polsl.tai.domain.EntityBase;
 import pl.polsl.tai.domain.user.UserEntity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class OtaTokenEntity extends EntityBase {
+public class OtaTokenEntity extends EntityBase implements Serializable {
 
 	@Column(updatable = false)
 	private String token;

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import pl.polsl.tai.domain.EntityBase;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class LogEntity extends EntityBase {
+public class LogEntity extends EntityBase implements Serializable {
 
 	private String message;
 
