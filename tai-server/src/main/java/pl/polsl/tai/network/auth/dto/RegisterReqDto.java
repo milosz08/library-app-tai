@@ -6,9 +6,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import pl.polsl.tai.network.auth.validator.EmailExists;
-import pl.polsl.tai.network.auth.validator.MatchPasswords;
 import pl.polsl.tai.util.Regex;
+import pl.polsl.tai.validator.EmailExists;
+import pl.polsl.tai.validator.MatchPasswords;
 
 @Getter
 @Setter

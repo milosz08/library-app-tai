@@ -1,8 +1,9 @@
-package pl.polsl.tai.network.auth.validator;
+package pl.polsl.tai.validator.constraint;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import pl.polsl.tai.network.auth.dto.RegisterReqDto;
+import pl.polsl.tai.validator.MatchPasswords;
 
 import java.util.Objects;
 
