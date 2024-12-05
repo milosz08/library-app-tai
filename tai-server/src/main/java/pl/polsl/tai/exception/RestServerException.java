@@ -9,9 +9,14 @@ public class RestServerException extends RuntimeException {
 
 	private final HttpStatus status;
 
+	public RestServerException(String message, HttpStatus status) {
+		super(message);
+		this.status = status;
+	}
+
 	public RestServerException(String message) {
 		super(message);
-		this.status = HttpStatus.BAD_REQUEST;
+		status = HttpStatus.BAD_REQUEST;
 	}
 
 	public RestServerException() {

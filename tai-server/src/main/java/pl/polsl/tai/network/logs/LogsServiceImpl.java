@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import pl.polsl.tai.domain.log.LogEntity;
 import pl.polsl.tai.domain.log.LogRepository;
 import pl.polsl.tai.dto.PageableContainerResDto;
-import pl.polsl.tai.exception.RestServerException;
+import pl.polsl.tai.exception.NotFoundRestServerException;
 import pl.polsl.tai.network.logs.dto.DeletedLogRowsCountResDto;
 import pl.polsl.tai.network.logs.dto.LogRowResDto;
 import pl.polsl.tai.security.LoggedUser;
@@ -37,7 +37,7 @@ public class LogsServiceImpl implements LogsService {
 	@Override
 	public void deleteLogById(long id, LoggedUser loggedUser) {
 		if (!logRepository.existsById(id)) {
-			throw new RestServerException("Wybrany zapis nie istnieje.");
+			throw new NotFoundRestServerException("Wybrany zapis nie istnieje.");
 		}
 		logRepository.deleteById(id);
 		log.info("Delete log with id: {} by: {}.", id, loggedUser.getUsername());
