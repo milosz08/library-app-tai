@@ -63,7 +63,7 @@ public class MeServiceImpl implements MeService {
 	public void deleteAccount(LoggedUser loggedUser) {
 		final UserEntity user = loggedUser.userEntity();
 
-		// TODO: delete in future all rented books, or maybe user cannot be deleted with rented boots??
+		// TODO: delete in future all rented books, or maybe user cannot be deleted with rented books?
 
 		addressRepository.delete(user.getAddress());
 		userRepository.delete(user);
