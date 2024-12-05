@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import pl.polsl.tai.domain.log.LogEntity;
+import pl.polsl.tai.dto.PageableContainerResDto;
 import pl.polsl.tai.network.logs.dto.DeletedLogRowsCountResDto;
-import pl.polsl.tai.network.logs.dto.LogsContainerResDto;
+import pl.polsl.tai.network.logs.dto.LogRowResDto;
 import pl.polsl.tai.security.LoggedUser;
 
 @RestController
@@ -15,7 +17,7 @@ public class LogsController {
 	private final LogsService logsService;
 
 	@GetMapping
-	ResponseEntity<LogsContainerResDto> getNewestPageableLogs(
+	ResponseEntity<PageableContainerResDto<LogRowResDto, LogEntity>> getNewestPageableLogs(
 		@RequestParam(required = false) Integer page,
 		@RequestParam(required = false) Integer size
 	) {

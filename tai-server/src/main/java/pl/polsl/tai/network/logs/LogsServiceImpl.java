@@ -8,10 +8,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.polsl.tai.domain.log.LogEntity;
 import pl.polsl.tai.domain.log.LogRepository;
+import pl.polsl.tai.dto.PageableContainerResDto;
 import pl.polsl.tai.exception.RestServerException;
 import pl.polsl.tai.network.logs.dto.DeletedLogRowsCountResDto;
 import pl.polsl.tai.network.logs.dto.LogRowResDto;
-import pl.polsl.tai.network.logs.dto.LogsContainerResDto;
 import pl.polsl.tai.security.LoggedUser;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class LogsServiceImpl implements LogsService {
 	private final LogRepository logRepository;
 
 	@Override
-	public LogsContainerResDto getNewestPageableLogs(Integer page, Integer size) {
+	public PageableContainerResDto<LogRowResDto, LogEntity> getNewestPageableLogs(Integer page, Integer size) {
 		final int pageSafe = page == null ? 1 : page;
 		final int sizeSafe = size == null ? 10 : size;
 
@@ -31,7 +31,7 @@ public class LogsServiceImpl implements LogsService {
 			.findAll(PageRequest.of(pageSafe - 1, sizeSafe, Sort.by(Sort.Direction.DESC, "executedTime")));
 
 		final List<LogRowResDto> results = pageable.map(LogRowResDto::new).toList();
-		return new LogsContainerResDto(results, pageable.getTotalElements(), pageable.getTotalPages(), pageSafe, sizeSafe);
+		return new PageableContainerResDto<>(results, pageable);
 	}
 
 	@Override
