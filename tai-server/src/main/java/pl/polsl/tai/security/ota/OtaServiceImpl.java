@@ -31,11 +31,11 @@ class OtaServiceImpl implements OtaService {
 		final OtaTokenEntity otaToken = OtaTokenEntity.builder()
 			.token(token)
 			.expires(LocalDateTime.now().plusSeconds(expiredSeconds))
-			.type(OtaType.ACTIVATE_ACCOUNT)
+			.type(otaType)
 			.user(user)
 			.build();
 
-		log.info("Generated ota token with type: {} and time: {} for user: {}", otaType.name(), expiredSeconds, user);
+		log.info("Generated ota token with type: {} and time: {} for user: {}.", otaType.name(), expiredSeconds, user);
 		return new GeneratedOta(otaToken, expiredSeconds);
 	}
 

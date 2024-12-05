@@ -9,7 +9,7 @@ import pl.polsl.tai.security.LoggedUser;
 public interface LogsService {
 	PageableContainerResDto<LogRowResDto, LogEntity> getNewestPageableLogs(Integer page, Integer size);
 
-	void deleteLogById(long id, LoggedUser loggedUser);
+	void deleteLogById(Long id, LoggedUser loggedUser);
 
 	DeletedLogRowsCountResDto deleteAllLogs(LoggedUser loggedUser);
 }

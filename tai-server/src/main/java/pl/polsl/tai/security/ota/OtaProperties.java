@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "application.ota")
 public class OtaProperties {
 	private int length;
-	private long activateExpiredMin;
-	private long passwordExpiredHours;
+	private long shortExpiredMin;
+	private long longExpiredHours;
 }

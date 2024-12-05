@@ -3,6 +3,7 @@ package pl.polsl.tai.network.me;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.tai.domain.address.AddressEntity;
 import pl.polsl.tai.domain.address.AddressRepository;
 import pl.polsl.tai.domain.user.UserEntity;
@@ -27,21 +28,21 @@ public class MeServiceImpl implements MeService {
 	}
 
 	@Override
+	@Transactional
 	public UpdatedUserDetailsResDto updateDetails(UpdateUserDetailsReqDto reqDto, LoggedUser loggedUser) {
 		final UserEntity user = loggedUser.userEntity();
 
 		user.setFirstName(reqDto.getFirstName());
 		user.setLastName(reqDto.getLastName());
-		userRepository.save(user);
 
 		final var resDto = new UpdatedUserDetailsResDto(user);
 		log.info("Updated user: {} details. Details: {}.", user.getEmail(), resDto);
-		logPersistService.info("Użytkownik: %s zmienił imię i/lub nazwisko swojego konta. Nowe dane: %s.",
-			user.getEmail(), resDto);
+		logPersistService.info("Użytkownik: %s zmienił imię i/lub nazwisko swojego konta.", user.getEmail());
 		return resDto;
 	}
 
 	@Override
+	@Transactional
 	public UserAddressDto updateAddress(UpdateUserAddressReqDto reqDto, LoggedUser loggedUser) {
 		final UserEntity user = loggedUser.userEntity();
 		final AddressEntity address = user.getAddress();
@@ -50,11 +51,10 @@ public class MeServiceImpl implements MeService {
 		address.setCity(reqDto.getCity());
 		address.setApartmentNumber(reqDto.getApartmentNumber());
 		address.setBuildingNumber(reqDto.getBuildingNumber());
-		addressRepository.save(address);
 
 		final var resDto = new UserAddressDto(address);
 		log.info("Updated customer: {} address. New address: {}.", user.getEmail(), address);
-		logPersistService.info("Klient: %s zmienił dane adresowe swojego konta. Nowe dane: %s.", user.getEmail(), resDto);
+		logPersistService.info("Klient: %s zmienił dane adresowe swojego konta.", user.getEmail());
 		return resDto;
 	}
 }

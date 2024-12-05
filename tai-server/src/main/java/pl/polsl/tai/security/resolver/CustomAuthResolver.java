@@ -23,7 +23,7 @@ public class CustomAuthResolver extends ResponseResolverBase implements Authenti
 		HttpServletResponse res,
 		AuthenticationException ex
 	) throws IOException {
-		log.error("Authentication exception: {}", ex.getMessage());
+		log.error("Authentication exception: {}.", ex.getMessage());
 		sendResponse(res, ex.getMessage());
 	}
 

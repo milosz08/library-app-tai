@@ -28,9 +28,8 @@ public class CustomAccessDeniedResolver extends ResponseResolverBase implements 
 		AccessDeniedException ex
 	) throws IOException {
 		final String path = req.getServletPath();
-		final String principal = req.getRemoteAddr();
-		log.error("Exception at: {} invoked by: {}. Cause: {}", path, principal, ex.getMessage());
-		logPersistService.error("Wystąpiła próba nieuprawnionego dostęp do chronionego zasobu: %s przez: %s.", path, principal);
+		log.error("Exception at: {} invoked. Cause: {}", path, ex.getMessage());
+		logPersistService.error("Wystąpiła próba nieuprawnionego dostęp do chronionego zasobu: %s.", path);
 		sendResponse(res, "Nieautoryzowany dostęp do zasobu.");
 	}
 

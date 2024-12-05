@@ -35,7 +35,7 @@ public class LogsServiceImpl implements LogsService {
 	}
 
 	@Override
-	public void deleteLogById(long id, LoggedUser loggedUser) {
+	public void deleteLogById(Long id, LoggedUser loggedUser) {
 		if (!logRepository.existsById(id)) {
 			throw new NotFoundRestServerException("Wybrany zapis nie istnieje.");
 		}
