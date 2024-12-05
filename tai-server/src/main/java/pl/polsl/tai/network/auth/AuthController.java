@@ -27,9 +27,9 @@ public class AuthController {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) {
-		final Optional<String> token = authService.login(reqDto);
+		final Optional<TokenResDto> token = authService.login(reqDto);
 		if (token.isPresent()) {
-			return ResponseEntity.ok(new TokenResDto(token.get()));
+			return ResponseEntity.ok(token);
 		}
 		securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
 		return ResponseEntity.noContent().build();
@@ -37,7 +37,7 @@ public class AuthController {
 
 	@PostMapping("/register")
 	ResponseEntity<TokenResDto> register(@RequestBody @Valid RegisterReqDto reqDto) {
-		return ResponseEntity.ok(new TokenResDto(authService.register(reqDto)));
+		return ResponseEntity.ok(authService.register(reqDto));
 	}
 
 	@PatchMapping("/activate/{token}")

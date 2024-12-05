@@ -38,4 +38,7 @@ application:
   locale: pl
   ota:
     length: 10
-    expired-min: 10
+    activate-expired-min: 10
+    password-expired-hours: 24
+  first-password:
+    length: 20

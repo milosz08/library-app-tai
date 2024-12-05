@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,8 +23,14 @@ import pl.polsl.tai.exception.RestServerException;
 import pl.polsl.tai.log.LogPersistService;
 import pl.polsl.tai.network.auth.dto.LoginReqDto;
 import pl.polsl.tai.network.auth.dto.RegisterReqDto;
+import pl.polsl.tai.network.auth.dto.TokenResDto;
+import pl.polsl.tai.security.FirstLoginPasswordAuthenticationToken;
 import pl.polsl.tai.security.LoggedUser;
+import pl.polsl.tai.security.ota.GeneratedOta;
+import pl.polsl.tai.security.ota.OtaProperties;
+import pl.polsl.tai.security.ota.OtaService;
 
+import java.time.Duration;
 import java.util.Optional;
 
 @Slf4j
@@ -36,6 +41,7 @@ class AuthServiceImpl implements AuthService {
 	private final PasswordEncoder passwordEncoder;
 	private final OtaService otaService;
 	private final LogPersistService logPersistService;
+	private final OtaProperties otaProperties;
 
 	private final UserRepository userRepository;
 	private final AddressRepository addressRepository;
@@ -43,17 +49,18 @@ class AuthServiceImpl implements AuthService {
 	private final OtaTokenRepository otaTokenRepository;
 
 	@Override
-	public Optional<String> login(LoginReqDto reqDto) {
-		final var authInputToken = UsernamePasswordAuthenticationToken.unauthenticated(
+	public Optional<TokenResDto> login(LoginReqDto reqDto) {
+		final var authInputToken = FirstLoginPasswordAuthenticationToken.unauthenticated(
 			reqDto.getEmail(),
 			reqDto.getPassword()
 		);
 		final Authentication authentication = authenticationManager.authenticate(authInputToken);
 		final UserEntity user = ((LoggedUser) authentication.getPrincipal()).userEntity();
 		if (authentication.isAuthenticated() && !user.getActive()) {
-			final OtaTokenEntity otaToken = otaService.generateToken(OtaType.ACTIVATE_ACCOUNT, user);
-			otaTokenRepository.save(otaToken);
-			return Optional.of(otaToken.getToken());
+			final GeneratedOta ota = generateActivateAccountOta(user);
+			otaTokenRepository.save(ota.entity());
+			// This OTA token should be sent via email sender but... I suppose we don't have to.
+			return Optional.of(new TokenResDto(ota.entity().getToken(), ota.expiredSeconds()));
 		}
 		final SecurityContext context = SecurityContextHolder.getContext();
 		context.setAuthentication(authentication);
@@ -64,7 +71,7 @@ class AuthServiceImpl implements AuthService {
 
 	@Override
 	@Transactional
-	public String register(RegisterReqDto reqDto) {
+	public TokenResDto register(RegisterReqDto reqDto) {
 		final RoleEntity role = roleRepository
 			.findByName(UserRole.CUSTOMER)
 			.orElseThrow(RestServerException::new);
@@ -85,14 +92,14 @@ class AuthServiceImpl implements AuthService {
 			.user(user)
 			.build();
 
-		final OtaTokenEntity otaToken = otaService.generateToken(OtaType.ACTIVATE_ACCOUNT, user);
+		final GeneratedOta ota = generateActivateAccountOta(user);
 		userRepository.save(user);
 		addressRepository.save(address);
-		otaTokenRepository.save(otaToken);
+		otaTokenRepository.save(ota.entity());
 
 		log.info("Created new customer account: {}", user);
 		logPersistService.info("Utworzono nowe konto klienckie na adres email: %s.", user.getEmail());
-		return otaToken.getToken();
+		return new TokenResDto(ota.entity().getToken(), ota.expiredSeconds());
 	}
 
 	@Override
@@ -108,5 +115,10 @@ class AuthServiceImpl implements AuthService {
 
 		log.info("Activated account for user: {}", user);
 		logPersistService.info("Konto z adresem email: %s zostało aktywowane.", user.getEmail());
+	}
+
+	private GeneratedOta generateActivateAccountOta(UserEntity user) {
+		return otaService.generateToken(OtaType.ACTIVATE_ACCOUNT,
+			Duration.ofMinutes(otaProperties.getActivateExpiredMin()), user);
 	}
 }
