@@ -57,4 +57,18 @@ public class MeServiceImpl implements MeService {
 		logPersistService.info("Klient: %s zmienił dane adresowe swojego konta.", user.getEmail());
 		return resDto;
 	}
+
+	@Override
+	@Transactional
+	public void deleteAccount(LoggedUser loggedUser) {
+		final UserEntity user = loggedUser.userEntity();
+
+		// TODO: delete in future all rented books, or maybe user cannot be deleted with rented boots??
+
+		addressRepository.delete(user.getAddress());
+		userRepository.delete(user);
+
+		log.info("Customer: {} removed account.", user);
+		logPersistService.info("Klient: %s usunął swoje konto.", user.getEmail());
+	}
 }

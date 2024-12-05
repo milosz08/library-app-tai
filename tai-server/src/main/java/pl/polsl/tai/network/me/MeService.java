@@ -9,4 +9,6 @@ interface MeService {
 	UpdatedUserDetailsResDto updateDetails(UpdateUserDetailsReqDto reqDto, LoggedUser loggedUser);
 
 	UserAddressDto updateAddress(UpdateUserAddressReqDto reqDto, LoggedUser loggedUser);
+
+	void deleteAccount(LoggedUser loggedUser);
 }
