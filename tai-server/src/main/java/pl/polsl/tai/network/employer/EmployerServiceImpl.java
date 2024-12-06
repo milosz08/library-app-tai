@@ -114,6 +114,10 @@ class EmployerServiceImpl implements EmployerService {
 
 		employer.setPassword(passwordEncoder.encode(temporaryPassword));
 
+		log.info("Regenerate first access token for: {} by: {}.", employer, loggedUser.getUsername());
+		logPersistService.info("Wygenerowany nowy token pierwszego dostępu dla pracownika: %s przez administratora: %s.",
+			employer.getEmail(), loggedUser.getUsername());
+
 		// This credentials should be sent via email sender but... I suppose we don't have to.
 		return new TemporalPasswordWithTokenResDto(ota.entity().getToken(), ota.expiredSeconds(), temporaryPassword);
 	}
