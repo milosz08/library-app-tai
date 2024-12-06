@@ -47,22 +47,19 @@ const RegistrationPage = () => {
     });
 
     if (response.token) {
-      const activationLink =
-        window.location.origin + '/aktywacja/' + response.token;
-      const alertMessage =
-        'Rejestracja zakończona sukcesem! Kliknij tutaj, aby aktywować swoje konto: ' +
-        activationLink;
+      const activationLink = `${window.location.origin}/aktywacja/${response.token}`;
+      const alertMessage = `Rejestracja zakończona sukcesem! Kliknij tutaj, aby aktywować swoje konto: ${activationLink}`;
 
       navigate('/logowanie');
       addAlert(alertMessage, 'info');
+    } else if (response.errors) {
+      Object.entries(response.errors).forEach(([field, message]) => {
+        addAlert(`Błąd w polu ${field}: ${message}`, 'error');
+      });
     } else {
-      addAlert(
-        response?.error || 'Rejestracja nie powiodła się. Spróbuj ponownie.',
-        'error'
-      );
+      addAlert('Rejestracja nie powiodła się. Spróbuj ponownie.', 'error');
     }
   };
-
   return (
     <Container
       maxWidth="md"
