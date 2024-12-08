@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -56,8 +57,7 @@ class SecurityConfig {
 		http
 			.addFilterBefore(fixedOneLocaleFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterAfter(renewCookieFilter, UsernamePasswordAuthenticationFilter.class)
-//			.csrf(Customizer.withDefaults())
-			.csrf(AbstractHttpConfigurer::disable)
+			.csrf(Customizer.withDefaults())
 			.cors(config -> config.configurationSource(appCorsConfiguration))
 			.sessionManagement(config -> {
 				config.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
