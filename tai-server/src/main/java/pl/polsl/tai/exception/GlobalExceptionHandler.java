@@ -19,9 +19,9 @@ import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+class GlobalExceptionHandler {
 	@ExceptionHandler(NoResourceFoundException.class)
-	public ResponseEntity<Void> handleNotFound() {
+	ResponseEntity<Void> handleNotFound() {
 		return ResponseEntity.notFound().build();
 	}
 
