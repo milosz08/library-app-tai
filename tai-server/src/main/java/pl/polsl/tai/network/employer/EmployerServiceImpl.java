@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,9 @@ import pl.polsl.tai.domain.role.RoleRepository;
 import pl.polsl.tai.domain.role.UserRole;
 import pl.polsl.tai.domain.user.UserEntity;
 import pl.polsl.tai.domain.user.UserRepository;
-import pl.polsl.tai.dto.PageableContainerResDto;
+import pl.polsl.tai.domain.user.UserSpec;
+import pl.polsl.tai.dto.DeleteResultResDto;
+import pl.polsl.tai.dto.PageableResDto;
 import pl.polsl.tai.exception.NotFoundRestServerException;
 import pl.polsl.tai.exception.RestServerException;
 import pl.polsl.tai.log.LogPersistService;
@@ -47,12 +50,16 @@ class EmployerServiceImpl implements EmployerService {
 	private int firstPasswordLength;
 
 	@Override
-	public PageableContainerResDto<EmployerRowResDto, UserEntity> getPageableEmployers(Integer page, Integer size) {
+	public PageableResDto<EmployerRowResDto, UserEntity> getPageableEmployers(String email, Integer page, Integer size) {
+		final String emailSafe = email == null ? "" : email;
 		final int pageSafe = page == null ? 1 : page;
 		final int sizeSafe = size == null ? 10 : size;
 
-		final Page<UserEntity> pageable = userRepository
-			.findAllByRole_Name(PageRequest.of(pageSafe - 1, sizeSafe), UserRole.EMPLOYER);
+		final Specification<UserEntity> spec = Specification
+			.where(UserSpec.hasEmail(emailSafe))
+			.and(UserSpec.hasRole(UserRole.EMPLOYER));
+
+		final Page<UserEntity> pageable = userRepository.findAll(spec, PageRequest.of(pageSafe - 1, sizeSafe));
 
 		final List<EmployerRowResDto> results = pageable.map(EmployerRowResDto::new).toList();
 		return new PageableResDto<>(results, pageable);
@@ -141,15 +148,22 @@ class EmployerServiceImpl implements EmployerService {
 	}
 
 	@Override
-	public void deleteEmployer(Long id, LoggedUser loggedUser) {
-		final UserEntity employer = findEmployer(id);
+	public DeleteResultResDto deleteEmployers(List<Long> employerIds, LoggedUser loggedUser) {
+		List<UserEntity> employers;
+		if (employerIds.isEmpty()) {
+			employers = userRepository.findAllByRole_Name(UserRole.EMPLOYER);
+		} else {
+			employers = userRepository.findAllByIdInAndRole_Name(employerIds, UserRole.EMPLOYER);
+		}
+		userRepository.deleteAll(employers);
 
-		// TODO: any checks? maybe unset referential id to added books?
-		userRepository.delete(employer);
+		final List<String> deleteEmployers = employers.stream().map(UserEntity::getEmail).toList();
 
-		log.info("Delete employer by: {}. Deleted employer data: {}.", loggedUser.getUsername(), employer);
-		logPersistService.info("Usunięto pracownika: %s przez administratora: %s.",
-			employer.getEmail(), loggedUser.getUsername());
+		log.info("Delete employer(s) by: {}. Deleted employer(s) data: {}.", loggedUser.getUsername(), deleteEmployers);
+		logPersistService.info("Usunięto pracownika/ów: %s przez administratora: %s.", deleteEmployers,
+			loggedUser.getUsername());
+
+		return new DeleteResultResDto(employers.size());
 	}
 
 	private UserEntity findEmployer(Long employerId) {

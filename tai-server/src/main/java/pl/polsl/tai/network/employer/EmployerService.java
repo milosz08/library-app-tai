@@ -1,9 +1,12 @@
 package pl.polsl.tai.network.employer;
 
 import pl.polsl.tai.domain.user.UserEntity;
-import pl.polsl.tai.dto.PageableContainerResDto;
+import pl.polsl.tai.dto.DeleteResultResDto;
+import pl.polsl.tai.dto.PageableResDto;
 import pl.polsl.tai.network.employer.dto.*;
 import pl.polsl.tai.security.LoggedUser;
+
+import java.util.List;
 
 interface EmployerService {
 	PageableResDto<EmployerRowResDto, UserEntity> getPageableEmployers(String email, Integer page, Integer size);
@@ -16,5 +19,5 @@ interface EmployerService {
 
 	void firstAccessUpdatePassword(String token, FirstAccessUpdatePasswordReqDto reqDto);
 
-	void deleteEmployer(Long id, LoggedUser loggedUser);
+	DeleteResultResDto deleteEmployers(List<Long> employerIds, LoggedUser loggedUser);
 }

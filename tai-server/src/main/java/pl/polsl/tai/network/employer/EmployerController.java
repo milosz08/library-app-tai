@@ -6,9 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.polsl.tai.domain.user.UserEntity;
-import pl.polsl.tai.dto.PageableContainerResDto;
+import pl.polsl.tai.dto.DeleteResultResDto;
+import pl.polsl.tai.dto.PageableResDto;
+import pl.polsl.tai.dto.SelectedIdsDto;
 import pl.polsl.tai.network.employer.dto.*;
 import pl.polsl.tai.security.LoggedUser;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/employer")
@@ -63,5 +67,18 @@ class EmployerController {
 	ResponseEntity<Void> deleteEmployer(@PathVariable Long employerId, @AuthenticationPrincipal LoggedUser loggedUser) {
 		employerService.deleteEmployers(List.of(employerId), loggedUser);
 		return ResponseEntity.noContent().build();
+	}
+
+	@DeleteMapping("/selected")
+	ResponseEntity<DeleteResultResDto> deleteSelectedEmployers(
+		@Valid @RequestBody SelectedIdsDto employerIdsDto,
+		@AuthenticationPrincipal LoggedUser loggedUser
+	) {
+		return ResponseEntity.ok(employerService.deleteEmployers(employerIdsDto.getIds(), loggedUser));
+	}
+
+	@DeleteMapping
+	ResponseEntity<DeleteResultResDto> deleteAllEmployers(@AuthenticationPrincipal LoggedUser loggedUser) {
+		return ResponseEntity.ok(employerService.deleteEmployers(List.of(), loggedUser));
 	}
 }
