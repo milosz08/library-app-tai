@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class LogsServiceImpl implements LogsService {
+class LogsServiceImpl implements LogsService {
 	private final LogRepository logRepository;
 
 	@Override

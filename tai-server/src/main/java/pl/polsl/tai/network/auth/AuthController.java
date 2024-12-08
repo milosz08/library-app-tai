@@ -20,7 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/v1/auth")
 @RequiredArgsConstructor
-public class AuthController {
+class AuthController {
 	private final AuthService authService;
 	private final SecurityContextRepository securityContextRepository;
 

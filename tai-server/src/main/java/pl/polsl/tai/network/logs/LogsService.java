@@ -6,7 +6,7 @@ import pl.polsl.tai.network.logs.dto.DeletedLogRowsCountResDto;
 import pl.polsl.tai.network.logs.dto.LogRowResDto;
 import pl.polsl.tai.security.LoggedUser;
 
-public interface LogsService {
+interface LogsService {
 	PageableResDto<LogRowResDto, LogEntity> getNewestPageableLogs(Integer page, Integer size);
 
 	void deleteLogById(Long logId, LoggedUser loggedUser);

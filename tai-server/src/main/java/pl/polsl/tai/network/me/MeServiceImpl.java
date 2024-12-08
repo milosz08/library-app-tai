@@ -15,7 +15,7 @@ import pl.polsl.tai.security.LoggedUser;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MeServiceImpl implements MeService {
+class MeServiceImpl implements MeService {
 	private final LogPersistService logPersistService;
 
 	private final UserRepository userRepository;

@@ -13,7 +13,7 @@ import pl.polsl.tai.security.LoggedUser;
 @RestController
 @RequestMapping("/v1/logs")
 @RequiredArgsConstructor
-public class LogsController {
+class LogsController {
 	private final LogsService logsService;
 
 	@GetMapping

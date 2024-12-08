@@ -13,7 +13,7 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-public class AppCorsConfiguration implements CorsConfigurationSource {
+class AppCorsConfiguration implements CorsConfigurationSource {
 	private final CorsProperties corsProperties;
 
 	@Override

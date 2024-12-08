@@ -25,7 +25,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ForgotPasswordServiceImpl implements ForgotPasswordService {
+class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	private final OtaService otaService;
 	private final LogPersistService logPersistService;
 	private final OtaProperties otaProperties;
