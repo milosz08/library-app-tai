@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.tai.domain.log.LogEntity;
 import pl.polsl.tai.domain.log.LogRepository;
-import pl.polsl.tai.dto.PageableContainerResDto;
+import pl.polsl.tai.dto.PageableResDto;
 import pl.polsl.tai.exception.NotFoundRestServerException;
 import pl.polsl.tai.network.logs.dto.DeletedLogRowsCountResDto;
 import pl.polsl.tai.network.logs.dto.LogRowResDto;
@@ -24,7 +24,7 @@ public class LogsServiceImpl implements LogsService {
 	private final LogRepository logRepository;
 
 	@Override
-	public PageableContainerResDto<LogRowResDto, LogEntity> getNewestPageableLogs(Integer page, Integer size) {
+	public PageableResDto<LogRowResDto, LogEntity> getNewestPageableLogs(Integer page, Integer size) {
 		final int pageSafe = page == null ? 1 : page;
 		final int sizeSafe = size == null ? 10 : size;
 
@@ -32,16 +32,16 @@ public class LogsServiceImpl implements LogsService {
 			.findAll(PageRequest.of(pageSafe - 1, sizeSafe, Sort.by(Sort.Direction.DESC, "executedTime")));
 
 		final List<LogRowResDto> results = pageable.map(LogRowResDto::new).toList();
-		return new PageableContainerResDto<>(results, pageable);
+		return new PageableResDto<>(results, pageable);
 	}
 
 	@Override
-	public void deleteLogById(Long id, LoggedUser loggedUser) {
-		if (!logRepository.existsById(id)) {
+	public void deleteLogById(Long logId, LoggedUser loggedUser) {
+		if (!logRepository.existsById(logId)) {
 			throw new NotFoundRestServerException("Wybrany zapis nie istnieje.");
 		}
-		logRepository.deleteById(id);
-		log.info("Delete log with id: {} by: {}.", id, loggedUser.getUsername());
+		logRepository.deleteById(logId);
+		log.info("Delete log with id: {} by: {}.", logId, loggedUser.getUsername());
 	}
 
 	@Override

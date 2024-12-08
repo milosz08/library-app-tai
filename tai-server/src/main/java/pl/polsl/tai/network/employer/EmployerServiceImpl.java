@@ -55,7 +55,7 @@ class EmployerServiceImpl implements EmployerService {
 			.findAllByRole_Name(PageRequest.of(pageSafe - 1, sizeSafe), UserRole.EMPLOYER);
 
 		final List<EmployerRowResDto> results = pageable.map(EmployerRowResDto::new).toList();
-		return new PageableContainerResDto<>(results, pageable);
+		return new PageableResDto<>(results, pageable);
 	}
 
 	@Override
@@ -88,8 +88,8 @@ class EmployerServiceImpl implements EmployerService {
 
 	@Override
 	@Transactional
-	public UpdateEmployerResDto updateEmployer(Long id, UpdateEmployerReqDto reqDto, LoggedUser loggedUser) {
-		final UserEntity employer = findEmployer(id);
+	public UpdateEmployerResDto updateEmployer(Long employerId, UpdateEmployerReqDto reqDto, LoggedUser loggedUser) {
+		final UserEntity employer = findEmployer(employerId);
 
 		employer.setFirstName(reqDto.getFirstName());
 		employer.setLastName(reqDto.getLastName());
@@ -103,8 +103,8 @@ class EmployerServiceImpl implements EmployerService {
 
 	@Override
 	@Transactional
-	public TemporalPasswordWithTokenResDto firstAccessRegenerateToken(Long id, LoggedUser loggedUser) {
-		final UserEntity employer = findEmployer(id);
+	public TemporalPasswordWithTokenResDto firstAccessRegenerateToken(Long employerId, LoggedUser loggedUser) {
+		final UserEntity employer = findEmployer(employerId);
 		if (employer.getActive()) {
 			throw new RestServerException("To konto zostało już aktywowane.");
 		}
@@ -152,9 +152,9 @@ class EmployerServiceImpl implements EmployerService {
 			employer.getEmail(), loggedUser.getUsername());
 	}
 
-	private UserEntity findEmployer(Long id) {
+	private UserEntity findEmployer(Long employerId) {
 		return userRepository
-			.findByIdAndRole_Name(id, UserRole.EMPLOYER)
+			.findByIdAndRole_Name(employerId, UserRole.EMPLOYER)
 			.orElseThrow(() -> new NotFoundRestServerException("Nie znaleziono pracownika."));
 	}
 
