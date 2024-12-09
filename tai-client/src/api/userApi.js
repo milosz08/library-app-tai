@@ -9,6 +9,10 @@ export const details = () => {
     });
 };
 
+export const deleteAccount = () => {
+  return axiosInstance.delete('/@me').then(response => response.status);
+};
+
 export const updatePersonalDetails = async personalDetails => {
   try {
     const response = await axiosInstance.patch('/@me', personalDetails);
