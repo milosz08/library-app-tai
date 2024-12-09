@@ -5,9 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.tai.domain.address.AddressEntity;
-import pl.polsl.tai.domain.address.AddressRepository;
+import pl.polsl.tai.domain.book.BookRepository;
 import pl.polsl.tai.domain.user.UserEntity;
 import pl.polsl.tai.domain.user.UserRepository;
+import pl.polsl.tai.exception.RestServerException;
 import pl.polsl.tai.log.LogPersistService;
 import pl.polsl.tai.network.me.dto.*;
 import pl.polsl.tai.security.LoggedUser;
@@ -19,7 +20,7 @@ class MeServiceImpl implements MeService {
 	private final LogPersistService logPersistService;
 
 	private final UserRepository userRepository;
-	private final AddressRepository addressRepository;
+	private final BookRepository bookRepository;
 
 	@Override
 	public MeDetailsResDto getMeDetails(LoggedUser loggedUser) {
@@ -59,13 +60,11 @@ class MeServiceImpl implements MeService {
 	}
 
 	@Override
-	@Transactional
 	public void deleteAccount(LoggedUser loggedUser) {
 		final UserEntity user = loggedUser.userEntity();
-
-		// TODO: delete in future all rented books, or maybe user cannot be deleted with rented books?
-
-		addressRepository.delete(user.getAddress());
+		if (bookRepository.countAllRentedByUserId(user.getId()) > 0) {
+			throw new RestServerException("Nie możesz usunąć konta, gdy masz wypożyczoną przynajmniej jedną książkę.");
+		}
 		userRepository.delete(user);
 
 		log.info("Customer: {} removed account.", user);
