@@ -16,11 +16,10 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async config => {
+    config.headers['Accept-Language'] = 'pl';
     if (['post', 'put', 'patch', 'delete'].includes(config.method)) {
       if (!config.headers['X-CSRF-Token']) {
-        if (!csrfTokenCache) {
-          csrfTokenCache = await fetchCsrfToken();
-        }
+        csrfTokenCache = await fetchCsrfToken();
         config.headers['X-CSRF-Token'] = csrfTokenCache;
       }
     }
@@ -31,15 +30,11 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   response => response,
-  error => {
+  async error => {
     const status = error.response?.status;
 
     if (status === 401) {
-      executeLogout();
-    }
-
-    if (status === 403) {
-      csrfTokenCache = null;
+      await executeLogout();
     }
 
     return Promise.reject(error);

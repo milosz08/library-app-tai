@@ -5,6 +5,7 @@ import { register } from '../../../api/authApi';
 import FormRedirectBox from '../../../components/common/FormRedirectBox';
 import FormTextField from '../../../components/common/FormTextField';
 import { useAlert } from '../../../hooks/useAlert';
+import { useLoader } from '../../../hooks/useLoader';
 
 const RegistrationPage = () => {
   const [form, setForm] = useState({
@@ -18,7 +19,7 @@ const RegistrationPage = () => {
     password: '',
     confirmedPassword: '',
   });
-
+  const { setIsLoading } = useLoader();
   const { addAlert } = useAlert();
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ const RegistrationPage = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-
+    setIsLoading(true);
     if (form.password !== form.confirmedPassword) {
       addAlert('Hasła nie są zgodne.', 'error');
       return;
@@ -47,22 +48,20 @@ const RegistrationPage = () => {
     });
 
     if (response.token) {
-      const activationLink =
-        window.location.origin + '/aktywacja/' + response.token;
-      const alertMessage =
-        'Rejestracja zakończona sukcesem! Kliknij tutaj, aby aktywować swoje konto: ' +
-        activationLink;
+      const activationLink = `${window.location.origin}/aktywacja/${response.token}`;
+      const alertMessage = `Rejestracja zakończona sukcesem! Kliknij tutaj, aby aktywować swoje konto: ${activationLink}`;
 
       navigate('/logowanie');
       addAlert(alertMessage, 'info');
+    } else if (response.errors) {
+      Object.entries(response.errors).forEach(([field, message]) => {
+        addAlert(`Błąd w polu ${field}: ${message}`, 'error');
+      });
     } else {
-      addAlert(
-        response?.error || 'Rejestracja nie powiodła się. Spróbuj ponownie.',
-        'error'
-      );
+      addAlert('Rejestracja nie powiodła się. Spróbuj ponownie.', 'error');
     }
+    setIsLoading(false);
   };
-
   return (
     <Container
       maxWidth="md"

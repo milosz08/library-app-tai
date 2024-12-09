@@ -4,8 +4,8 @@ export const setLogoutFunction = fn => {
   logoutFunction = fn;
 };
 
-export const executeLogout = () => {
+export const executeLogout = async () => {
   if (logoutFunction) {
-    logoutFunction();
+    await logoutFunction();
   }
 };

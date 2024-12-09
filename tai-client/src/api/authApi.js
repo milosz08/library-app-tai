@@ -1,27 +1,32 @@
 import axiosInstance from './axiosConfig';
 
 export const register = form => {
-  return axiosInstance
-    .post('/auth/register', form)
-    .then(response => {
-      return { token: response.data.token };
-    })
-    .catch(error => {
-      const errorMessage =
-        error.response?.data?.details ||
-        error.response?.data?.firstName ||
-        error.response?.data?.lastName ||
-        error.response?.data?.city ||
-        error.response?.data?.street ||
-        error.response?.data?.buildingNumber ||
-        error.response?.data?.apartmentNumber ||
-        error.response?.data?.email ||
-        error.response?.data?.password ||
-        error.response?.data?.confirmedPassword ||
-        'Rejestracja nie powiodła się. Spróbuj ponownie.';
+  try {
+    const response = axiosInstance.post('/auth/register', form);
+    return { token: response.data.token };
+  } catch (error) {
+    const errors = error.response?.data || {};
 
-      return { error: errorMessage };
+    const fieldErrors = {
+      firstName: errors.firstName,
+      lastName: errors.lastName,
+      city: errors.city,
+      street: errors.street,
+      buildingNumber: errors.buildingNumber,
+      apartmentNumber: errors.apartmentNumber,
+      email: errors.email,
+      password: errors.password,
+      confirmedPassword: errors.confirmedPassword,
+    };
+
+    Object.keys(fieldErrors).forEach(key => {
+      if (!fieldErrors[key]) {
+        delete fieldErrors[key];
+      }
     });
+
+    return { errors: fieldErrors };
+  }
 };
 
 export const login = (email, password) => {
@@ -29,12 +34,13 @@ export const login = (email, password) => {
     .post('/auth/login', { email, password })
     .then(response => {
       if (response.status === 200) {
+        const { token, role, roleName } = response.data;
         return {
           status: response.status,
-          token: response.data.token,
+          token: token || null,
+          role: role || null,
+          roleName: roleName || null,
         };
-      } else if (response.status === 204) {
-        return { status: response.status };
       }
       return { status: response.status };
     })
@@ -45,10 +51,7 @@ export const login = (email, password) => {
 };
 
 export const logout = () => {
-  return axiosInstance
-    .delete('/auth/logout')
-    .then(response => response.status === 200)
-    .catch(() => false);
+  return axiosInstance.delete('/auth/logout');
 };
 
 export const activateAccount = token => {
@@ -66,6 +69,29 @@ export const activateAccount = token => {
         success: false,
         message:
           error.response?.data?.message || 'Aktywacja konta nie powiodła się.',
+      };
+    });
+};
+
+export const sessionRevalidate = () => {
+  return axiosInstance
+    .patch('/auth/session/revalidate')
+    .then(response => {
+      if (response.status === 200 || response.status === 204) {
+        const { role, roleName } = response.data;
+        return {
+          success: true,
+          role: role || null,
+          roleName: roleName || null,
+        };
+      }
+      return {
+        success: false,
+      };
+    })
+    .catch(() => {
+      return {
+        success: false,
       };
     });
 };
