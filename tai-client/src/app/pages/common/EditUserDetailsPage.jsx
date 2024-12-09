@@ -7,6 +7,7 @@ import {
 } from '../../../api/userApi';
 import FormTextField from '../../../components/common/FormTextField';
 import { useAlert } from '../../../hooks/useAlert';
+import { useAuth } from '../../../hooks/useAuth';
 import { useLoader } from '../../../hooks/useLoader';
 
 const EditUserDetailsPage = () => {
@@ -22,6 +23,7 @@ const EditUserDetailsPage = () => {
   });
   const { setIsLoading } = useLoader();
   const { addAlert } = useAlert();
+  const { role } = useAuth();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -46,7 +48,8 @@ const EditUserDetailsPage = () => {
     };
 
     fetchDetails();
-  }, [addAlert, setIsLoading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handlePersonalDetailsChange = e => {
     setPersonalDetails({ ...personalDetails, [e.target.name]: e.target.value });
@@ -97,6 +100,7 @@ const EditUserDetailsPage = () => {
       </Typography>
 
       <Box
+        key="personalDetails"
         component="form"
         onSubmit={handlePersonalDetailsSubmit}
         sx={{ mb: 5 }}>
@@ -113,6 +117,7 @@ const EditUserDetailsPage = () => {
             },
           }}>
           <Box
+            key="firstName"
             sx={{
               flexBasis: '49%',
               width: '100%',
@@ -127,7 +132,10 @@ const EditUserDetailsPage = () => {
               onChange={handlePersonalDetailsChange}
             />
           </Box>
-          <Box flexBasis="49%" sx={{ flexBasis: { xs: '100%', sm: '49%' } }}>
+          <Box
+            key="lastName"
+            flexBasis="49%"
+            sx={{ flexBasis: { xs: '100%', sm: '49%' } }}>
             <FormTextField
               label="Nazwisko"
               name="lastName"
@@ -150,72 +158,74 @@ const EditUserDetailsPage = () => {
         </Button>
       </Box>
 
-      <Box component="form" onSubmit={handleAddressDetailsSubmit}>
-        <Typography variant="h6" sx={{ color: 'white', mb: 2 }}>
-          Adres zamieszkania
-        </Typography>
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          gap={2}
-          sx={{
-            '@media (max-width:900px)': {
-              flexDirection: 'column',
-            },
-          }}>
+      {role === 'CUSTOMER' && (
+        <Box component="form" onSubmit={handleAddressDetailsSubmit}>
+          <Typography variant="h6" sx={{ color: 'white', mb: 2 }}>
+            Adres zamieszkania
+          </Typography>
           <Box
+            display="flex"
+            flexWrap="wrap"
+            gap={2}
             sx={{
-              flexBasis: '49%',
-              width: '100%',
               '@media (max-width:900px)': {
-                flexBasis: '100%',
+                flexDirection: 'column',
               },
             }}>
-            <FormTextField
-              label="Miejscowość"
-              name="city"
-              value={addressDetails.city}
-              onChange={handleAddressDetailsChange}
-            />
+            <Box
+              sx={{
+                flexBasis: '49%',
+                width: '100%',
+                '@media (max-width:900px)': {
+                  flexBasis: '100%',
+                },
+              }}>
+              <FormTextField
+                label="Miejscowość"
+                name="city"
+                value={addressDetails.city}
+                onChange={handleAddressDetailsChange}
+              />
+            </Box>
+            <Box flexBasis="49%" sx={{ flexBasis: { xs: '100%', sm: '49%' } }}>
+              <FormTextField
+                label="Ulica"
+                name="street"
+                value={addressDetails.street}
+                onChange={handleAddressDetailsChange}
+              />
+            </Box>
+            <Box flexBasis="49%" sx={{ flexBasis: { xs: '100%', sm: '49%' } }}>
+              <FormTextField
+                label="Numer budynku"
+                name="buildingNumber"
+                value={addressDetails.buildingNumber}
+                onChange={handleAddressDetailsChange}
+              />
+            </Box>
+            <Box flexBasis="49%" sx={{ flexBasis: { xs: '100%', sm: '49%' } }}>
+              <FormTextField
+                label="Numer apartamentu (opcjonalne)"
+                name="apartmentNumber"
+                value={addressDetails.apartmentNumber}
+                onChange={handleAddressDetailsChange}
+              />
+            </Box>
           </Box>
-          <Box flexBasis="49%" sx={{ flexBasis: { xs: '100%', sm: '49%' } }}>
-            <FormTextField
-              label="Ulica"
-              name="street"
-              value={addressDetails.street}
-              onChange={handleAddressDetailsChange}
-            />
-          </Box>
-          <Box flexBasis="49%" sx={{ flexBasis: { xs: '100%', sm: '49%' } }}>
-            <FormTextField
-              label="Numer budynku"
-              name="buildingNumber"
-              value={addressDetails.buildingNumber}
-              onChange={handleAddressDetailsChange}
-            />
-          </Box>
-          <Box flexBasis="49%" sx={{ flexBasis: { xs: '100%', sm: '49%' } }}>
-            <FormTextField
-              label="Numer apartamentu (opcjonalne)"
-              name="apartmentNumber"
-              value={addressDetails.apartmentNumber}
-              onChange={handleAddressDetailsChange}
-            />
-          </Box>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 3,
+              bgcolor: 'customBlue.600',
+              color: 'white',
+              '&:hover': { bgcolor: 'customBlue.500' },
+            }}>
+            Zaktualizuj adres
+          </Button>
         </Box>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{
-            mt: 3,
-            bgcolor: 'customBlue.600',
-            color: 'white',
-            '&:hover': { bgcolor: 'customBlue.500' },
-          }}>
-          Zaktualizuj adres
-        </Button>
-      </Box>
+      )}
     </Container>
   );
 };

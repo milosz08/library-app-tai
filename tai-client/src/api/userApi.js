@@ -4,7 +4,9 @@ export const details = () => {
   return axiosInstance
     .get('/@me')
     .then(response => response.data)
-    .catch();
+    .catch(() => {
+      return { error: 'Nie udało się pobrać danych użytkownika.' };
+    });
 };
 
 export const updatePersonalDetails = async personalDetails => {

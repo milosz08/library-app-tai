@@ -24,7 +24,7 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: (
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={['CUSTOMER', 'ADMIN', 'EMPLOYER']}>
             <RootPage />
           </ProtectedRoute>
         ),
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
       {
         path: '/edycja/danych',
         element: (
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
             <EditUserDetailsPage />
           </ProtectedRoute>
         ),
