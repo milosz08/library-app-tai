@@ -1,42 +1,26 @@
 import { useState } from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { resetPassword } from '../../../api/passwordApi';
 import FormRedirectBox from '../../../components/common/FormRedirectBox';
 import FormTextField from '../../../components/common/FormTextField';
 import { useAlert } from '../../../hooks/useAlert';
-import { useAuth } from '../../../hooks/useAuth';
 import { useLoader } from '../../../hooks/useLoader';
 
-const LoginPage = () => {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
+const RequestResetPassoword = () => {
+  const [email, setEmail] = useState('');
   const { setIsLoading } = useLoader();
-  const { handleLogin } = useAuth();
   const { addAlert } = useAlert();
-  const navigate = useNavigate();
-
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setIsLoading(true);
-    const result = await handleLogin(form.email, form.password);
-    if (result.success) {
-      addAlert('Zalogowano pomyślnie!', 'success');
-      navigate('/');
-    } else if (result.token) {
-      const activationLink =
-        window.location.origin + '/aktywacja/' + result.token;
-      const activationMessage =
-        'Twoje konto wymaga aktywacji. Kliknij poniższy link, aby je aktywować:' +
-        activationLink;
-      addAlert(activationMessage, 'info');
+    const response = await resetPassword(email);
+    if (response.success) {
+      const activationLink = window.location + '/' + response.message;
+      const alertMessage = 'Link przypominający hasło: ' + activationLink;
+      addAlert(alertMessage, 'info');
     } else {
-      addAlert(result.error || 'Nieprawidłowe dane logowania.', 'error');
+      addAlert(response.message, 'error');
     }
     setIsLoading(false);
   };
@@ -59,7 +43,7 @@ const LoginPage = () => {
           marginTop: 4,
         }}>
         <Typography variant="h5" sx={{ color: 'white' }}>
-          Logowanie
+          Przypomnij hasło
         </Typography>
         <Box
           component="form"
@@ -72,17 +56,9 @@ const LoginPage = () => {
             label="Email"
             name="email"
             type="email"
-            value={form.email}
-            onChange={handleChange}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             autoComplete="email"
-          />
-          <FormTextField
-            label="Hasło"
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            autoComplete="new-password"
           />
           <Button
             type="submit"
@@ -94,17 +70,12 @@ const LoginPage = () => {
               bgcolor: 'customBlue.600',
               '&:hover': { bgcolor: 'customBlue.500' },
             }}>
-            Zaloguj się
+            Wyślij przypomnienie
           </Button>
         </Box>
         <FormRedirectBox
-          questionText="Nie masz konta?"
-          linkText="Zarejestruj się"
-          linkPath="/rejestracja"
-        />
-        <FormRedirectBox
-          questionText="Nie pamiętasz hasła?"
-          linkText="Przypomnij"
+          questionText=""
+          linkText="Wróć do logowania"
           linkPath="/przypomnij-haslo"
         />
       </Box>
@@ -112,4 +83,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RequestResetPassoword;

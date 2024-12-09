@@ -1,42 +1,41 @@
 import { useState } from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import FormRedirectBox from '../../../components/common/FormRedirectBox';
+import { renewPassword } from '../../../api/passwordApi';
 import FormTextField from '../../../components/common/FormTextField';
 import { useAlert } from '../../../hooks/useAlert';
-import { useAuth } from '../../../hooks/useAuth';
 import { useLoader } from '../../../hooks/useLoader';
 
-const LoginPage = () => {
+const RenewResetPassword = () => {
+  const { token } = useParams();
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    newPassword: '',
+    confirmedNewPassword: '',
   });
+
   const { setIsLoading } = useLoader();
-  const { handleLogin } = useAuth();
   const { addAlert } = useAlert();
   const navigate = useNavigate();
-
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
+
+    if (form.newPassword !== form.confirmedNewPassword) {
+      addAlert('Hasła nie są zgodne.', 'error');
+      return;
+    }
+
     setIsLoading(true);
-    const result = await handleLogin(form.email, form.password);
-    if (result.success) {
-      addAlert('Zalogowano pomyślnie!', 'success');
-      navigate('/');
-    } else if (result.token) {
-      const activationLink =
-        window.location.origin + '/aktywacja/' + result.token;
-      const activationMessage =
-        'Twoje konto wymaga aktywacji. Kliknij poniższy link, aby je aktywować:' +
-        activationLink;
-      addAlert(activationMessage, 'info');
+    const response = await renewPassword(token, form);
+    if (response.success) {
+      navigate('/logowanie');
+      addAlert('Hasło zostało zresetowane pomyślnie.', 'success');
     } else {
-      addAlert(result.error || 'Nieprawidłowe dane logowania.', 'error');
+      addAlert(response.message, 'error');
     }
     setIsLoading(false);
   };
@@ -59,7 +58,7 @@ const LoginPage = () => {
           marginTop: 4,
         }}>
         <Typography variant="h5" sx={{ color: 'white' }}>
-          Logowanie
+          Ustaw nowe hasło
         </Typography>
         <Box
           component="form"
@@ -69,18 +68,18 @@ const LoginPage = () => {
           gap={2}
           sx={{ mt: 3 }}>
           <FormTextField
-            label="Email"
-            name="email"
-            type="email"
-            value={form.email}
+            label="Nowe hasło"
+            name="newPassword"
+            type="password"
+            value={form.newPassword}
             onChange={handleChange}
-            autoComplete="email"
+            autoComplete="new-password"
           />
           <FormTextField
-            label="Hasło"
-            name="password"
+            label="Powtórz nowe hasło"
+            name="confirmedNewPassword"
             type="password"
-            value={form.password}
+            value={form.confirmedNewPassword}
             onChange={handleChange}
             autoComplete="new-password"
           />
@@ -94,22 +93,12 @@ const LoginPage = () => {
               bgcolor: 'customBlue.600',
               '&:hover': { bgcolor: 'customBlue.500' },
             }}>
-            Zaloguj się
+            Zmień hasło
           </Button>
         </Box>
-        <FormRedirectBox
-          questionText="Nie masz konta?"
-          linkText="Zarejestruj się"
-          linkPath="/rejestracja"
-        />
-        <FormRedirectBox
-          questionText="Nie pamiętasz hasła?"
-          linkText="Przypomnij"
-          linkPath="/przypomnij-haslo"
-        />
       </Box>
     </Container>
   );
 };
 
-export default LoginPage;
+export default RenewResetPassword;

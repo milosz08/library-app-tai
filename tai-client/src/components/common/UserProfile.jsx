@@ -30,7 +30,7 @@ const UserProfile = () => {
   };
 
   const handleEditProfile = () => {
-    navigate('/edycja/danych');
+    navigate('/edycja-danych');
     handleMenuClose();
   };
 
