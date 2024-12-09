@@ -1,35 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { RouterProvider } from 'react-router';
-import { Navigate, createBrowserRouter } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { createBrowserRouter } from 'react-router-dom';
+import GuestRoute from './GuestRoute';
 import MainLayout from './MainLayout';
+import ProtectedRoute from './ProtectedRoute';
 
-const RootPage = React.lazy(() => import('./pages/root/HomePage'));
-const NotFoundPage = React.lazy(() => import('./pages/common/NotFoundPage'));
-const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));
+const RootPage = React.lazy(() => import('../pages/root/HomePage'));
+const NotFoundPage = React.lazy(() => import('../pages/common/NotFoundPage'));
+const LoginPage = React.lazy(() => import('../pages/auth/LoginPage'));
 const RegistrationPage = React.lazy(
-  () => import('./pages/auth/RegistrationPage')
+  () => import('../pages/auth/RegistrationPage')
 );
-const ActivationPage = React.lazy(() => import('./pages/auth/ActivationPage'));
-
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/logowanie" />;
-};
-
-ProtectedRoute.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-const GuestRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  return !isAuthenticated ? children : <Navigate to="/" />;
-};
-
-GuestRoute.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+const ActivationPage = React.lazy(() => import('../pages/auth/ActivationPage'));
+const EditUserDetailsPage = React.lazy(
+  () => import('../pages/common/EditUserDetailsPage')
+);
 
 const router = createBrowserRouter([
   {
@@ -41,6 +26,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <RootPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/edycja/danych',
+        element: (
+          <ProtectedRoute>
+            <EditUserDetailsPage />
           </ProtectedRoute>
         ),
       },

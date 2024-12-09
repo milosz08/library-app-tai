@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { createRoot } from 'react-dom/client';
-import AppRouter from './app/AppRouter';
+import AppRouter from './app/routes/AppRouter';
 import { AlertProvider } from './context/AlertContext';
 import { AuthProvider } from './context/AuthContext';
 import { LoaderProvider } from './context/LoaderContenxt';

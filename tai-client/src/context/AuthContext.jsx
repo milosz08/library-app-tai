@@ -13,9 +13,11 @@ export const AuthProvider = ({ children }) => {
   const [role, setRole] = useState(null);
   const [roleName, setRoleName] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const revalidateSession = async () => {
+      setIsLoading(true);
       const result = await sessionRevalidate();
       if (result.success) {
         setRole(result.role);
@@ -24,6 +26,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         setIsAuthenticated(false);
       }
+      setIsLoading(false);
     };
 
     if (!isAuthenticated) {
@@ -66,7 +69,14 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ handleLogin, handleLogout, isAuthenticated, role, roleName }}>
+      value={{
+        handleLogin,
+        handleLogout,
+        isAuthenticated,
+        role,
+        roleName,
+        isLoading,
+      }}>
       {children}
     </AuthContext.Provider>
   );
