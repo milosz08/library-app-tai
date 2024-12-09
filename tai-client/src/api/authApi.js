@@ -1,32 +1,36 @@
 import axiosInstance from './axiosConfig';
 
 export const register = form => {
-  try {
-    const response = axiosInstance.post('/auth/register', form);
-    return { token: response.data.token };
-  } catch (error) {
-    const errors = error.response?.data || {};
-
-    const fieldErrors = {
-      firstName: errors.firstName,
-      lastName: errors.lastName,
-      city: errors.city,
-      street: errors.street,
-      buildingNumber: errors.buildingNumber,
-      apartmentNumber: errors.apartmentNumber,
-      email: errors.email,
-      password: errors.password,
-      confirmedPassword: errors.confirmedPassword,
-    };
-
-    Object.keys(fieldErrors).forEach(key => {
-      if (!fieldErrors[key]) {
-        delete fieldErrors[key];
+  return axiosInstance
+    .post('/auth/register', form)
+    .then(response => {
+      if (response.status === 200) {
+        return { token: response.data.token };
       }
-    });
+      return { errors: { general: 'Rejestracja nie powiodła się.' } };
+    })
+    .catch(error => {
+      const errors = error.response?.data || {};
+      const fieldErrors = {
+        firstName: errors.firstName,
+        lastName: errors.lastName,
+        city: errors.city,
+        street: errors.street,
+        buildingNumber: errors.buildingNumber,
+        apartmentNumber: errors.apartmentNumber,
+        email: errors.email,
+        password: errors.password,
+        confirmedPassword: errors.confirmedPassword,
+      };
 
-    return { errors: fieldErrors };
-  }
+      Object.keys(fieldErrors).forEach(key => {
+        if (!fieldErrors[key]) {
+          delete fieldErrors[key];
+        }
+      });
+
+      return { errors: fieldErrors };
+    });
 };
 
 export const login = (email, password) => {

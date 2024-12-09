@@ -30,8 +30,10 @@ const RegistrationPage = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     setIsLoading(true);
+
     if (form.password !== form.confirmedPassword) {
       addAlert('Hasła nie są zgodne.', 'error');
+      setIsLoading(false);
       return;
     }
 
@@ -48,20 +50,24 @@ const RegistrationPage = () => {
     });
 
     if (response.token) {
-      const activationLink = `${window.location.origin}/aktywacja/${response.token}`;
-      const alertMessage = `Rejestracja zakończona sukcesem! Kliknij tutaj, aby aktywować swoje konto: ${activationLink}`;
-
-      navigate('/logowanie');
+      const activationLink =
+        window.location.origin + '/aktywacja/' + response.token;
+      const alertMessage =
+        'Rejestracja zakończona sukcesem! Kliknij tutaj, aby aktywować swoje konto: ' +
+        activationLink;
       addAlert(alertMessage, 'info');
+      navigate('/logowanie');
     } else if (response.errors) {
       Object.entries(response.errors).forEach(([field, message]) => {
-        addAlert(`Błąd w polu ${field}: ${message}`, 'error');
+        addAlert('Błąd w polu ' + field + ': ' + message, 'error');
       });
     } else {
       addAlert('Rejestracja nie powiodła się. Spróbuj ponownie.', 'error');
     }
+
     setIsLoading(false);
   };
+
   return (
     <Container
       maxWidth="md"
@@ -86,8 +92,20 @@ const RegistrationPage = () => {
           component="form"
           onSubmit={handleSubmit}
           sx={{ mt: 3, width: '100%' }}>
-          <Box display="flex" flexWrap="wrap" gap={2}>
-            <Box flexBasis="49%">
+          <Box
+            display="flex"
+            flexWrap="wrap"
+            gap={2}
+            sx={{
+              '@media (max-width:900px)': {
+                flexDirection: 'column',
+              },
+            }}>
+            <Box
+              flexBasis="49%"
+              sx={{
+                flexBasis: { xs: '100%', sm: '49%' },
+              }}>
               <FormTextField
                 label="Imię"
                 name="firstName"
@@ -95,7 +113,11 @@ const RegistrationPage = () => {
                 onChange={handleChange}
               />
             </Box>
-            <Box flexBasis="49%">
+            <Box
+              flexBasis="49%"
+              sx={{
+                flexBasis: { xs: '100%', sm: '49%' },
+              }}>
               <FormTextField
                 label="Nazwisko"
                 name="lastName"
@@ -103,7 +125,11 @@ const RegistrationPage = () => {
                 onChange={handleChange}
               />
             </Box>
-            <Box flexBasis="49%">
+            <Box
+              flexBasis="49%"
+              sx={{
+                flexBasis: { xs: '100%', sm: '49%' },
+              }}>
               <FormTextField
                 label="Miejscowość"
                 name="city"
@@ -111,7 +137,11 @@ const RegistrationPage = () => {
                 onChange={handleChange}
               />
             </Box>
-            <Box flexBasis="49%">
+            <Box
+              flexBasis="49%"
+              sx={{
+                flexBasis: { xs: '100%', sm: '49%' },
+              }}>
               <FormTextField
                 label="Ulica"
                 name="street"
@@ -119,7 +149,11 @@ const RegistrationPage = () => {
                 onChange={handleChange}
               />
             </Box>
-            <Box flexBasis="49%">
+            <Box
+              flexBasis="49%"
+              sx={{
+                flexBasis: { xs: '100%', sm: '49%' },
+              }}>
               <FormTextField
                 label="Numer budynku"
                 name="buildingNumber"
@@ -127,7 +161,11 @@ const RegistrationPage = () => {
                 onChange={handleChange}
               />
             </Box>
-            <Box flexBasis="49%">
+            <Box
+              flexBasis="49%"
+              sx={{
+                flexBasis: { xs: '100%', sm: '49%' },
+              }}>
               <FormTextField
                 label="Numer apartamentu (opcjonalne)"
                 name="apartmentNumber"
@@ -145,7 +183,11 @@ const RegistrationPage = () => {
                 autoComplete="email"
               />
             </Box>
-            <Box flexBasis="49%">
+            <Box
+              flexBasis="49%"
+              sx={{
+                flexBasis: { xs: '100%', sm: '49%' },
+              }}>
               <FormTextField
                 label="Hasło"
                 name="password"
@@ -155,7 +197,11 @@ const RegistrationPage = () => {
                 autoComplete="new-password"
               />
             </Box>
-            <Box flexBasis="49%">
+            <Box
+              flexBasis="49%"
+              sx={{
+                flexBasis: { xs: '100%', sm: '49%' },
+              }}>
               <FormTextField
                 label="Potwierdź hasło"
                 name="confirmedPassword"
