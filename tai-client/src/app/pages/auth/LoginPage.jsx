@@ -5,13 +5,14 @@ import FormRedirectBox from '../../../components/common/FormRedirectBox';
 import FormTextField from '../../../components/common/FormTextField';
 import { useAlert } from '../../../hooks/useAlert';
 import { useAuth } from '../../../hooks/useAuth';
+import { useLoader } from '../../../hooks/useLoader';
 
 const LoginPage = () => {
   const [form, setForm] = useState({
     email: '',
     password: '',
   });
-
+  const { setIsLoading } = useLoader();
   const { handleLogin } = useAuth();
   const { addAlert } = useAlert();
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const LoginPage = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-
+    setIsLoading(true);
     const result = await handleLogin(form.email, form.password);
     if (result.success) {
       addAlert('Zalogowano pomyślnie!', 'success');
@@ -37,6 +38,7 @@ const LoginPage = () => {
     } else {
       addAlert(result.error || 'Nieprawidłowe dane logowania.', 'error');
     }
+    setIsLoading(false);
   };
 
   return (
