@@ -15,7 +15,7 @@ import pl.polsl.tai.security.LoggedUser;
 @RestController
 @RequestMapping("/v1/@me")
 @RequiredArgsConstructor
-public class MeController {
+class MeController {
 	private final MeService meService;
 
 	@GetMapping

@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.polsl.tai.domain.log.LogEntity;
-import pl.polsl.tai.dto.PageableContainerResDto;
+import pl.polsl.tai.dto.PageableResDto;
 import pl.polsl.tai.network.logs.dto.DeletedLogRowsCountResDto;
 import pl.polsl.tai.network.logs.dto.LogRowResDto;
 import pl.polsl.tai.security.LoggedUser;
@@ -13,20 +13,20 @@ import pl.polsl.tai.security.LoggedUser;
 @RestController
 @RequestMapping("/v1/logs")
 @RequiredArgsConstructor
-public class LogsController {
+class LogsController {
 	private final LogsService logsService;
 
 	@GetMapping
-	ResponseEntity<PageableContainerResDto<LogRowResDto, LogEntity>> getNewestPageableLogs(
+	ResponseEntity<PageableResDto<LogRowResDto, LogEntity>> getNewestPageableLogs(
 		@RequestParam(required = false) Integer page,
 		@RequestParam(required = false) Integer size
 	) {
 		return ResponseEntity.ok(logsService.getNewestPageableLogs(page, size));
 	}
 
-	@DeleteMapping("/{id}")
-	ResponseEntity<Void> deleteLogById(@PathVariable Long id, @AuthenticationPrincipal LoggedUser loggedUser) {
-		logsService.deleteLogById(id, loggedUser);
+	@DeleteMapping("/{logId}")
+	ResponseEntity<Void> deleteLogById(@PathVariable Long logId, @AuthenticationPrincipal LoggedUser loggedUser) {
+		logsService.deleteLogById(logId, loggedUser);
 		return ResponseEntity.noContent().build();
 	}
 

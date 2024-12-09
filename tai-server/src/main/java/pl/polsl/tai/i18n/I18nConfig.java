@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Configuration
-public class I18nConfig implements WebMvcConfigurer {
+class I18nConfig implements WebMvcConfigurer {
 
 	@Value("${application.locale}")
 	private String locale;

@@ -13,10 +13,10 @@ import java.util.List;
 public interface LogRepository extends JpaRepository<LogEntity, Long> {
 	List<LogEntity> findAllBy(Pageable pageable);
 
-	boolean existsById(@NotNull Long id);
+	boolean existsById(@NotNull Long logId);
 
 	@Modifying
-	void deleteById(@NotNull Long id);
+	void deleteById(@NotNull Long logId);
 
 	@Modifying
 	@Query(value = "ALTER TABLE logs AUTO_INCREMENT = :value", nativeQuery = true)

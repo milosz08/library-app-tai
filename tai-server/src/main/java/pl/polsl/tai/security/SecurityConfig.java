@@ -36,8 +36,7 @@ import pl.polsl.tai.security.resolver.RenewCookieFilter;
 import java.util.Arrays;
 
 import static org.springframework.http.HttpMethod.*;
-import static pl.polsl.tai.domain.role.UserRole.ADMIN;
-import static pl.polsl.tai.domain.role.UserRole.CUSTOMER;
+import static pl.polsl.tai.domain.role.UserRole.*;
 
 @Configuration
 @EnableWebSecurity
@@ -69,23 +68,41 @@ class SecurityConfig {
 				config.accessDeniedHandler(accessDeniedResolver);
 			})
 			.authorizeHttpRequests(auth -> {
-				auth.requestMatchers(GET, "/actuator/**").permitAll();
+				// CsrfController
 				auth.requestMatchers(GET, "/v1/csrf/token").permitAll();
+				// AuthController
 				auth.requestMatchers(POST, "/v1/auth/login").permitAll();
 				auth.requestMatchers(POST, "/v1/auth/register").permitAll();
 				auth.requestMatchers(PATCH, "/v1/auth/activate/**").permitAll();
+				// ForgotPasswordController
 				auth.requestMatchers(PATCH, "/v1/forgot/password/**").permitAll();
+				// MeController
 				auth.requestMatchers(PATCH, "/v1/@me").hasAnyRole(mapRoles(CUSTOMER, ADMIN));
 				auth.requestMatchers(PATCH, "/v1/@me/address").hasAnyRole(mapRoles(CUSTOMER));
 				auth.requestMatchers(DELETE, "/v1/@me").hasAnyRole(mapRoles(CUSTOMER));
+				// LogController
 				auth.requestMatchers(GET, "/v1/logs").hasAnyRole(mapRoles(ADMIN));
 				auth.requestMatchers(DELETE, "/v1/logs/**").hasAnyRole(mapRoles(ADMIN));
 				auth.requestMatchers(DELETE, "/v1/logs").hasAnyRole(mapRoles(ADMIN));
+				// EmployerController
 				auth.requestMatchers(GET, "/v1/employer").hasAnyRole(mapRoles(ADMIN));
 				auth.requestMatchers(POST, "/v1/employer").hasAnyRole(mapRoles(ADMIN));
 				auth.requestMatchers(PATCH, "/v1/employer/first/access/**").permitAll();
 				auth.requestMatchers(PATCH, "/v1/employer/**").hasAnyRole(mapRoles(ADMIN));
 				auth.requestMatchers(DELETE, "/v1/employer/**").hasAnyRole(mapRoles(ADMIN));
+				auth.requestMatchers(DELETE, "/v1/employer").hasAnyRole(mapRoles(ADMIN));
+				// BookController
+				auth.requestMatchers(GET, "/v1/book/**").hasAnyRole(mapRoles(CUSTOMER, EMPLOYER));
+				auth.requestMatchers(POST, "/v1/book").hasAnyRole(mapRoles(EMPLOYER));
+				auth.requestMatchers(PATCH, "/v1/book/**").hasAnyRole(mapRoles(EMPLOYER));
+				auth.requestMatchers(DELETE, "/v1/book/**").hasAnyRole(mapRoles(EMPLOYER));
+				auth.requestMatchers(DELETE, "/v1/book").hasAnyRole(mapRoles(EMPLOYER));
+				// RentalController
+				auth.requestMatchers(GET, "/v1/rental/rented/**").hasAnyRole(mapRoles(CUSTOMER));
+				auth.requestMatchers(PATCH, "/v1/rental/load").hasAnyRole(mapRoles(CUSTOMER));
+				auth.requestMatchers(DELETE, "/v1/rental/return").hasAnyRole(mapRoles(CUSTOMER));
+				// any
+				auth.requestMatchers(GET, "/actuator/**").permitAll();
 				auth.requestMatchers(OPTIONS, "/**").permitAll();
 				auth.anyRequest().authenticated();
 			})

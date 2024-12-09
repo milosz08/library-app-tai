@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import pl.polsl.tai.domain.EntityBase;
 import pl.polsl.tai.domain.address.AddressEntity;
+import pl.polsl.tai.domain.book.BookEntity;
 import pl.polsl.tai.domain.role.RoleEntity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,6 +37,9 @@ public class UserEntity extends EntityBase implements Serializable {
 
 	@OneToOne(mappedBy = "user")
 	private AddressEntity address;
+
+	@ManyToMany(mappedBy = "users")
+	private List<BookEntity> books = new ArrayList<>();
 
 	@Override
 	public String toString() {

@@ -11,6 +11,6 @@ import java.util.List;
 @Setter
 @Configuration
 @ConfigurationProperties(prefix = "application.cors")
-public class CorsProperties {
+class CorsProperties {
 	private List<String> urls;
 }

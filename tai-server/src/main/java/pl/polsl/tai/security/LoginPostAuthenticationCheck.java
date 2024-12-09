@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 import pl.polsl.tai.domain.role.UserRole;
 
-public class LoginPostAuthenticationCheck implements UserDetailsChecker {
+class LoginPostAuthenticationCheck implements UserDetailsChecker {
 	protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
 	@Override

@@ -19,9 +19,9 @@ import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+class GlobalExceptionHandler {
 	@ExceptionHandler(NoResourceFoundException.class)
-	public ResponseEntity<Void> handleNotFound() {
+	ResponseEntity<Void> handleNotFound() {
 		return ResponseEntity.notFound().build();
 	}
 
@@ -42,17 +42,17 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(AuthenticationException.class)
-	public ResponseEntity<?> handleAuthenticationException(AuthenticationException ex) throws AuthenticationException {
+	ResponseEntity<?> handleAuthenticationException(AuthenticationException ex) throws AuthenticationException {
 		throw ex;
 	}
 
 	@ExceptionHandler(AccessDeniedException.class)
-	public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) throws AccessDeniedException {
+	ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) throws AccessDeniedException {
 		throw ex;
 	}
 
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-	public ResponseEntity<Void> handleHttpRequestMethodNotSupported() {
+	ResponseEntity<Void> handleHttpRequestMethodNotSupported() {
 		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
 	}
 

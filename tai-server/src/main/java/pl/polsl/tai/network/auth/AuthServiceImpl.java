@@ -24,6 +24,7 @@ import pl.polsl.tai.exception.RestServerException;
 import pl.polsl.tai.log.LogPersistService;
 import pl.polsl.tai.network.auth.dto.LoginReqDto;
 import pl.polsl.tai.network.auth.dto.RegisterReqDto;
+import pl.polsl.tai.network.auth.dto.RevalidateSessionResDto;
 import pl.polsl.tai.security.FirstLoginPasswordAuthenticationToken;
 import pl.polsl.tai.security.LoggedUser;
 import pl.polsl.tai.security.ota.GeneratedOta;
@@ -123,6 +124,12 @@ class AuthServiceImpl implements AuthService {
 
 		log.info("Activated account for user: {}.", user);
 		logPersistService.info("Konto z adresem email: %s zostało aktywowane.", user.getEmail());
+	}
+
+	@Override
+	public RevalidateSessionResDto revalidateSession(LoggedUser loggedUser) {
+		final UserRole role = loggedUser.userEntity().getRole().getName();
+		return new RevalidateSessionResDto(role.getLocaleName(), role.name());
 	}
 
 	private GeneratedOta generateActivateAccountOta(UserEntity user) {
