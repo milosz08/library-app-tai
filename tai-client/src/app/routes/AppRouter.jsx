@@ -29,6 +29,8 @@ const RenewResetPassoword = React.lazy(
 const FirstAccessPage = React.lazy(
   () => import('../pages/employer/FirstAccessPage')
 );
+const AddBookPage = React.lazy(() => import('../pages/employer/AddBookPage'));
+const BooksPage = React.lazy(() => import('../pages/employer/BooksPage'));
 
 const router = createBrowserRouter([
   {
@@ -72,6 +74,22 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={['ADMIN']}>
             <EmployersPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/pracownik/dodaj-ksiazke',
+        element: (
+          <ProtectedRoute allowedRoles={['EMPLOYER']}>
+            <AddBookPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/pracownik/ksiazki',
+        element: (
+          <ProtectedRoute allowedRoles={['EMPLOYER']}>
+            <BooksPage />
           </ProtectedRoute>
         ),
       },

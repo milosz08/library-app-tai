@@ -36,6 +36,12 @@ const Navbar = () => {
           { label: 'Pracownicy', path: '/admin/pracownicy' },
         ]
       : []),
+    ...(isAuthenticated && role === 'EMPLOYER'
+      ? [
+          { label: 'Dodaj książkę', path: '/pracownik/dodaj-ksiazke' },
+          { label: 'Książki', path: '/pracownik/ksiazki' },
+        ]
+      : []),
   ];
 
   return (

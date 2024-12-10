@@ -58,8 +58,8 @@ const RegistrationPage = () => {
       addAlert(alertMessage, 'info');
       navigate('/logowanie');
     } else if (response.errors) {
-      Object.entries(response.errors).forEach(([field, message]) => {
-        addAlert('Błąd w polu ' + field + ': ' + message, 'error');
+      Object.entries(response.errors).forEach(([, message]) => {
+        addAlert(message, 'error');
       });
     } else {
       addAlert('Rejestracja nie powiodła się. Spróbuj ponownie.', 'error');
