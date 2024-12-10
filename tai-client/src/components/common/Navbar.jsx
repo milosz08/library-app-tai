@@ -13,11 +13,21 @@ const Navbar = () => {
           <Typography variant="h6" component="div" sx={{ marginRight: 2 }}>
             Projekt TAI - biblioteka
           </Typography>
+          <NavigationButton label="Home" path="/" />
           {isAuthenticated && (
             <>
-              <NavigationButton label="Home" path="/" />
               {role === 'ADMIN' && (
-                <NavigationButton label="Zdarzenia" path="/admin/zdarzenia" />
+                <>
+                  <NavigationButton label="Zdarzenia" path="/admin/zdarzenia" />
+                  <NavigationButton
+                    label="Dodaj pracownika"
+                    path="/admin/dodaj-pracownika"
+                  />
+                  <NavigationButton
+                    label="Pracownicy"
+                    path="/admin/pracownicy"
+                  />
+                </>
               )}
             </>
           )}

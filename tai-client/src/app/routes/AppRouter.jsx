@@ -5,7 +5,7 @@ import GuestRoute from './GuestRoute';
 import MainLayout from './MainLayout';
 import ProtectedRoute from './ProtectedRoute';
 
-const RootPage = React.lazy(() => import('../pages/root/HomePage'));
+const RootPage = React.lazy(() => import('../pages/common/HomePage'));
 const NotFoundPage = React.lazy(() => import('../pages/common/NotFoundPage'));
 const LoginPage = React.lazy(() => import('../pages/auth/LoginPage'));
 const RequestResetPassoword = React.lazy(
@@ -16,11 +16,18 @@ const RegistrationPage = React.lazy(
 );
 const ActivationPage = React.lazy(() => import('../pages/auth/ActivationPage'));
 const LogsPage = React.lazy(() => import('../pages/admin/LogsPage'));
+const EmployerCreationPage = React.lazy(
+  () => import('../pages/admin/EmployerCreationPage')
+);
+const EmployersPage = React.lazy(() => import('../pages/admin/EmployersPage'));
 const EditUserDetailsPage = React.lazy(
   () => import('../pages/common/EditUserDetailsPage')
 );
 const RenewResetPassoword = React.lazy(
   () => import('../pages/common/RenewResetPassword')
+);
+const FirstAccessPage = React.lazy(
+  () => import('../pages/employer/FirstAccessPage')
 );
 
 const router = createBrowserRouter([
@@ -47,10 +54,30 @@ const router = createBrowserRouter([
       {
         path: '/admin/zdarzenia',
         element: (
-          <ProtectedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+          <ProtectedRoute allowedRoles={['ADMIN']}>
             <LogsPage />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: '/admin/dodaj-pracownika',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <EmployerCreationPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/pracownicy',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <EmployersPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/pracownik/pierwszy-dostep/:token',
+        element: <FirstAccessPage />,
       },
       {
         path: '/logowanie',
