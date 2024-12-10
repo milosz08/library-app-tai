@@ -6,6 +6,7 @@ import {
   MenuItem,
   Pagination,
   Select,
+  TextField,
 } from '@mui/material';
 import {
   deleteAllEmployers,
@@ -31,10 +32,15 @@ const EmployersPage = () => {
   const [isDeleteSelectedModalOpen, setDeleteSelectedModalOpen] =
     useState(false);
   const { addAlert } = useAlert();
+  const [searchEmployer, setSearchEmployer] = useState('');
 
   const loadEmployers = async () => {
     try {
-      const { data, totalPages } = await fetchEmployers(page, pageSize);
+      const { data, totalPages } = await fetchEmployers(
+        page,
+        pageSize,
+        searchEmployer
+      );
       setEmployers(data);
       setTotalPages(totalPages);
     } catch (error) {
@@ -121,6 +127,15 @@ const EmployersPage = () => {
     );
   };
 
+  const handleSearchChange = event => {
+    setSearchEmployer(event.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    setPage(1);
+    loadEmployers();
+  };
+
   const openDeleteSelectedModal = () => {
     setDeleteSelectedModalOpen(true);
   };
@@ -169,6 +184,23 @@ const EmployersPage = () => {
           gap: 2,
           paddingY: 2,
         }}>
+        <TextField
+          label="Szukaj email"
+          value={searchEmployer}
+          onChange={handleSearchChange}
+          onKeyUp={e => {
+            if (e.key === 'Enter') {
+              handleSearchSubmit();
+            }
+          }}
+          sx={{
+            flex: '1 1 auto',
+            bgcolor: 'custom.800',
+            color: 'white',
+            '& .MuiInputBase-input': { color: 'white' },
+            '& .MuiInputLabel-root': { color: 'white' },
+          }}
+        />
         <Select
           value={pageSize}
           onChange={handlePageSizeChange}

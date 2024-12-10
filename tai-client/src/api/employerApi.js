@@ -31,6 +31,7 @@ export const createEmployer = form => {
         firstName: errors.firstName,
         lastName: errors.lastName,
         email: errors.email,
+        details: errors.details,
       };
 
       Object.keys(fieldErrors).forEach(key => {
@@ -54,6 +55,7 @@ export const updateEmployer = (id, form) => {
       const fieldErrors = {
         firstName: errors.firstName,
         lastName: errors.lastName,
+        details: errors.details,
       };
 
       Object.keys(fieldErrors).forEach(key => {

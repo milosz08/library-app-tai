@@ -21,7 +21,6 @@ const EditEmployeeModal = ({
 
   const handleSubmit = () => {
     onSubmit({ firstName, lastName });
-    onClose();
   };
 
   return (
