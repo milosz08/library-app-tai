@@ -15,6 +15,7 @@ const RegistrationPage = React.lazy(
   () => import('../pages/auth/RegistrationPage')
 );
 const ActivationPage = React.lazy(() => import('../pages/auth/ActivationPage'));
+const LogsPage = React.lazy(() => import('../pages/admin/LogsPage'));
 const EditUserDetailsPage = React.lazy(
   () => import('../pages/common/EditUserDetailsPage')
 );
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
             <EditUserDetailsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/zdarzenia',
+        element: (
+          <ProtectedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+            <LogsPage />
           </ProtectedRoute>
         ),
       },
@@ -83,6 +92,7 @@ const router = createBrowserRouter([
           </GuestRoute>
         ),
       },
+
       { path: '*', element: <NotFoundPage /> },
     ],
   },

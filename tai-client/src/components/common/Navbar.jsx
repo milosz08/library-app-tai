@@ -4,7 +4,7 @@ import NavigationButton from './NavigationButton';
 import UserProfile from './UserProfile';
 
 const Navbar = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, role } = useAuth();
 
   return (
     <AppBar position="static" sx={{ bgcolor: 'custom.900' }}>
@@ -16,6 +16,9 @@ const Navbar = () => {
           {isAuthenticated && (
             <>
               <NavigationButton label="Home" path="/" />
+              {role === 'ADMIN' && (
+                <NavigationButton label="Zdarzenia" path="/admin/zdarzenia" />
+              )}
             </>
           )}
         </Box>
