@@ -28,28 +28,17 @@ export const fetchRentedDetails = id => {
     });
 };
 
-export const rentBook = (id, count) => {
+export const rentBook = (bookId, count) => {
   return axiosInstance
     .patch('/rental/loan', {
-      bookId: id,
+      bookId,
       count,
     })
-    .then(response => {
-      if (response.status === 204) {
-        return {
-          success: true,
-        };
-      } else {
-        return {
-          success: false,
-          message: 'Nie udało się wypożyczyć książki',
-        };
-      }
-    })
+    .then(response => response.status)
     .catch(error => {
-      const errorMessage =
+      return (
         error.response?.data?.details ||
-        'Nie udało się wypożyczyć książki o ID: ' + id;
-      return { success: false, message: errorMessage };
+        'Nie udało się zaktualizować danych wypożyczenia.'
+      );
     });
 };

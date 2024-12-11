@@ -22,6 +22,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
 
 	boolean existsByEmail(String email);
 
-	@Query("from UserEntity u join fetch u.books where u.id = :userId")
+	@Query("from UserEntity u left join fetch u.books where u.id = :userId")
 	Optional<UserEntity> findUserAndFetchBooks(@Param("userId") Long userId);
 }

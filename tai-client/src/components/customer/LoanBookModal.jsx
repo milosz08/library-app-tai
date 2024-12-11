@@ -26,7 +26,6 @@ const LoanBookModal = ({ open, onClose, bookDetails, onConfirm }) => {
       addAlert('Wprowadź poprawną ilość książek', 'error');
       return;
     }
-    console.log(bookDetails);
     onConfirm(quantity);
   };
 

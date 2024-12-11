@@ -20,7 +20,7 @@ const CustomerBooksPage = () => {
   const [searchTitle, setSearchTitle] = useState('');
   const { addAlert } = useAlert();
 
-  const loadBooks = async () => {
+  const getBooks = async () => {
     try {
       const { data, totalPages } = await fetchBooks(
         page,
@@ -57,11 +57,11 @@ const CustomerBooksPage = () => {
 
   const handleSearchSubmit = () => {
     setPage(1);
-    loadBooks();
+    getBooks();
   };
 
   useEffect(() => {
-    loadBooks();
+    getBooks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pageSize]);
 
@@ -123,7 +123,7 @@ const CustomerBooksPage = () => {
         books={books}
         onToggleSelection={toggleBookSelection}
         selectedBooks={selectedBooks}
-        refreshData={loadBooks}
+        refreshBooks={getBooks}
       />
       <Pagination
         count={totalPages}

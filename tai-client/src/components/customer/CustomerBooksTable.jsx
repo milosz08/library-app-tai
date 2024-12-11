@@ -17,7 +17,7 @@ import { useAlert } from '../../hooks/useAlert';
 import BookDetailsModal from './BookDetailsModal';
 import LoanBookModal from './LoanBookModal';
 
-const CustomerBooksTable = ({ books }) => {
+const CustomerBooksTable = ({ books, refreshBooks }) => {
   const { addAlert } = useAlert();
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [loanModalOpen, setLoanModalOpen] = useState(false);
@@ -50,12 +50,14 @@ const CustomerBooksTable = ({ books }) => {
 
   const handleLoanConfirm = async quantity => {
     const response = await rentBook(currentBook.id, quantity);
-    if (response.success) {
+    if (response == 204) {
       addAlert(
         'Wypożyczono ' + quantity + ' kopie książki: ' + currentBook.title,
         'success'
       );
-    } else addAlert(response.message, 'error');
+      handleLoanModalClose(true);
+      refreshBooks();
+    } else addAlert(response, 'error');
   };
 
   return (
@@ -139,6 +141,7 @@ CustomerBooksTable.propTypes = {
       availableCopies: PropTypes.number.isRequired,
     })
   ).isRequired,
+  refreshBooks: PropTypes.func.isRequired,
 };
 
 export default CustomerBooksTable;
