@@ -15,7 +15,7 @@ import {
   fetchBooks,
 } from '../../../api/bookApi';
 import ConfirmationModal from '../../../components/common/ConfirmationModal';
-import EmployerBooksTable from '../../../components/employer/EmployerBooksTable';
+import EmployerBooksTable from '../../../components/employer2/EmployerBooksTable';
 import { useAlert } from '../../../hooks/useAlert';
 
 const EmployerBooksPage = () => {
