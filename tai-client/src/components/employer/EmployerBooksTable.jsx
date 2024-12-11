@@ -12,8 +12,8 @@ import {
   TableRow,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { fetchBookDetails, updateBook } from '../../api/bookApi';
-import { useAlert } from '../../hooks/useAlert';
+import { fetchBookDetails, updateBook } from '~/api/bookApi';
+import { useAlert } from '~/hooks/useAlert';
 import EditBookModal from './EditBookModal';
 
 const EmployerBooksTable = ({

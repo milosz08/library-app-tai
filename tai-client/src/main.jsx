@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import AppRouter from './app/routes/AppRouter';
 import { AlertProvider } from './context/AlertContext';
 import { AuthProvider } from './context/AuthContext';
-import { LoaderProvider } from './context/LoaderContenxt';
+import { LoaderProvider } from './context/LoaderContext';
 import theme from './utils/theme';
 
 createRoot(document.getElementById('app-mount')).render(

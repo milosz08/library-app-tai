@@ -7,9 +7,9 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { fetchBooks } from '../../../api/bookApi';
-import CustomerBooksTable from '../../../components/customer/CustomerBooksTable';
-import { useAlert } from '../../../hooks/useAlert';
+import { fetchBooks } from '~/api/bookApi';
+import CustomerBooksTable from '~/components/customer/CustomerBooksTable';
+import { useAlert } from '~/hooks/useAlert';
 
 const CustomerBooksPage = () => {
   const [books, setBooks] = useState([]);

@@ -14,11 +14,11 @@ import {
   deleteSelectedEmployers,
   fetchEmployers,
   regenerateFirstAccess,
-} from '../../../api/employerApi';
-import EmployersTable from '../../../components/admin/EmployersTable';
-import ConfirmationModal from '../../../components/common/ConfirmationModal';
-import { useAlert } from '../../../hooks/useAlert';
-import { useLoader } from '../../../hooks/useLoader';
+} from '~/api/employerApi';
+import EmployersTable from '~/components/admin/EmployersTable';
+import ConfirmationModal from '~/components/common/ConfirmationModal';
+import { useAlert } from '~/hooks/useAlert';
+import { useLoader } from '~/hooks/useLoader';
 
 const EmployersPage = () => {
   const [employers, setEmployers] = useState([]);

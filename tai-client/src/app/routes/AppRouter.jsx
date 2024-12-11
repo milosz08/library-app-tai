@@ -8,8 +8,8 @@ import ProtectedRoute from './ProtectedRoute';
 const RootPage = React.lazy(() => import('../pages/common/HomePage'));
 const NotFoundPage = React.lazy(() => import('../pages/common/NotFoundPage'));
 const LoginPage = React.lazy(() => import('../pages/auth/LoginPage'));
-const RequestResetPassoword = React.lazy(
-  () => import('../pages/common/RequestResetPassoword')
+const RequestResetPassword = React.lazy(
+  () => import('../pages/common/RequestResetPassword')
 );
 const RegistrationPage = React.lazy(
   () => import('../pages/auth/RegistrationPage')
@@ -23,7 +23,7 @@ const EmployersPage = React.lazy(() => import('../pages/admin/EmployersPage'));
 const EditUserDetailsPage = React.lazy(
   () => import('../pages/common/EditUserDetailsPage')
 );
-const RenewResetPassoword = React.lazy(
+const RenewResetPassword = React.lazy(
   () => import('../pages/common/RenewResetPassword')
 );
 const FirstAccessPage = React.lazy(
@@ -149,7 +149,7 @@ const router = createBrowserRouter([
         path: '/przypomnij-haslo',
         element: (
           <GuestRoute>
-            <RequestResetPassoword />
+            <RequestResetPassword />
           </GuestRoute>
         ),
       },
@@ -157,7 +157,7 @@ const router = createBrowserRouter([
         path: '/przypomnij-haslo/:token',
         element: (
           <GuestRoute>
-            <RenewResetPassoword />
+            <RenewResetPassword />
           </GuestRoute>
         ),
       },

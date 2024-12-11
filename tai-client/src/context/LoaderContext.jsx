@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import SuspenseLoader from '../components/common/SuspenseLoader';
+import SuspenseLoader from '~/components/common/SuspenseLoader';
 
 export const LoaderContext = createContext();
 

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
-import { resetPassword } from '../../../api/passwordApi';
-import FormRedirectBox from '../../../components/common/FormRedirectBox';
-import FormTextField from '../../../components/common/FormTextField';
-import { useAlert } from '../../../hooks/useAlert';
-import { useLoader } from '../../../hooks/useLoader';
+import { resetPassword } from '~/api/passwordApi';
+import FormRedirectBox from '~/components/common/FormRedirectBox';
+import FormTextField from '~/components/common/FormTextField';
+import { useAlert } from '~/hooks/useAlert';
+import { useLoader } from '~/hooks/useLoader';
 
-const RequestResetPassoword = () => {
+const RequestResetPassword = () => {
   const [email, setEmail] = useState('');
   const { setIsLoading } = useLoader();
   const { addAlert } = useAlert();
@@ -83,4 +83,4 @@ const RequestResetPassoword = () => {
   );
 };
 
-export default RequestResetPassoword;
+export default RequestResetPassword;

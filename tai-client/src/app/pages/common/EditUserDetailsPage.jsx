@@ -4,11 +4,11 @@ import {
   details,
   updateAddressDetails,
   updatePersonalDetails,
-} from '../../../api/userApi';
-import FormTextField from '../../../components/common/FormTextField';
-import { useAlert } from '../../../hooks/useAlert';
-import { useAuth } from '../../../hooks/useAuth';
-import { useLoader } from '../../../hooks/useLoader';
+} from '~/api/userApi';
+import FormTextField from '~/components/common/FormTextField';
+import { useAlert } from '~/hooks/useAlert';
+import { useAuth } from '~/hooks/useAuth';
+import { useLoader } from '~/hooks/useLoader';
 
 const EditUserDetailsPage = () => {
   const [personalDetails, setPersonalDetails] = useState({

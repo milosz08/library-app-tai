@@ -4,8 +4,8 @@ import {
   login as loginApi,
   logout as logoutApi,
   sessionRevalidate,
-} from '../api/authApi';
-import { setLogoutFunction } from '../utils/authManager';
+} from '~/api/authApi';
+import { setLogoutFunction } from '~/utils/authManager';
 
 export const AuthContext = createContext();
 

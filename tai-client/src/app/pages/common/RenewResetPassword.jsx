@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { renewPassword } from '../../../api/passwordApi';
-import FormTextField from '../../../components/common/FormTextField';
-import { useAlert } from '../../../hooks/useAlert';
-import { useLoader } from '../../../hooks/useLoader';
+import { renewPassword } from '~/api/passwordApi';
+import FormTextField from '~/components/common/FormTextField';
+import { useAlert } from '~/hooks/useAlert';
+import { useLoader } from '~/hooks/useLoader';
 
 const RenewResetPassword = () => {
   const { token } = useParams();

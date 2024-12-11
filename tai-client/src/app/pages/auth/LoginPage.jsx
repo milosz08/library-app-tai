@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import FormRedirectBox from '../../../components/common/FormRedirectBox';
-import FormTextField from '../../../components/common/FormTextField';
-import { useAlert } from '../../../hooks/useAlert';
-import { useAuth } from '../../../hooks/useAuth';
-import { useLoader } from '../../../hooks/useLoader';
+import FormRedirectBox from '~/components/common/FormRedirectBox';
+import FormTextField from '~/components/common/FormTextField';
+import { useAlert } from '~/hooks/useAlert';
+import { useAuth } from '~/hooks/useAuth';
+import { useLoader } from '~/hooks/useLoader';
 
 const LoginPage = () => {
   const [form, setForm] = useState({

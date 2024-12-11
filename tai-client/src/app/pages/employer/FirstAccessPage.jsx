@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { changePasswordOnFirstAccess } from '../../../api/employerApi';
-import FormTextField from '../../../components/common/FormTextField';
-import { useAlert } from '../../../hooks/useAlert';
-import { useLoader } from '../../../hooks/useLoader';
+import { changePasswordOnFirstAccess } from '~/api/employerApi';
+import FormTextField from '~/components/common/FormTextField';
+import { useAlert } from '~/hooks/useAlert';
+import { useLoader } from '~/hooks/useLoader';
 
 const FirstAccessPage = () => {
   const { token } = useParams();

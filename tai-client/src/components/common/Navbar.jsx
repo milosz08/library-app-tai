@@ -10,7 +10,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '~/hooks/useAuth';
 import NavigationButton from './NavigationButton';
 import UserProfile from './UserProfile';
 

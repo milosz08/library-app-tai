@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Box, CircularProgress, Container, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { activateAccount } from '../../../api/authApi';
-import { useAlert } from '../../../hooks/useAlert';
+import { activateAccount } from '~/api/authApi';
+import { useAlert } from '~/hooks/useAlert';
 
 const ActivationPage = () => {
   const { token } = useParams();

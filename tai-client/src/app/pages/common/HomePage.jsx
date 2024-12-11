@@ -1,5 +1,5 @@
 import { Box, Button, Container, Grid2, Typography } from '@mui/material';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '~/hooks/useAuth';
 
 const HomePage = () => {
   const { isAuthenticated, role } = useAuth();

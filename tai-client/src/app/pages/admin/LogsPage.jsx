@@ -13,10 +13,10 @@ import {
   deleteLastLogs,
   deleteLog,
   fetchLogs,
-} from '../../../api/logsApi';
-import LogsTable from '../../../components/admin/LogsTable';
-import ConfirmationModal from '../../../components/common/ConfirmationModal';
-import { useAlert } from '../../../hooks/useAlert';
+} from '~/api/logsApi';
+import LogsTable from '~/components/admin/LogsTable';
+import ConfirmationModal from '~/components/common/ConfirmationModal';
+import { useAlert } from '~/hooks/useAlert';
 
 const LogsPage = () => {
   const [logs, setLogs] = useState([]);

@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { Box, Button, Container, IconButton, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { addBook } from '../../../api/bookApi';
-import FormTextField from '../../../components/common/FormTextField';
-import { useAlert } from '../../../hooks/useAlert';
-import { useLoader } from '../../../hooks/useLoader';
+import { addBook } from '~/api/bookApi';
+import FormTextField from '~/components/common/FormTextField';
+import { useAlert } from '~/hooks/useAlert';
+import { useLoader } from '~/hooks/useLoader';
 
 const AddBookPage = () => {
   const [form, setForm] = useState({

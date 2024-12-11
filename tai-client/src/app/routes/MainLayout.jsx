@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import Footer from '../../components/common/Footer';
-import Navbar from '../../components/common/Navbar';
-import SuspenseLoader from '../../components/common/SuspenseLoader';
-import '../../styles/index.css';
+import Footer from '~/components/common/Footer';
+import Navbar from '~/components/common/Navbar';
+import SuspenseLoader from '~/components/common/SuspenseLoader';
+import '~/styles/index.css';
 
 const MainLayout = () => {
   return (

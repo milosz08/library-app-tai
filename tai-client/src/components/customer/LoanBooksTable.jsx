@@ -11,8 +11,8 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { IoIosInformationCircleOutline } from 'react-icons/io';
-import { fetchRentedDetails, returnBook } from '../../api/rentalApi';
-import { useAlert } from '../../hooks/useAlert';
+import { fetchRentedDetails, returnBook } from '~/api/rentalApi';
+import { useAlert } from '~/hooks/useAlert';
 import BookDetailsModal from './BookDetailsModal';
 import LoanBookModal from './LoanBookModal';
 

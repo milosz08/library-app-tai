@@ -15,8 +15,8 @@ import {
 import PropTypes from 'prop-types';
 import { FaCheck } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
-import { updateEmployer } from '../../api/employerApi';
-import { useAlert } from '../../hooks/useAlert';
+import { updateEmployer } from '~/api/employerApi';
+import { useAlert } from '~/hooks/useAlert';
 import EditEmployeeModal from './EditEmployeeModal';
 
 const EmployersTable = ({

@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
-import { deleteAccount, details } from '../../api/userApi';
-import { useAlert } from '../../hooks/useAlert';
-import { useAuth } from '../../hooks/useAuth';
-import { useLoader } from '../../hooks/useLoader';
+import { deleteAccount, details } from '~/api/userApi';
+import { useAlert } from '~/hooks/useAlert';
+import { useAuth } from '~/hooks/useAuth';
+import { useLoader } from '~/hooks/useLoader';
 import ConfirmationModal from './ConfirmationModal';
 
 const UserProfile = () => {
