@@ -10,6 +10,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '~/hooks/useAuth';
 import NavigationButton from './NavigationButton';
 import UserProfile from './UserProfile';
@@ -18,6 +19,7 @@ const Navbar = () => {
   const { isAuthenticated, role } = useAuth();
   const [menuAnchor, setMenuAnchor] = useState(null);
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
 
   const handleMenuOpen = event => {
     setMenuAnchor(event.currentTarget);
@@ -80,7 +82,7 @@ const Navbar = () => {
                 <MenuItem
                   key={item.label}
                   onClick={() => {
-                    window.location.href = item.path;
+                    navigate(item.path);
                     handleMenuClose();
                   }}
                   sx={{

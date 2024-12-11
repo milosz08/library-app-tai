@@ -1,8 +1,10 @@
 import { Box, Button, Container, Grid2, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '~/hooks/useAuth';
 
 const HomePage = () => {
   const { isAuthenticated, role } = useAuth();
+  const navigate = useNavigate();
 
   const getQuickLinks = () => {
     if (!isAuthenticated) return [];
@@ -80,7 +82,7 @@ const HomePage = () => {
                     '&:hover': { bgcolor: 'customBlue.500' },
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                   }}
-                  onClick={() => (window.location.href = link.path)}>
+                  onClick={() => navigate(link.path)}>
                   {link.label}
                 </Button>
               </Grid2>
