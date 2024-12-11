@@ -47,13 +47,13 @@ const UserProfile = () => {
   const confirmDeleteAccount = async () => {
     setModalOpen(false);
     setIsLoading(true);
-    const status = await deleteAccount();
-    if (status === 204) {
+    const response = await deleteAccount();
+    if (response.status === 204) {
       handleLogout();
       navigate('/');
       addAlert('Pomyślnie usunięto konto.', 'success');
     } else {
-      addAlert('Wystąpił nieoczekiwany błąd', 'error');
+      addAlert(response.message, 'error');
     }
     setIsLoading(false);
   };

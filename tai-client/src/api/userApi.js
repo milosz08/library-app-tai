@@ -10,7 +10,15 @@ export const details = () => {
 };
 
 export const deleteAccount = () => {
-  return axiosInstance.delete('/@me').then(response => response.status);
+  return axiosInstance
+    .delete('/@me')
+    .then(response => response)
+    .catch(error => {
+      const errorMessage =
+        error.response?.data?.details ||
+        'Wystąpił błąd podczas usuwania konta.';
+      return { message: errorMessage };
+    });
 };
 
 export const updatePersonalDetails = personalDetails => {
