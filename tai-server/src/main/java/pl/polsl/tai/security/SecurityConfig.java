@@ -99,9 +99,9 @@ class SecurityConfig {
 				auth.requestMatchers(DELETE, "/v1/book").hasAnyRole(mapRoles(EMPLOYER));
 				// RentalController
 				auth.requestMatchers(GET, "/v1/rental/rented/**").hasAnyRole(mapRoles(CUSTOMER));
-				auth.requestMatchers(PATCH, "/v1/rental/load").hasAnyRole(mapRoles(CUSTOMER));
+				auth.requestMatchers(PATCH, "/v1/rental/loan").hasAnyRole(mapRoles(CUSTOMER));
 				auth.requestMatchers(DELETE, "/v1/rental/return").hasAnyRole(mapRoles(CUSTOMER));
-				// any
+				// other stuff
 				auth.requestMatchers(GET, "/actuator/**").permitAll();
 				auth.requestMatchers(OPTIONS, "/**").permitAll();
 				auth.anyRequest().authenticated();

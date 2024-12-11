@@ -35,11 +35,16 @@ public class UserEntity extends EntityBase implements Serializable {
 	@JoinColumn
 	private RoleEntity role;
 
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private AddressEntity address;
 
 	@ManyToMany(mappedBy = "users")
 	private List<BookEntity> books = new ArrayList<>();
+
+	public void attachAddress(AddressEntity address) {
+		this.address = address;
+		address.setUser(this);
+	}
 
 	@Override
 	public String toString() {

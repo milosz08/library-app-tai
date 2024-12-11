@@ -97,7 +97,7 @@ class RentalServiceImpl implements RentalService {
 		}
 		final UserEntity user = userRepository
 			.findUserAndFetchBooks(loggedUser.userEntity().getId())
-			.orElseThrow(() -> new UsernameNotFoundException("User not found."));
+			.orElseThrow(() -> new UsernameNotFoundException("Nie znaleziono użytkownika."));
 
 		for (long i = 0; i < reqDto.getCount(); i++) {
 			book.attachUser(user);
@@ -126,7 +126,7 @@ class RentalServiceImpl implements RentalService {
 		}
 		final UserEntity user = userRepository
 			.findUserAndFetchBooks(loggedUser.userEntity().getId())
-			.orElseThrow(() -> new UsernameNotFoundException("User not found."));
+			.orElseThrow(() -> new UsernameNotFoundException("Nie znaleziono użytkownika."));
 
 		final BookEntity book = rented.get(1, BookEntity.class);
 		for (long i = 0; i < reqDto.getCount(); i++) {

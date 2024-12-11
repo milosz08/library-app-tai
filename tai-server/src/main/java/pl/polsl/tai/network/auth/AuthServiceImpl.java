@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.polsl.tai.domain.address.AddressEntity;
-import pl.polsl.tai.domain.address.AddressRepository;
 import pl.polsl.tai.domain.ota.OtaTokenEntity;
 import pl.polsl.tai.domain.ota.OtaTokenRepository;
 import pl.polsl.tai.domain.ota.OtaType;
@@ -46,7 +45,6 @@ class AuthServiceImpl implements AuthService {
 	private final OtaProperties otaProperties;
 
 	private final UserRepository userRepository;
-	private final AddressRepository addressRepository;
 	private final RoleRepository roleRepository;
 	private final OtaTokenRepository otaTokenRepository;
 
@@ -102,8 +100,10 @@ class AuthServiceImpl implements AuthService {
 			.build();
 
 		final GeneratedOta ota = generateActivateAccountOta(user);
+
+		user.attachAddress(address);
 		userRepository.save(user);
-		addressRepository.save(address);
+
 		otaTokenRepository.save(ota.entity());
 
 		log.info("Created new customer account: {}.", user);
