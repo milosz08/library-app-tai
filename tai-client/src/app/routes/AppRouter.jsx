@@ -30,7 +30,12 @@ const FirstAccessPage = React.lazy(
   () => import('../pages/employer/FirstAccessPage')
 );
 const AddBookPage = React.lazy(() => import('../pages/employer/AddBookPage'));
-const BooksPage = React.lazy(() => import('../pages/employer/BooksPage'));
+const EmployerBooksPage = React.lazy(
+  () => import('../pages/employer/EmployerBooksPage')
+);
+const CustomerBooksPage = React.lazy(
+  () => import('../pages/customer/CustomerBooksPage')
+);
 
 const router = createBrowserRouter([
   {
@@ -89,7 +94,15 @@ const router = createBrowserRouter([
         path: '/pracownik/ksiazki',
         element: (
           <ProtectedRoute allowedRoles={['EMPLOYER']}>
-            <BooksPage />
+            <EmployerBooksPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/ksiazki',
+        element: (
+          <ProtectedRoute allowedRoles={['CUSTOMER']}>
+            <CustomerBooksPage />
           </ProtectedRoute>
         ),
       },

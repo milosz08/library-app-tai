@@ -22,7 +22,7 @@ export const fetchBookDetails = id => {
     .catch(error => {
       return (
         error.response?.data?.details ||
-        'Nie udało się pobrać książki o id: .' + id
+        'Nie udało się pobrać książki o id: ' + id
       );
     });
 };

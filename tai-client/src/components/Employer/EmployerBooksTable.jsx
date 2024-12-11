@@ -16,7 +16,7 @@ import { fetchBookDetails, updateBook } from '../../api/bookApi';
 import { useAlert } from '../../hooks/useAlert';
 import EditBookModal from './EditBookModal';
 
-const BooksTable = ({
+const EmployerBooksTable = ({
   books,
   onDelete,
   onToggleSelection,
@@ -139,7 +139,7 @@ const BooksTable = ({
   );
 };
 
-BooksTable.propTypes = {
+EmployerBooksTable.propTypes = {
   books: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -156,4 +156,4 @@ BooksTable.propTypes = {
   ).isRequired,
 };
 
-export default BooksTable;
+export default EmployerBooksTable;

@@ -42,6 +42,9 @@ const Navbar = () => {
           { label: 'Książki', path: '/pracownik/ksiazki' },
         ]
       : []),
+    ...(isAuthenticated && role === 'CUSTOMER'
+      ? [{ label: 'Książki', path: '/ksiazki' }]
+      : []),
   ];
 
   return (

@@ -14,11 +14,11 @@ import {
   deleteSelectedBooks,
   fetchBooks,
 } from '../../../api/bookApi';
-import BooksTable from '../../../components/Employer/BooksTable';
 import ConfirmationModal from '../../../components/common/ConfirmationModal';
+import EmployerBooksTable from '../../../components/employer/EmployerBooksTable';
 import { useAlert } from '../../../hooks/useAlert';
 
-const BooksPage = () => {
+const EmployerBooksPage = () => {
   const [books, setBooks] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -187,7 +187,7 @@ const BooksPage = () => {
           Usuń wszystkie książki
         </Button>
       </Box>
-      <BooksTable
+      <EmployerBooksTable
         books={books}
         onDelete={id => setDeleteBookId(id)}
         onToggleSelection={toggleBookSelection}
@@ -246,4 +246,4 @@ const BooksPage = () => {
   );
 };
 
-export default BooksPage;
+export default EmployerBooksPage;
