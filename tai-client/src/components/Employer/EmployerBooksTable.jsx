@@ -54,8 +54,16 @@ const EmployerBooksTable = ({
       handleModalClose();
       refreshData();
     } else if (response.errors) {
-      Object.entries(response.errors).forEach(([, message]) => {
-        addAlert(message, 'error');
+      Object.entries(response.errors).forEach(([key, message]) => {
+        if (key === 'authors' && typeof message === 'object') {
+          Object.entries(message).forEach(([, authorError]) => {
+            Object.entries(authorError).forEach(([, fieldMessage]) => {
+              addAlert(fieldMessage, 'error');
+            });
+          });
+        } else {
+          addAlert(message, 'error');
+        }
       });
     } else {
       addAlert('Wystąpił nieoczekiwany błąd.', 'error');
@@ -132,7 +140,7 @@ const EmployerBooksTable = ({
           open={editModalOpen}
           onClose={handleModalClose}
           onSubmit={handleModalSubmit}
-          initialData={currentBook}
+          initialData={currentBook.data}
         />
       )}
     </>

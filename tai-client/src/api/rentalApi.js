@@ -19,12 +19,14 @@ export const fetchRentalBooks = (page, size, title) => {
 export const fetchRentedDetails = id => {
   return axiosInstance
     .get('/rental/rented/' + id)
-    .then(response => response.data)
+    .then(response => ({ success: true, data: response.data }))
     .catch(error => {
-      return (
-        error.response?.data?.details ||
-        'Nie udało się pobrać informacji o wypożyczeniu książki: ' + id
-      );
+      return {
+        success: false,
+        message:
+          error.response?.data?.details ||
+          'Nie udało się pobrać informacji o wypożyczeniu książki',
+      };
     });
 };
 
@@ -33,6 +35,23 @@ export const rentBook = (bookId, count) => {
     .patch('/rental/loan', {
       bookId,
       count,
+    })
+    .then(response => response.status)
+    .catch(error => {
+      return (
+        error.response?.data?.details ||
+        'Nie udało się zaktualizować danych wypożyczenia.'
+      );
+    });
+};
+
+export const returnBook = (bookId, count) => {
+  return axiosInstance
+    .delete('/rental/return', {
+      data: {
+        bookId,
+        count,
+      },
     })
     .then(response => response.status)
     .catch(error => {

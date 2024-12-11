@@ -10,11 +10,9 @@ import {
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { useAlert } from '../../hooks/useAlert';
 
-const LoanBookModal = ({ open, onClose, bookDetails, onConfirm }) => {
+const LoanBookModal = ({ open, onClose, bookDetails, onConfirm, title }) => {
   const [quantity, setQuantity] = useState(1);
-  const { addAlert } = useAlert();
 
   const handleQuantityChange = event => {
     const value = parseInt(event.target.value, 10);
@@ -22,10 +20,6 @@ const LoanBookModal = ({ open, onClose, bookDetails, onConfirm }) => {
   };
 
   const handleConfirm = () => {
-    if (quantity > bookDetails.availableCopies || quantity < 1) {
-      addAlert('Wprowadź poprawną ilość książek', 'error');
-      return;
-    }
     onConfirm(quantity);
   };
 
@@ -49,7 +43,7 @@ const LoanBookModal = ({ open, onClose, bookDetails, onConfirm }) => {
           color: 'custom.50',
           fontWeight: 'bold',
         }}>
-        Wypożycz książkę
+        {title}
       </DialogTitle>
       <DialogContent
         sx={{
@@ -63,11 +57,12 @@ const LoanBookModal = ({ open, onClose, bookDetails, onConfirm }) => {
             <strong>Tytuł:</strong> {bookDetails.title}
           </Typography>
           <Typography variant="body1">
-            <strong>Dostępne kopie:</strong> {bookDetails.availableCopies}
+            <strong>Dostępne kopie:</strong>{' '}
+            {bookDetails.availableCopies || bookDetails.rentedCopies}
           </Typography>
           <TextField
             type="number"
-            label="Liczba książek do wypożyczenia"
+            label="Liczba książek"
             value={quantity}
             onChange={handleQuantityChange}
             sx={{
@@ -110,7 +105,7 @@ const LoanBookModal = ({ open, onClose, bookDetails, onConfirm }) => {
               backgroundColor: '#388e3c',
             },
           }}>
-          Wypożycz
+          Potwierdź
         </Button>
       </DialogActions>
     </Dialog>
@@ -123,8 +118,10 @@ LoanBookModal.propTypes = {
   bookDetails: PropTypes.shape({
     title: PropTypes.string,
     availableCopies: PropTypes.number,
+    rentedCopies: PropTypes.number,
   }).isRequired,
   onConfirm: PropTypes.func.isRequired,
+  title: PropTypes.string,
 };
 
 export default LoanBookModal;

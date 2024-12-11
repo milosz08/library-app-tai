@@ -18,12 +18,13 @@ export const fetchBooks = (page, size, title) => {
 export const fetchBookDetails = id => {
   return axiosInstance
     .get('/book/' + id)
-    .then(response => response.data)
+    .then(response => ({ success: true, data: response.data }))
     .catch(error => {
-      return (
-        error.response?.data?.details ||
-        'Nie udało się pobrać książki o id: ' + id
-      );
+      return {
+        success: false,
+        message:
+          error.response?.data?.details || 'Nie udało się pobrać książki',
+      };
     });
 };
 
@@ -44,7 +45,7 @@ export const addBook = bookData => {
         publisher: errors.publisher,
         city: errors.city,
         copies: errors.copies,
-        authors: errors.authors,
+        authors: parseAuthorErrors(errors),
         details: errors.details,
       };
 
@@ -75,7 +76,7 @@ export const updateBook = (id, form) => {
         publisher: errors.publisher,
         city: errors.city,
         copies: errors.copies,
-        authors: errors.authors,
+        authors: parseAuthorErrors(errors),
         details: errors.details,
       };
 
@@ -87,6 +88,22 @@ export const updateBook = (id, form) => {
 
       return { errors: fieldErrors };
     });
+};
+
+const parseAuthorErrors = errors => {
+  const authorErrors = {};
+  for (const key in errors) {
+    if (key.startsWith('authors[')) {
+      const match = key.match(/authors\[(\d+)\]\.(.+)/);
+      if (match) {
+        const index = match[1];
+        const field = match[2];
+        authorErrors[index] = authorErrors[index] || {};
+        authorErrors[index][field] = errors[key];
+      }
+    }
+  }
+  return Object.keys(authorErrors).length ? authorErrors : null;
 };
 
 export const deleteBook = id => {

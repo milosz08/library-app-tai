@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const BookDetailsModal = ({ open, onClose, bookDetails }) => {
+const BookDetailsModal = ({ open, onClose, bookDetails, rented }) => {
   return (
     <Dialog
       open={open}
@@ -53,8 +53,16 @@ const BookDetailsModal = ({ open, onClose, bookDetails }) => {
             <strong>Miejscowość:</strong> {bookDetails.city}
           </Typography>
           <Typography variant="body1">
-            <strong>Liczba kopii:</strong> {bookDetails.copies}
+            <strong>Liczba kopii:</strong>{' '}
+            {rented ? bookDetails.rentedCopies : bookDetails.allCopies}
           </Typography>
+          {!rented ? (
+            <Typography variant="body1">
+              <strong>Dostępne kopie:</strong> {bookDetails.availableCopies}
+            </Typography>
+          ) : (
+            <></>
+          )}
           {bookDetails.authors && (
             <Box>
               <Typography variant="body1">
@@ -93,18 +101,21 @@ BookDetailsModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   bookDetails: PropTypes.shape({
-    title: PropTypes.string,
-    year: PropTypes.number,
-    publisher: PropTypes.string,
-    city: PropTypes.string,
-    copies: PropTypes.number,
+    title: PropTypes.string.isRequired,
+    year: PropTypes.number.isRequired,
+    publisher: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    allCopies: PropTypes.number,
+    availableCopies: PropTypes.number,
+    rentedCopies: PropTypes.number,
     authors: PropTypes.arrayOf(
       PropTypes.shape({
-        firstName: PropTypes.string,
-        lastName: PropTypes.string,
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired,
       })
     ),
   }).isRequired,
+  rented: PropTypes.bool.isRequired,
 };
 
 export default BookDetailsModal;

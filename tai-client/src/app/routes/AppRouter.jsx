@@ -36,6 +36,9 @@ const EmployerBooksPage = React.lazy(
 const CustomerBooksPage = React.lazy(
   () => import('../pages/customer/CustomerBooksPage')
 );
+const LoanBooksPage = React.lazy(
+  () => import('../pages/customer/LoanBooksPage')
+);
 
 const router = createBrowserRouter([
   {
@@ -103,6 +106,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={['CUSTOMER']}>
             <CustomerBooksPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/wypozyczone-ksiazki',
+        element: (
+          <ProtectedRoute allowedRoles={['CUSTOMER']}>
+            <LoanBooksPage />
           </ProtectedRoute>
         ),
       },

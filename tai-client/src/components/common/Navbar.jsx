@@ -43,7 +43,10 @@ const Navbar = () => {
         ]
       : []),
     ...(isAuthenticated && role === 'CUSTOMER'
-      ? [{ label: 'Książki', path: '/ksiazki' }]
+      ? [
+          { label: 'Książki', path: '/ksiazki' },
+          { label: 'Wypożyczone książki', path: '/wypozyczone-ksiazki' },
+        ]
       : []),
   ];
 
@@ -67,7 +70,7 @@ const Navbar = () => {
               anchorEl={menuAnchor}
               open={Boolean(menuAnchor)}
               onClose={handleMenuClose}
-              PaperProps={{
+              slotProps={{
                 sx: {
                   bgcolor: 'custom.900',
                   color: 'white',

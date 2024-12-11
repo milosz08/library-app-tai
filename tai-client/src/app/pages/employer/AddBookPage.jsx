@@ -53,8 +53,16 @@ const AddBookPage = () => {
       addAlert('Książka została dodana!', 'success');
       navigate('/pracownik/ksiazki');
     } else if (response.errors) {
-      Object.entries(response.errors).forEach(([, message]) => {
-        addAlert(message, 'error');
+      Object.entries(response.errors).forEach(([key, message]) => {
+        if (key === 'authors' && typeof message === 'object') {
+          Object.entries(message).forEach(([, authorError]) => {
+            Object.entries(authorError).forEach(([, fieldMessage]) => {
+              addAlert(fieldMessage, 'error');
+            });
+          });
+        } else {
+          addAlert(message, 'error');
+        }
       });
     } else {
       addAlert('Dodanie książki nie powiodło się. Spróbuj ponownie.', 'error');

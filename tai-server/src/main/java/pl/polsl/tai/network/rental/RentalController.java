@@ -29,7 +29,7 @@ class RentalController {
 		return ResponseEntity.ok(rentalService.getPageableRentedBooks(title, page, size, loggedUser));
 	}
 
-	@GetMapping("/rented/{bookId}/details")
+	@GetMapping("/rented/{bookId}")
 	ResponseEntity<RentedBookDetailsResDto> getRentedBookDetails(
 		@PathVariable Long bookId,
 		@AuthenticationPrincipal LoggedUser loggedUser
