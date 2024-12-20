@@ -32,7 +32,7 @@ const LoginPage = () => {
       const activationLink =
         window.location.origin + '/aktywacja/' + result.token;
       const activationMessage =
-        'Twoje konto wymaga aktywacji. Kliknij poniższy link, aby je aktywować:' +
+        'Twoje konto wymaga aktywacji. Wpisz poniższy link, aby je aktywować:' +
         activationLink;
       addAlert(activationMessage, 'info');
     } else {

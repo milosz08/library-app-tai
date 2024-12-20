@@ -53,7 +53,7 @@ const RegistrationPage = () => {
       const activationLink =
         window.location.origin + '/aktywacja/' + response.token;
       const alertMessage =
-        'Rejestracja zakończona sukcesem! Kliknij tutaj, aby aktywować swoje konto: ' +
+        'Rejestracja zakończona sukcesem! Wpisz, aby aktywować swoje konto: ' +
         activationLink;
       addAlert(alertMessage, 'info');
       navigate('/logowanie');

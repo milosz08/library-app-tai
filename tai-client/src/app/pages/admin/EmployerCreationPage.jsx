@@ -37,7 +37,7 @@ const EmployerCreationPage = () => {
         '/pracownik/pierwszy-dostep/' +
         response.data.token;
       const activationMessage =
-        'Konto pracownika wymaga zmiany hasła. Kliknij w link i podaj tymczasowe hasło: ' +
+        'Konto pracownika wymaga zmiany hasła. Wpisz link i podaj tymczasowe hasło: ' +
         response.data.temporalPassword +
         '\n' +
         activationLink;

@@ -46,23 +46,27 @@ const EmployerBooksPage = () => {
   };
 
   const handleDelete = async id => {
-    try {
-      await deleteBook(id);
-      addAlert('Książka została usunięta.', 'success');
-      loadBooks();
-    } catch (error) {
+    const response = await deleteBook(id);
+    if (response.status === 400) {
+      addAlert(response.details, 'error');
+    } else if (response.status === 204) {
+      addAlert('Pomyślnie usunięto książkę.', 'success');
+    } else {
       addAlert('Wystąpił błąd podczas usuwania książki.', 'error');
     }
+    loadBooks();
   };
 
   const handleDeleteAll = async () => {
-    try {
-      await deleteAllBooks();
+    const response = await deleteAllBooks();
+    if (response.status === 400) {
+      addAlert(response.details, 'error');
+    } else if (response.status === 200) {
       addAlert('Wszystkie książki zostały usunięte.', 'success');
-      loadBooks();
-    } catch (error) {
+    } else {
       addAlert('Wystąpił błąd podczas usuwania książek.', 'error');
     }
+    loadBooks();
   };
 
   const handleDeleteSelected = async () => {
@@ -70,15 +74,16 @@ const EmployerBooksPage = () => {
       addAlert('Nie wybrano żadnych książek do usunięcia.', 'warning');
       return;
     }
-
-    try {
-      await deleteSelectedBooks(selectedBooks);
+    const response = await deleteSelectedBooks(selectedBooks);
+    if (response.status === 400) {
+      addAlert(response.details, 'error');
+    } else if (response.status === 200) {
       addAlert('Wybrane książki zostały usunięte.', 'success');
-      setSelectedBooks([]);
-      loadBooks();
-    } catch (error) {
+    } else {
       addAlert('Wystąpił błąd podczas usuwania wybranych książek.', 'error');
     }
+    setSelectedBooks([]);
+    loadBooks();
   };
 
   const handlePageChange = (_, value) => {

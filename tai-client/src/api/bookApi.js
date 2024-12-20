@@ -107,15 +107,17 @@ const parseAuthorErrors = errors => {
 };
 
 export const deleteBook = id => {
-  return axiosInstance.delete('/book/' + id);
+  return axiosInstance.delete('/book/' + id).then(response => response.data);
 };
 
 export const deleteAllBooks = () => {
-  return axiosInstance.delete('/book');
+  return axiosInstance.delete('/book').then(response => response.data);
 };
 
 export const deleteSelectedBooks = ids => {
-  return axiosInstance.delete('/book/selected', {
-    data: { ids },
-  });
+  return axiosInstance
+    .delete('/book/selected', {
+      data: { ids },
+    })
+    .then(response => response.data);
 };

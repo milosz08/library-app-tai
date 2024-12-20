@@ -6,5 +6,6 @@
   "explorer.autoReveal": false,
   "explorer.compactFolders": false,
   "files.insertFinalNewline": true,
-  "cSpell.language": "en,pl"
+  "cSpell.language": "en,pl",
+  "eslint.useFlatConfig": false
 }
