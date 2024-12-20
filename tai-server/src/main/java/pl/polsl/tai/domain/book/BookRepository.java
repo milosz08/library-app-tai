@@ -20,7 +20,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Long>, JpaSpec
 	@Query("from BookEntity b left join b.users u where u.id is null and b.id in :bookIds")
 	List<BookEntity> findAllNotRentedAndHasIds(@Param("bookIds") List<Long> bookIds);
 
-	@Query("select count(*) from BookEntity b join b.users u where b.id = :userId")
+	@Query("select count(*) from BookEntity b join b.users u where u.id = :userId")
 	long countAllRentedByUserId(@Param("userId") Long userId);
 
 	@Query("select b.id, count(*) from BookEntity b join b.users group by b.id")
