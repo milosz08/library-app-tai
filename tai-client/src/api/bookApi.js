@@ -106,18 +106,31 @@ const parseAuthorErrors = errors => {
   return Object.keys(authorErrors).length ? authorErrors : null;
 };
 
-export const deleteBook = id => {
-  return axiosInstance.delete('/book/' + id).then(response => response.data);
+export const deleteBook = async id => {
+  try {
+    await axiosInstance.delete(`/book/${id}`);
+    return { message: 'Pomyślnie usunięto książkę.', type: 'success' };
+  } catch (e) {
+    return {
+      message:
+        e.response.data.details || 'Wystąpił błąd podczas usuwania książki.',
+      type: 'error',
+    };
+  }
 };
 
-export const deleteAllBooks = () => {
-  return axiosInstance.delete('/book').then(response => response.data);
-};
-
-export const deleteSelectedBooks = ids => {
-  return axiosInstance
-    .delete('/book/selected', {
-      data: { ids },
-    })
-    .then(response => response.data);
+export const deleteBooks = async callback => {
+  try {
+    const { data } = await callback(axiosInstance);
+    return {
+      message: `Liczba usuniętych książek: ${data.count}`,
+      type: 'success',
+    };
+  } catch (e) {
+    return {
+      message:
+        e.response.data.details || 'Wystąpił błąd podczas usuwania książki.',
+      type: 'error',
+    };
+  }
 };

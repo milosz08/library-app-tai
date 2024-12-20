@@ -8,12 +8,7 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import {
-  deleteAllBooks,
-  deleteBook,
-  deleteSelectedBooks,
-  fetchBooks,
-} from '~/api/bookApi';
+import { deleteBook, deleteBooks, fetchBooks } from '~/api/bookApi';
 import ConfirmationModal from '~/components/common/ConfirmationModal';
 import EmployerBooksTable from '~/components/employer/EmployerBooksTable';
 import { useAlert } from '~/hooks/useAlert';
@@ -46,26 +41,16 @@ const EmployerBooksPage = () => {
   };
 
   const handleDelete = async id => {
-    const response = await deleteBook(id);
-    if (response.status === 400) {
-      addAlert(response.details, 'error');
-    } else if (response.status === 204) {
-      addAlert('Pomyślnie usunięto książkę.', 'success');
-    } else {
-      addAlert('Wystąpił błąd podczas usuwania książki.', 'error');
-    }
+    const { message, type } = await deleteBook(id);
+    addAlert(message, type);
     loadBooks();
   };
 
   const handleDeleteAll = async () => {
-    const response = await deleteAllBooks();
-    if (response.status === 400) {
-      addAlert(response.details, 'error');
-    } else if (response.status === 200) {
-      addAlert('Wszystkie książki zostały usunięte.', 'success');
-    } else {
-      addAlert('Wystąpił błąd podczas usuwania książek.', 'error');
-    }
+    const { message, type } = await deleteBooks(instance =>
+      instance.delete('/book')
+    );
+    addAlert(message, type);
     loadBooks();
   };
 
@@ -74,14 +59,12 @@ const EmployerBooksPage = () => {
       addAlert('Nie wybrano żadnych książek do usunięcia.', 'warning');
       return;
     }
-    const response = await deleteSelectedBooks(selectedBooks);
-    if (response.status === 400) {
-      addAlert(response.details, 'error');
-    } else if (response.status === 200) {
-      addAlert('Wybrane książki zostały usunięte.', 'success');
-    } else {
-      addAlert('Wystąpił błąd podczas usuwania wybranych książek.', 'error');
-    }
+    const { message, type } = await deleteBooks(instance =>
+      instance.delete('/book/selected', {
+        data: { ids: selectedBooks },
+      })
+    );
+    addAlert(message, type);
     setSelectedBooks([]);
     loadBooks();
   };
