@@ -36,6 +36,7 @@ jobs:
         with:
           name: dist-output
           path: ${{ env.SUBPROJECT_ROOT }}/dist/
+          retention-days: 1
 
   deploy:
     runs-on: ubuntu-latest
