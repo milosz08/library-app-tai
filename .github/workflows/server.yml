@@ -68,7 +68,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./${{ env.SUBPROJECT_ROOT }}
-          file: ./Dockerfile.pipeline
+          file: './${{ env.SUBPROJECT_ROOT }}/Dockerfile.pipeline'
           push: true
           tags: milosz08/tai-server:latest
 

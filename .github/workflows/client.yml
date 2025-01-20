@@ -68,7 +68,7 @@ jobs:
           context: ./${{ env.SUBPROJECT_ROOT }}
           build-args: |
             TAI_CONTEXT=production
-          file: ./Dockerfile.pipeline
+          file: ./${{ env.SUBPROJECT_ROOT }}/Dockerfile.pipeline
           push: true
           tags: milosz08/tai-client:latest
 
