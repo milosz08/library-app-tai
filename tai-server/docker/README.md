@@ -46,6 +46,8 @@ services:
       TAI_DB_USERNAME: <database username>
       TAI_DB_PASSWORD: <database password>
       TAI_CLIENT_URL: <client url (for CORS)>
+      TAI_SERVER_XMS: 1024m
+      TAI_SERVER_XMX: 1024m
     networks:
       - tai-network
 
