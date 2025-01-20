@@ -1,0 +1,6 @@
+:9673 {
+  root * /app/tai-client
+  file_server
+  encode gzip zstd
+  try_files {path} /index.html
+}

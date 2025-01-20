@@ -39,6 +39,42 @@ jobs:
           path: ${{ env.SUBPROJECT_ROOT }}/dist/
           retention-days: 1
 
+  docker:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download generated dist files
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-output
+          path: ${{ github.workspace }}/${{ env.SUBPROJECT_ROOT }}/docker/dist
+
+      - name: Set up builder
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build the Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./${{ env.SUBPROJECT_ROOT }}
+          build-args: |
+            TAI_CONTEXT=production
+          file: ./Dockerfile.pipeline
+          push: true
+          tags: milosz08/tai-client:latest
+
+      - name: Logout from Docker Hub
+        run: docker logout
+
   deploy:
     runs-on: ubuntu-latest
     needs: build

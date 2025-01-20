@@ -1,0 +1,10 @@
+.vscode
+dist
+node_modules
+
+.eslintignore
+.eslintrc.cjs
+.prettierrc.cjs
+
+Dockerfile
+Dockerfile.*

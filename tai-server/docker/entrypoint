@@ -1,0 +1,7 @@
+#!/bin/sh
+
+java \
+  -Xms$TAI_SERVER_XMS \
+  -Xmx$TAI_SERVER_XMX \
+  -Dspring.profiles.active=prod \
+  -jar $JAR_NAME
