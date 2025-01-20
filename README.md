@@ -1,36 +1,37 @@
 # Library management app
 
-This monorepo includes library management app as client and server applications.
+This monorepo includes library management app build in React SPA (client) and Java Spring Boot (server).
 
 ### Services:
 
-| Service name   | Local address                 | Remote address                                           |
-|----------------|-------------------------------|----------------------------------------------------------|
-| Client (React) | [9673](http://localhost:9673) | [tai.miloszgilga.pl](https://tai.miloszgilga.pl)         |
-| Server (Java)  | [9672](http://localhost:9672) | [api.tai.miloszgilga.pl](https://api.tai.miloszgilga.pl) |
-| PHPMyAdmin     | [9671](http://localhost:9671) | -                                                        |
+| Service name   | Local address                 | Remote address                                           | Docker image                                           |
+|----------------|-------------------------------|----------------------------------------------------------|--------------------------------------------------------|
+| Client (React) | [9673](http://localhost:9673) | [tai.miloszgilga.pl](https://tai.miloszgilga.pl)         | [source](https://hub.docker.com/r/milosz08/tai-client) |
+| Server (Java)  | [9672](http://localhost:9672) | [api.tai.miloszgilga.pl](https://api.tai.miloszgilga.pl) | [source](https://hub.docker.com/r/milosz08/tai-server) |
+| PHPMyAdmin     | [9671](http://localhost:9671) | -                                                        | -                                                      |
 
-Postman REST API collection: [link](https://www.postman.com/navigation-architect-44725773/tai/collection/ufvyq5e/tai-rest-api?action=share&creator=18508721&active-environment=18508721-6412bbb5-8c07-400c-a6e5-1650938115d7&tab=overview).
+Postman REST API collection: [link](https://www.postman.com/navigation-architect-44725773/tai/collection/ufvyq5e/tai-rest-api).
 
 ## Table of content
 
 * [Prerequisites](#prerequisites)
 * [Clone and install](#clone-and-install)
-* [Setup client](#setup-client)
-* [Setup server](#setup-server)
+* [Run with Docker (simplest, not for development)](#run-with-docker)
+* [Setup client (for development)](#setup-client)
+* [Setup server (for development)](#setup-server)
 * [Tech stack](#tech-stack)
 
 ## Prerequisites
 
 To run client, you must have:
 * Free `9673` port at your machine.
-* Node (at least v20).
-* Yarn (see `setup client` section).
+* Node (at least v20) - *only for development installation*.
+* Yarn (see `setup client` section) - *only for development installation*.
 
 To run server, you must have:
 * Free `9670`, `9671` (optionally) and `9672` ports at your machine.
-* At least Java 17.
-* Docker and docker compose.
+* At least Java 17 - *only for development installation*.
+* Docker and docker compose - *only for development installation*.
 
 ## Clone and install
 
@@ -40,7 +41,27 @@ To install the program on your computer use the command (or use the built-in GIT
 $ git clone https://github.com/milosz08/library-app-tai
 ```
 
-## Setup client
+## Run with Docker (simplest, not for development)
+
+1. Go to root directory (where file `docker-compose.yml` is located) and type:
+
+```bash
+$ docker compose up -d 
+```
+
+This command should create 4 docker containers:
+
+| Container name | Port | Description      |
+|----------------|------|------------------|
+| tai-mysql-db   | 9670 | MySQL database   |
+| tai-phpmyadmin | 9671 | Database client  |
+| tai-server     | 9672 | Application API  |
+| tai-client     | 9673 | React SPA client |
+
+> NOTE: If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To omit, create only
+> MySQL db container via: `$ docker compose up -d tai-mysql-db tai-server tai-client`.
+
+## Setup client (for development)
 
 1. Go to client directory (`$ cd tai-client`) and install all dependencies via:
 
@@ -65,12 +86,12 @@ $ yarn run dev
 $ yarn run preview
 ```
 
-## Setup server
+## Setup server (for development)
 
 1. Go to project root directory and type:
 
 ```bash
-$ docker compose up -d
+$ docker compose up -d tai-mysql-db tai-phpmyadmin
 ```
 
 This command should create 2 docker containers:
@@ -112,6 +133,7 @@ this:
 application is running and waiting for http requests.
 
 ## Tech stack
+
 * React 18,
 * Vite,
 * Java 17, Spring Boot 3,

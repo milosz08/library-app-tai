@@ -1,0 +1,26 @@
+name: Update Dockerhub server README
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - ".github/workflows/docker-readme-server.yml"
+      - "tai-server/docker/README.md"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: milosz08/tai-server
+          readme-filepath: ./tai-server/docker/README.md
+          short-description: "Java (Spring Boot) server image for library management app (TAI)."
