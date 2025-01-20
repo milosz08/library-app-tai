@@ -2,7 +2,8 @@ name: Build and deploy client
 
 on:
   push:
-    branches: ["master"]
+    branches:
+      - master
     paths:
       - ".github/workflows/client.yml"
       - "tai-client/**"

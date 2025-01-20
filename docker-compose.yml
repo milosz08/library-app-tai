@@ -5,8 +5,8 @@ services:
     ports:
       - '${TAI_MYSQL_PORT}:3306'
     environment:
-      - 'MYSQL_ROOT_PASSWORD=${TAI_MYSQL_PASSWORD}'
-      - 'MYSQL_DATABASE=library-db'
+      MYSQL_ROOT_PASSWORD: ${TAI_MYSQL_PASSWORD}
+      MYSQL_DATABASE: library-db
     volumes:
       - ./.volumes/mysql/mysql-volume:/var/lib/mysql
     healthcheck:

@@ -2,7 +2,8 @@ name: Build and deploy server
 
 on:
   push:
-    branches: ["master"]
+    branches:
+      - master
     paths:
       - ".github/workflows/server.yml"
       - "tai-server/**"
