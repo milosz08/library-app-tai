@@ -16,7 +16,6 @@ docker build -t milosz08/tai-server .
 * Using command:
 
 ```bash
-
 docker run -d \
   --name tai-server \
   -p 9672:9672 \

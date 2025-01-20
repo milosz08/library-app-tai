@@ -18,7 +18,6 @@ docker build \
 * Using command:
 
 ```bash
-
 docker run -d \
   --name tai-client \
   -p 9673:9673 \
