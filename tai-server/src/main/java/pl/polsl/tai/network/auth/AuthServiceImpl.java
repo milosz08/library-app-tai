@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +29,6 @@ import pl.polsl.tai.network.auth.dto.LoginReqDto;
 import pl.polsl.tai.network.auth.dto.LoginResDto;
 import pl.polsl.tai.network.auth.dto.RegisterReqDto;
 import pl.polsl.tai.network.auth.dto.RevalidateSessionResDto;
-import pl.polsl.tai.security.FirstLoginPasswordAuthenticationToken;
 import pl.polsl.tai.security.LoggedUser;
 import pl.polsl.tai.security.ota.GeneratedOta;
 import pl.polsl.tai.security.ota.OtaProperties;
@@ -41,7 +41,7 @@ import java.time.Duration;
 @Service
 @RequiredArgsConstructor
 class AuthServiceImpl implements AuthService {
-	private final AuthenticationManager authenticationManager;
+	private final AuthenticationManager loginPageAuthenticationManager;
 	private final PasswordEncoder passwordEncoder;
 	private final OtaService otaService;
 	private final LogPersistService logPersistService;
@@ -55,26 +55,31 @@ class AuthServiceImpl implements AuthService {
 
 	@Override
 	public LoginResDto login(LoginReqDto reqDto) {
-		final var authInputToken = FirstLoginPasswordAuthenticationToken.unauthenticated(
+		final var authInputToken = UsernamePasswordAuthenticationToken.unauthenticated(
 			reqDto.getEmail(),
 			reqDto.getPassword()
 		);
-		final Authentication authentication = authenticationManager.authenticate(authInputToken);
+		final Authentication authentication = loginPageAuthenticationManager.authenticate(authInputToken);
 		final UserEntity user = ((LoggedUser) authentication.getPrincipal()).userEntity();
-		if (authentication.isAuthenticated() && !user.getActive()) {
-			final GeneratedOta ota = generateActivateAccountOta(user);
-			otaTokenRepository.save(ota.entity());
+		if (authentication.isAuthenticated() && user.getActive()) {
+			final SecurityContext context = SecurityContextHolder.getContext();
+			context.setAuthentication(authentication);
 
-			sendActivateAccountEmail(ota, user, "Aktywacja konta", MailTemplate.ACTIVATE_ACCOUNT);
-			return new LoginResDto(false);
+			log.info("User: {} was logged in.", user);
+			logPersistService.info("Użytkownik: %s zalogował się do serwisu.", user.getEmail());
+
+			return new LoginResDto(true, user.getRole().getName().name(), user.getRole().getName().getLocaleName());
 		}
-		final SecurityContext context = SecurityContextHolder.getContext();
-		context.setAuthentication(authentication);
+		final GeneratedOta ota = generateActivateAccountOta(user);
+		otaTokenRepository.save(ota.entity());
 
-		log.info("User: {} was logged in.", user);
-		logPersistService.info("Użytkownik: %s zalogował się do serwisu.", user.getEmail());
+		sendActivateAccountEmail(ota, user, "Aktywacja konta", MailTemplate.ACTIVATE_ACCOUNT);
 
-		return new LoginResDto(true, user.getRole().getName().name(), user.getRole().getName().getLocaleName());
+		log.info("User: {} was tried to log in, but his account is inactive.", user.getEmail());
+		logPersistService.info("Użytkownik: %s próbował zalogować się do serwisu, ale jego konto jest nieaktywne.",
+			user.getEmail());
+
+		return new LoginResDto(false);
 	}
 
 	@Override

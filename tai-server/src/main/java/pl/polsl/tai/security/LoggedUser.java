@@ -22,4 +22,9 @@ public record LoggedUser(UserEntity userEntity) implements UserDetails {
 	public String getUsername() {
 		return userEntity.getEmail();
 	}
+
+	@Override
+	public boolean isEnabled() {
+		return userEntity.getActive();
+	}
 }
