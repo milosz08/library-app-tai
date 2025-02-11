@@ -38,12 +38,12 @@ export const AuthProvider = ({ children }) => {
   const handleLogin = async (email, password) => {
     const result = await loginApi(email, password);
     if (result.status === 200) {
-      if (result.token) {
+      if (!result.activated) {
         return {
           success: false,
-          token: result.token,
+          notActivated: true,
         };
-      } else if (result.role && result.roleName) {
+      } else {
         setRole(result.role);
         setRoleName(result.roleName);
         setIsAuthenticated(true);

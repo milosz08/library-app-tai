@@ -32,16 +32,10 @@ const EmployerCreationPage = () => {
     });
 
     if (response.success) {
-      const activationLink =
-        window.location.origin +
-        '/pracownik/pierwszy-dostep/' +
-        response.data.token;
-      const activationMessage =
-        'Konto pracownika wymaga zmiany hasła. Wpisz link i podaj tymczasowe hasło: ' +
-        response.data.temporalPassword +
-        '\n' +
-        activationLink;
-      addAlert(activationMessage, 'info');
+      addAlert(
+        'Konto pracownika zostało utworzone. Na podany adres email zostały wysłane dalsze instrukcje.',
+        'info'
+      );
       navigate('/admin/pracownicy');
     } else if (response.errors) {
       Object.entries(response.errors).forEach(([field, message]) => {

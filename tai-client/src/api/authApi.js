@@ -4,8 +4,8 @@ export const register = form => {
   return axiosInstance
     .post('/auth/register', form)
     .then(response => {
-      if (response.status === 200) {
-        return { token: response.data.token };
+      if (response.status === 204) {
+        return { success: true };
       }
       return { errors: { general: 'Rejestracja nie powiodła się.' } };
     })
@@ -38,12 +38,9 @@ export const login = (email, password) => {
     .post('/auth/login', { email, password })
     .then(response => {
       if (response.status === 200) {
-        const { token, role, roleName } = response.data;
         return {
           status: response.status,
-          token: token || null,
-          role: role || null,
-          roleName: roleName || null,
+          ...response.data,
         };
       }
       return { status: response.status };

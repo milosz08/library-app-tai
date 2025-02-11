@@ -16,9 +16,10 @@ const RequestResetPassword = () => {
     setIsLoading(true);
     const response = await resetPassword(email);
     if (response.success) {
-      const activationLink = window.location + '/' + response.message;
-      const alertMessage = 'Link przypominający hasło: ' + activationLink;
-      addAlert(alertMessage, 'info');
+      addAlert(
+        'Jeśli konto z adresem email istnieje, system wyśle wiadomość umożliwiającą zmianę hasła. Sprawdź pocztę.',
+        'info'
+      );
     } else {
       addAlert(response.message, 'error');
     }
@@ -76,7 +77,7 @@ const RequestResetPassword = () => {
         <FormRedirectBox
           questionText=""
           linkText="Wróć do logowania"
-          linkPath="/przypomnij-haslo"
+          linkPath="/logowanie"
         />
       </Box>
     </Container>

@@ -28,13 +28,11 @@ const LoginPage = () => {
     if (result.success) {
       addAlert('Zalogowano pomyślnie!', 'success');
       navigate('/');
-    } else if (result.token) {
-      const activationLink =
-        window.location.origin + '/aktywacja/' + result.token;
-      const activationMessage =
-        'Twoje konto wymaga aktywacji. Wpisz poniższy link, aby je aktywować:' +
-        activationLink;
-      addAlert(activationMessage, 'info');
+    } else if (result.notActivated) {
+      addAlert(
+        'Twoje konto wymaga aktywacji. System na adres email powiązany z kontem wysłał dalsze instrukcje. Sprawdź pocztę.',
+        'info'
+      );
     } else {
       addAlert(result.error || 'Nieprawidłowe dane logowania.', 'error');
     }

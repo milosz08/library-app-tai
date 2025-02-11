@@ -49,13 +49,11 @@ const RegistrationPage = () => {
       confirmedPassword: form.confirmedPassword,
     });
 
-    if (response.token) {
-      const activationLink =
-        window.location.origin + '/aktywacja/' + response.token;
-      const alertMessage =
-        'Rejestracja zakończona sukcesem! Wpisz, aby aktywować swoje konto: ' +
-        activationLink;
-      addAlert(alertMessage, 'info');
+    if (response.success) {
+      addAlert(
+        'Twoje konto zostało utworzone. System wysłał wiadomość na podany adres email umożliwiającą aktywację konta. Sprawdź pocztę.',
+        'info'
+      );
       navigate('/logowanie');
     } else if (response.errors) {
       Object.entries(response.errors).forEach(([, message]) => {

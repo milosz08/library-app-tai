@@ -20,8 +20,8 @@ export const createEmployer = form => {
   return axiosInstance
     .post('/employer', form)
     .then(response => {
-      if (response.status === 200) {
-        return { success: true, data: response.data };
+      if (response.status === 204) {
+        return { success: true };
       }
       return { errors: { general: 'Tworzenie pracownika nie powiodło się.' } };
     })
@@ -114,14 +114,8 @@ export const regenerateFirstAccess = id => {
   return axiosInstance
     .patch('/employer/' + id + '/first/access/regenerate')
     .then(response => {
-      if (response.status === 200) {
-        return {
-          success: true,
-          data: {
-            token: response.data.token,
-            temporalPassword: response.data.temporalPassword,
-          },
-        };
+      if (response.status === 204) {
+        return { success: true };
       }
       return { success: false, message: 'Nie udało się wygenerować danych.' };
     })

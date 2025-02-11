@@ -86,17 +86,10 @@ const EmployersPage = () => {
     const response = await regenerateFirstAccess(id);
 
     if (response.success) {
-      const activationLink =
-        window.location.origin +
-        '/pracownik/pierwszy-dostep/' +
-        response.data.token;
-      const activationMessage =
-        'Nowy link i hasło zostały wygenerowane. Tymczasowe hasło: ' +
-        response.data.temporalPassword +
-        '\n Link aktywacyjny: ' +
-        activationLink;
-
-      addAlert(activationMessage, 'info');
+      addAlert(
+        'Nowy link i hasło zostały wygenerowane oraz wysłane na adres email powiązany z wybranym kontem pracownika.',
+        'info'
+      );
     } else {
       addAlert(response.message, 'error');
     }
