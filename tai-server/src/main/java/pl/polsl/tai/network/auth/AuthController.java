@@ -9,13 +9,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
-import pl.polsl.tai.dto.TokenResDto;
 import pl.polsl.tai.network.auth.dto.LoginReqDto;
+import pl.polsl.tai.network.auth.dto.LoginResDto;
 import pl.polsl.tai.network.auth.dto.RegisterReqDto;
 import pl.polsl.tai.network.auth.dto.RevalidateSessionResDto;
 import pl.polsl.tai.security.LoggedUser;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -25,21 +23,22 @@ class AuthController {
 	private final SecurityContextRepository securityContextRepository;
 
 	@PostMapping("/login")
-	ResponseEntity<Map<String, Object>> login(
+	ResponseEntity<LoginResDto> login(
 		@RequestBody @Valid LoginReqDto reqDto,
 		HttpServletRequest request,
 		HttpServletResponse response
 	) {
-		final Map<String, Object> results = authService.login(reqDto);
-		if (results.containsKey("role")) {
+		final LoginResDto resDto = authService.login(reqDto);
+		if (resDto.activated()) {
 			securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
 		}
-		return ResponseEntity.ok(results);
+		return ResponseEntity.ok(resDto);
 	}
 
 	@PostMapping("/register")
-	ResponseEntity<TokenResDto> register(@RequestBody @Valid RegisterReqDto reqDto) {
-		return ResponseEntity.ok(authService.register(reqDto));
+	ResponseEntity<Void> register(@RequestBody @Valid RegisterReqDto reqDto) {
+		authService.register(reqDto);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PatchMapping("/activate/{token}")

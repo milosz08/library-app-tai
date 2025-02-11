@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 import pl.polsl.tai.domain.address.AddressEntity;
 import pl.polsl.tai.domain.ota.OtaTokenEntity;
 import pl.polsl.tai.domain.ota.OtaTokenRepository;
@@ -18,10 +19,13 @@ import pl.polsl.tai.domain.role.RoleRepository;
 import pl.polsl.tai.domain.role.UserRole;
 import pl.polsl.tai.domain.user.UserEntity;
 import pl.polsl.tai.domain.user.UserRepository;
-import pl.polsl.tai.dto.TokenResDto;
 import pl.polsl.tai.exception.RestServerException;
 import pl.polsl.tai.log.LogPersistService;
+import pl.polsl.tai.mail.MailProperties;
+import pl.polsl.tai.mail.MailService;
+import pl.polsl.tai.mail.MailTemplate;
 import pl.polsl.tai.network.auth.dto.LoginReqDto;
+import pl.polsl.tai.network.auth.dto.LoginResDto;
 import pl.polsl.tai.network.auth.dto.RegisterReqDto;
 import pl.polsl.tai.network.auth.dto.RevalidateSessionResDto;
 import pl.polsl.tai.security.FirstLoginPasswordAuthenticationToken;
@@ -29,10 +33,9 @@ import pl.polsl.tai.security.LoggedUser;
 import pl.polsl.tai.security.ota.GeneratedOta;
 import pl.polsl.tai.security.ota.OtaProperties;
 import pl.polsl.tai.security.ota.OtaService;
+import pl.polsl.tai.util.DateTime;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -43,14 +46,15 @@ class AuthServiceImpl implements AuthService {
 	private final OtaService otaService;
 	private final LogPersistService logPersistService;
 	private final OtaProperties otaProperties;
+	private final MailService mailService;
+	private final MailProperties mailProperties;
 
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
 	private final OtaTokenRepository otaTokenRepository;
 
 	@Override
-	public Map<String, Object> login(LoginReqDto reqDto) {
-		final Map<String, Object> outputResults = new HashMap<>();
+	public LoginResDto login(LoginReqDto reqDto) {
 		final var authInputToken = FirstLoginPasswordAuthenticationToken.unauthenticated(
 			reqDto.getEmail(),
 			reqDto.getPassword()
@@ -60,10 +64,9 @@ class AuthServiceImpl implements AuthService {
 		if (authentication.isAuthenticated() && !user.getActive()) {
 			final GeneratedOta ota = generateActivateAccountOta(user);
 			otaTokenRepository.save(ota.entity());
-			// This OTA token should be sent via email sender but... I suppose we don't have to.
-			outputResults.put("token", ota.entity().getToken());
-			outputResults.put("expiredSeconds", ota.expiredSeconds());
-			return outputResults;
+
+			sendActivateAccountEmail(ota, user, "Aktywacja konta", MailTemplate.ACTIVATE_ACCOUNT);
+			return new LoginResDto(false);
 		}
 		final SecurityContext context = SecurityContextHolder.getContext();
 		context.setAuthentication(authentication);
@@ -71,14 +74,12 @@ class AuthServiceImpl implements AuthService {
 		log.info("User: {} was logged in.", user);
 		logPersistService.info("Użytkownik: %s zalogował się do serwisu.", user.getEmail());
 
-		outputResults.put("role", user.getRole().getName().name());
-		outputResults.put("roleName", user.getRole().getName().getLocaleName());
-		return outputResults;
+		return new LoginResDto(true, user.getRole().getName().name(), user.getRole().getName().getLocaleName());
 	}
 
 	@Override
 	@Transactional
-	public TokenResDto register(RegisterReqDto reqDto) {
+	public void register(RegisterReqDto reqDto) {
 		final RoleEntity role = roleRepository
 			.findByName(UserRole.CUSTOMER)
 			.orElseThrow(RestServerException::new);
@@ -101,14 +102,14 @@ class AuthServiceImpl implements AuthService {
 
 		final GeneratedOta ota = generateActivateAccountOta(user);
 
+		sendActivateAccountEmail(ota, user, "Utworzono konto", MailTemplate.REGISTER_ACCOUNT);
+
 		user.attachAddress(address);
 		userRepository.save(user);
-
 		otaTokenRepository.save(ota.entity());
 
 		log.info("Created new customer account: {}.", user);
 		logPersistService.info("Utworzono nowe konto klienckie na adres email: %s.", user.getEmail());
-		return new TokenResDto(ota.entity().getToken(), ota.expiredSeconds());
 	}
 
 	@Override
@@ -135,5 +136,18 @@ class AuthServiceImpl implements AuthService {
 	private GeneratedOta generateActivateAccountOta(UserEntity user) {
 		return otaService.generateToken(OtaType.ACTIVATE_ACCOUNT,
 			Duration.ofMinutes(otaProperties.getShortExpiredMin()), user);
+	}
+
+	private void sendActivateAccountEmail(GeneratedOta ota, UserEntity user, String title, MailTemplate template) {
+		final String token = ota.entity().getToken();
+		final String activationLink = String.format("%s/aktywacja/%s", mailProperties.getClientUrl(), token);
+
+		final Context context = new Context();
+		context.setVariable("name", user.getFirstName() + " " + user.getLastName());
+		context.setVariable("token", token);
+		context.setVariable("activationLink", activationLink);
+		context.setVariable("tokenExpiration", DateTime.formatSeconds(ota.expiredSeconds()));
+
+		mailService.send(user.getEmail(), title, context, template);
 	}
 }

@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.polsl.tai.dto.TokenResDto;
 import pl.polsl.tai.network.password.dto.ChangePasswordReqDto;
 import pl.polsl.tai.network.password.dto.RequestChangePasswordReqDto;
 
@@ -15,8 +14,9 @@ class ForgotPasswordController {
 	private final ForgotPasswordService forgotPasswordService;
 
 	@PatchMapping("/request")
-	ResponseEntity<TokenResDto> sendRequestToChangePassword(@Valid @RequestBody RequestChangePasswordReqDto reqDto) {
-		return ResponseEntity.ok(forgotPasswordService.sendRequestToChangePassword(reqDto));
+	ResponseEntity<Void> sendRequestToChangePassword(@Valid @RequestBody RequestChangePasswordReqDto reqDto) {
+		forgotPasswordService.sendRequestToChangePassword(reqDto);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PatchMapping("/renew/{token}")

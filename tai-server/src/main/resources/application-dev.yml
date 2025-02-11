@@ -19,6 +19,10 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
+  mail:
+    port: 9672
+    username: admin
+    password: admin
 
 logging:
   level:
@@ -35,5 +39,7 @@ management:
 application:
   cors:
     urls:
-      - http://localhost:9673
-      - http://127.0.0.1:5500
+      - http://localhost:9675
+  mail:
+    from: noreply-dev@tai.miloszgilga.pl
+    client-url: http://localhost:9675

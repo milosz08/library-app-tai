@@ -30,11 +30,12 @@ class EmployerController {
 	}
 
 	@PostMapping
-	ResponseEntity<TemporalPasswordWithTokenResDto> createEmployer(
+	ResponseEntity<Void> createEmployer(
 		@RequestBody @Valid AddEmployerReqDto reqDto,
 		@AuthenticationPrincipal LoggedUser loggedUser
 	) {
-		return ResponseEntity.ok(employerService.createEmployer(reqDto, loggedUser));
+		employerService.createEmployer(reqDto, loggedUser);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PatchMapping("/{employerId}")
@@ -47,11 +48,12 @@ class EmployerController {
 	}
 
 	@PatchMapping("/{employerId}/first/access/regenerate")
-	ResponseEntity<TemporalPasswordWithTokenResDto> firstAccessRegenerateToken(
+	ResponseEntity<Void> firstAccessRegenerateToken(
 		@PathVariable Long employerId,
 		@AuthenticationPrincipal LoggedUser loggedUser
 	) {
-		return ResponseEntity.ok(employerService.firstAccessRegenerateToken(employerId, loggedUser));
+		employerService.firstAccessRegenerateToken(employerId, loggedUser);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PatchMapping("/first/access/{token}/password")

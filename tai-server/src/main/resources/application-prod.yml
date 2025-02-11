@@ -12,6 +12,10 @@ spring:
     password: ${TAI_DB_PASSWORD}
   liquibase:
     contexts: lq_prod
+  mail:
+    port: ${TAI_MAIL_PORT:587}
+    username: ${TAI_MAIL_USERNAME}
+    password: ${TAI_MAIL_PASSWORD}
 
 management:
   endpoints:
@@ -23,3 +27,6 @@ application:
   cors:
     urls:
       - ${TAI_CLIENT_URL:https://tai.miloszgilga.pl}
+  mail:
+    from: ${TAI_MAIL_FROM_ADDRESS}
+    client-url: ${TAI_CLIENT_URL:https://tai.miloszgilga.pl}

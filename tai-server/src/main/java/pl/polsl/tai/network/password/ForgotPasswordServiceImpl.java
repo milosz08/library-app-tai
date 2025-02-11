@@ -5,19 +5,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.context.Context;
 import pl.polsl.tai.domain.ota.OtaTokenEntity;
 import pl.polsl.tai.domain.ota.OtaTokenRepository;
 import pl.polsl.tai.domain.ota.OtaType;
 import pl.polsl.tai.domain.user.UserEntity;
 import pl.polsl.tai.domain.user.UserRepository;
-import pl.polsl.tai.dto.TokenResDto;
 import pl.polsl.tai.log.LogPersistService;
+import pl.polsl.tai.mail.MailProperties;
+import pl.polsl.tai.mail.MailService;
+import pl.polsl.tai.mail.MailTemplate;
 import pl.polsl.tai.network.password.dto.ChangePasswordReqDto;
 import pl.polsl.tai.network.password.dto.RequestChangePasswordReqDto;
 import pl.polsl.tai.security.ota.GeneratedOta;
 import pl.polsl.tai.security.ota.OtaProperties;
 import pl.polsl.tai.security.ota.OtaService;
-import pl.polsl.tai.util.SecureRandomGenerator;
+import pl.polsl.tai.util.DateTime;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -30,27 +33,35 @@ class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	private final LogPersistService logPersistService;
 	private final OtaProperties otaProperties;
 	private final PasswordEncoder passwordEncoder;
+	private final MailService mailService;
+	private final MailProperties mailProperties;
 
 	private final UserRepository userRepository;
 	private final OtaTokenRepository otaTokenRepository;
 
 	@Override
-	public TokenResDto sendRequestToChangePassword(RequestChangePasswordReqDto reqDto) {
+	public void sendRequestToChangePassword(RequestChangePasswordReqDto reqDto) {
 		final Optional<UserEntity> optionalUser = userRepository.findByEmail(reqDto.getEmail());
 
-		String token = SecureRandomGenerator.generate(otaProperties.getLength());
-		Duration expiredSeconds = Duration.ofMinutes(otaProperties.getShortExpiredMin());
-
 		if (optionalUser.isPresent()) {
-			final GeneratedOta ota = otaService.generateToken(OtaType.RESET_PASSWORD, expiredSeconds, optionalUser.get());
+			final Duration expiredDuration = Duration.ofMinutes(otaProperties.getShortExpiredMin());
+			final GeneratedOta ota = otaService.generateToken(OtaType.RESET_PASSWORD, expiredDuration, optionalUser.get());
 			otaTokenRepository.save(ota.entity());
 
-			token = ota.entity().getToken();
-			expiredSeconds = Duration.ofSeconds(ota.expiredSeconds());
-			log.info("Send request to change password for user: {}.", optionalUser.get());
+			final String token = ota.entity().getToken();
+			final UserEntity user = optionalUser.get();
+
+			final String changePasswordLink = String.format("%s/przypomnij-haslo/%s", mailProperties.getClientUrl(), token);
+
+			final Context context = new Context();
+			context.setVariable("name", user.getFirstName() + " " + user.getLastName());
+			context.setVariable("token", token);
+			context.setVariable("changePasswordLink", changePasswordLink);
+			context.setVariable("tokenExpiration", DateTime.formatSeconds(ota.expiredSeconds()));
+
+			mailService.send(user.getEmail(), "Zmiana hasła", context, MailTemplate.FORGOT_PASSWORD);
+			log.info("Sent request to change password for user: {}.", optionalUser.get());
 		}
-		// This OTA token should be sent via email sender but... I suppose we don't have to.
-		return new TokenResDto(token, expiredSeconds.toSeconds());
 	}
 
 	@Override

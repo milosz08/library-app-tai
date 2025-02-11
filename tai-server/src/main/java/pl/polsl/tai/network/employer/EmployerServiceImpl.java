@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.context.Context;
 import pl.polsl.tai.domain.ota.OtaTokenEntity;
 import pl.polsl.tai.domain.ota.OtaTokenRepository;
 import pl.polsl.tai.domain.ota.OtaType;
@@ -23,11 +24,15 @@ import pl.polsl.tai.dto.PageableResDto;
 import pl.polsl.tai.exception.NotFoundRestServerException;
 import pl.polsl.tai.exception.RestServerException;
 import pl.polsl.tai.log.LogPersistService;
+import pl.polsl.tai.mail.MailProperties;
+import pl.polsl.tai.mail.MailService;
+import pl.polsl.tai.mail.MailTemplate;
 import pl.polsl.tai.network.employer.dto.*;
 import pl.polsl.tai.security.LoggedUser;
 import pl.polsl.tai.security.ota.GeneratedOta;
 import pl.polsl.tai.security.ota.OtaProperties;
 import pl.polsl.tai.security.ota.OtaService;
+import pl.polsl.tai.util.DateTime;
 import pl.polsl.tai.util.SecureRandomGenerator;
 
 import java.time.Duration;
@@ -41,6 +46,8 @@ class EmployerServiceImpl implements EmployerService {
 	private final PasswordEncoder passwordEncoder;
 	private final OtaService otaService;
 	private final OtaProperties otaProperties;
+	private final MailService mailService;
+	private final MailProperties mailProperties;
 
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
@@ -66,7 +73,7 @@ class EmployerServiceImpl implements EmployerService {
 	}
 
 	@Override
-	public TemporalPasswordWithTokenResDto createEmployer(AddEmployerReqDto reqDto, LoggedUser loggedUser) {
+	public void createEmployer(AddEmployerReqDto reqDto, LoggedUser loggedUser) {
 		final RoleEntity role = roleRepository
 			.findByName(UserRole.EMPLOYER)
 			.orElseThrow(RestServerException::new);
@@ -82,15 +89,16 @@ class EmployerServiceImpl implements EmployerService {
 			.build();
 
 		final GeneratedOta ota = generateSetPasswordOta(employer);
+
+		sendMailMessageToActivateAccount(ota, employer, temporaryPassword, "Dane dostępowe do konta",
+			MailTemplate.CREATE_EMPLOYER_ACCOUNT);
+
 		userRepository.save(employer);
 		otaTokenRepository.save(ota.entity());
 
 		log.info("Create new employer by: {}. Employer data: {}.", loggedUser.getUsername(), reqDto);
 		logPersistService.info("Dodano nowego pracownika z adresem email: %s przez administratora: %s.",
 			employer.getEmail(), loggedUser.getUsername());
-
-		// This credentials should be sent via email sender but... I suppose we don't have to.
-		return new TemporalPasswordWithTokenResDto(ota.entity().getToken(), ota.expiredSeconds(), temporaryPassword);
 	}
 
 	@Override
@@ -110,7 +118,7 @@ class EmployerServiceImpl implements EmployerService {
 
 	@Override
 	@Transactional
-	public TemporalPasswordWithTokenResDto firstAccessRegenerateToken(Long employerId, LoggedUser loggedUser) {
+	public void firstAccessRegenerateToken(Long employerId, LoggedUser loggedUser) {
 		final UserEntity employer = findEmployer(employerId);
 		if (employer.getActive()) {
 			throw new RestServerException("To konto zostało już aktywowane.");
@@ -119,14 +127,14 @@ class EmployerServiceImpl implements EmployerService {
 		final GeneratedOta ota = generateSetPasswordOta(employer);
 		otaTokenRepository.save(ota.entity());
 
+		sendMailMessageToActivateAccount(ota, employer, temporaryPassword,
+			"Ponowne wygenerowanie danych dostępowych do konta", MailTemplate.REGENERATE_TOKEN_ACTIVATE_EMPLOYER);
+
 		employer.setPassword(passwordEncoder.encode(temporaryPassword));
 
 		log.info("Regenerate first access token for: {} by: {}.", employer, loggedUser.getUsername());
 		logPersistService.info("Wygenerowany nowy token pierwszego dostępu dla pracownika: %s przez administratora: %s.",
 			employer.getEmail(), loggedUser.getUsername());
-
-		// This credentials should be sent via email sender but... I suppose we don't have to.
-		return new TemporalPasswordWithTokenResDto(ota.entity().getToken(), ota.expiredSeconds(), temporaryPassword);
 	}
 
 	@Override
@@ -175,5 +183,25 @@ class EmployerServiceImpl implements EmployerService {
 	private GeneratedOta generateSetPasswordOta(UserEntity user) {
 		return otaService.generateToken(OtaType.CHANGE_FIRST_PASSWORD,
 			Duration.ofHours(otaProperties.getLongExpiredHours()), user);
+	}
+
+	private void sendMailMessageToActivateAccount(
+		GeneratedOta ota,
+		UserEntity employer,
+		String temporaryPassword,
+		String title,
+		MailTemplate mailTemplate
+	) {
+		final String token = ota.entity().getToken();
+		final String activationLink = String.format("%s/pracownik/pierwszy-dostep/%s", mailProperties.getClientUrl(), token);
+
+		final Context context = new Context();
+		context.setVariable("name", employer.getFirstName() + " " + employer.getLastName());
+		context.setVariable("token", token);
+		context.setVariable("activationLink", activationLink);
+		context.setVariable("tokenExpiration", DateTime.formatSeconds(ota.expiredSeconds()));
+		context.setVariable("firstPassword", temporaryPassword);
+
+		mailService.send(employer.getEmail(), title, context, mailTemplate);
 	}
 }

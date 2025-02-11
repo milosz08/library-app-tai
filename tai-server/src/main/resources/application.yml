@@ -30,6 +30,22 @@ spring:
     properties:
       hibernate:
         physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    open-in-view: false
+  mail:
+    host: ${TAI_MAIL_HOST:127.0.0.1}
+    properties:
+      smtp:
+        starttls:
+          required: ${TAI_MAIL_SSL_ENABLED:false}
+      mail:
+        smtp:
+          ssl:
+            enabled: ${TAI_MAIL_SSL_ENABLED:false}
+          auth: ${TAI_MAIL_AUTH_ENABLED:false}
+          starttls:
+            enabled: ${TAI_MAIL_SSL_ENABLED:false}
+  thymeleaf:
+    check-template-location: false
 
 application:
   session:
