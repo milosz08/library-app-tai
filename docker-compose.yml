@@ -63,7 +63,7 @@ services:
       TAI_DB_NAME: library-db
       TAI_DB_USERNAME: root
       TAI_DB_PASSWORD: ${TAI_MYSQL_PASSWORD}
-      TAI_CLIENT_URL: http://localhost:9673
+      TAI_CLIENT_URL: http://localhost:9675
       TAI_SERVER_XMS: 1024m
       TAI_SERVER_XMX: 1024m
       TAI_MAIL_HOST: tai-mailhog
