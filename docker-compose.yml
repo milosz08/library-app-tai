@@ -70,6 +70,7 @@ services:
       TAI_MAIL_PORT: 1025
       TAI_MAIL_USERNAME: admin
       TAI_MAIL_PASSWORD: admin
+      TAI_MAIL_FROM_ADDRESS: noreply-docker@tai.miloszgilga.pl
     depends_on:
       - tai-mysql-db
       - tai-mailhog
