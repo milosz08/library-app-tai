@@ -4,7 +4,6 @@ import {
   Button,
   Container,
   MenuItem,
-  Pagination,
   Select,
   TextField,
 } from '@mui/material';
@@ -16,6 +15,7 @@ import {
 } from '~/api/logsApi';
 import LogsTable from '~/components/admin/LogsTable';
 import ConfirmationModal from '~/components/common/ConfirmationModal';
+import Paginator from '~/components/common/Paginator';
 import { useAlert } from '~/hooks/useAlert';
 
 const LogsPage = () => {
@@ -221,18 +221,7 @@ const LogsPage = () => {
         </Button>
       </Box>
       <LogsTable logs={logs} onDelete={openDeleteModal} />
-      <Pagination
-        count={totalPages}
-        page={page}
-        onChange={handlePageChange}
-        sx={{
-          mt: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          '& .MuiPaginationItem-root': { color: 'white' },
-          '& .Mui-selected': { backgroundColor: 'custom.500' },
-        }}
-      />
+      <Paginator total={totalPages} page={page} onChange={handlePageChange} />
       {isModalOpen && (
         <ConfirmationModal
           open={isModalOpen}

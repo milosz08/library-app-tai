@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  MenuItem,
-  Pagination,
-  Select,
-  TextField,
-} from '@mui/material';
+import { Box, Button, Container, MenuItem, Select } from '@mui/material';
 import {
   deleteAllEmployers,
   deleteEmployer,
@@ -17,6 +9,8 @@ import {
 } from '~/api/employerApi';
 import EmployersTable from '~/components/admin/EmployersTable';
 import ConfirmationModal from '~/components/common/ConfirmationModal';
+import Paginator from '~/components/common/Paginator';
+import SearchTextField from '~/components/common/SearchTextField';
 import { useAlert } from '~/hooks/useAlert';
 import { useLoader } from '~/hooks/useLoader';
 
@@ -184,22 +178,11 @@ const EmployersPage = () => {
           gap: 2,
           paddingY: 2,
         }}>
-        <TextField
+        <SearchTextField
           label="Szukaj email"
           value={searchEmployer}
           onChange={handleSearchChange}
-          onKeyUp={e => {
-            if (e.key === 'Enter') {
-              handleSearchSubmit();
-            }
-          }}
-          sx={{
-            flex: '1 1 auto',
-            bgcolor: 'custom.800',
-            color: 'white',
-            '& .MuiInputBase-input': { color: 'white' },
-            '& .MuiInputLabel-root': { color: 'white' },
-          }}
+          onSubmit={handleSearchSubmit}
         />
         <Select
           value={pageSize}
@@ -248,18 +231,7 @@ const EmployersPage = () => {
         onRegenerateAccess={handleRegenerateAccess}
         refreshData={loadEmployers}
       />
-      <Pagination
-        count={totalPages}
-        page={page}
-        onChange={handlePageChange}
-        sx={{
-          mt: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          '& .MuiPaginationItem-root': { color: 'white' },
-          '& .Mui-selected': { backgroundColor: 'custom.500' },
-        }}
-      />
+      <Paginator total={totalPages} page={page} onChange={handlePageChange} />
       {isDeleteSelectedModalOpen && (
         <ConfirmationModal
           open={isDeleteSelectedModalOpen}

@@ -5,9 +5,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import EmployeeTextField from './EmployeeTextField';
 
 const EditEmployeeModal = ({
   open,
@@ -52,43 +52,15 @@ const EditEmployeeModal = ({
           justifyContent: 'center',
           minHeight: '150px',
         }}>
-        <TextField
+        <EmployeeTextField
           label="Imię"
-          variant="outlined"
           value={firstName}
-          onChange={e => setFirstName(e.target.value)}
-          fullWidth
-          sx={{
-            input: { color: 'white' },
-            label: { color: 'custom.200' },
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: 'custom.200',
-              },
-              '&:hover fieldset': {
-                borderColor: 'white',
-              },
-            },
-          }}
+          onChange={setFirstName}
         />
-        <TextField
+        <EmployeeTextField
           label="Nazwisko"
-          variant="outlined"
           value={lastName}
-          onChange={e => setLastName(e.target.value)}
-          fullWidth
-          sx={{
-            input: { color: 'white' },
-            label: { color: 'custom.200' },
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: 'custom.200',
-              },
-              '&:hover fieldset': {
-                borderColor: 'white',
-              },
-            },
-          }}
+          onChange={setLastName}
         />
       </DialogContent>
       <DialogActions

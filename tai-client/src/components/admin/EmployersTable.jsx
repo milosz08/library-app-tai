@@ -142,7 +142,6 @@ const EmployersTable = ({
           </TableBody>
         </Table>
       </TableContainer>
-
       {currentEmployee && (
         <EditEmployeeModal
           open={editModalOpen}

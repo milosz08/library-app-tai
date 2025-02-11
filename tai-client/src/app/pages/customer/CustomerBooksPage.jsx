@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  Container,
-  MenuItem,
-  Pagination,
-  Select,
-  TextField,
-} from '@mui/material';
+import { Box, Container, MenuItem, Select } from '@mui/material';
 import { fetchBooks } from '~/api/bookApi';
+import Paginator from '~/components/common/Paginator';
+import SearchTextField from '~/components/common/SearchTextField';
 import CustomerBooksTable from '~/components/customer/CustomerBooksTable';
 import { useAlert } from '~/hooks/useAlert';
 
@@ -84,22 +79,11 @@ const CustomerBooksPage = () => {
           gap: 2,
           paddingY: 2,
         }}>
-        <TextField
+        <SearchTextField
           label="Szukaj książki"
           value={searchTitle}
           onChange={handleSearchChange}
-          onKeyUp={e => {
-            if (e.key === 'Enter') {
-              handleSearchSubmit();
-            }
-          }}
-          sx={{
-            flex: '1 1 auto',
-            bgcolor: 'custom.800',
-            color: 'white',
-            '& .MuiInputBase-input': { color: 'white' },
-            '& .MuiInputLabel-root': { color: 'white' },
-          }}
+          onSubmit={handleSearchSubmit}
         />
         <Select
           value={pageSize}
@@ -125,18 +109,7 @@ const CustomerBooksPage = () => {
         selectedBooks={selectedBooks}
         refreshBooks={getBooks}
       />
-      <Pagination
-        count={totalPages}
-        page={page}
-        onChange={handlePageChange}
-        sx={{
-          mt: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          '& .MuiPaginationItem-root': { color: 'white' },
-          '& .Mui-selected': { backgroundColor: 'custom.500' },
-        }}
-      />
+      <Paginator total={totalPages} page={page} onChange={handlePageChange} />
     </Container>
   );
 };

@@ -1,15 +1,9 @@
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  MenuItem,
-  Pagination,
-  Select,
-  TextField,
-} from '@mui/material';
+import { Box, Button, Container, MenuItem, Select } from '@mui/material';
 import { deleteBook, deleteBooks, fetchBooks } from '~/api/bookApi';
 import ConfirmationModal from '~/components/common/ConfirmationModal';
+import Paginator from '~/components/common/Paginator';
+import SearchTextField from '~/components/common/SearchTextField';
 import EmployerBooksTable from '~/components/employer/EmployerBooksTable';
 import { useAlert } from '~/hooks/useAlert';
 
@@ -119,22 +113,11 @@ const EmployerBooksPage = () => {
           gap: 2,
           paddingY: 2,
         }}>
-        <TextField
+        <SearchTextField
           label="Szukaj książki"
           value={searchTitle}
           onChange={handleSearchChange}
-          onKeyUp={e => {
-            if (e.key === 'Enter') {
-              handleSearchSubmit();
-            }
-          }}
-          sx={{
-            flex: '1 1 auto',
-            bgcolor: 'custom.800',
-            color: 'white',
-            '& .MuiInputBase-input': { color: 'white' },
-            '& .MuiInputLabel-root': { color: 'white' },
-          }}
+          onSubmit={handleSearchSubmit}
         />
         <Select
           value={pageSize}
@@ -182,18 +165,7 @@ const EmployerBooksPage = () => {
         selectedBooks={selectedBooks}
         refreshData={loadBooks}
       />
-      <Pagination
-        count={totalPages}
-        page={page}
-        onChange={handlePageChange}
-        sx={{
-          mt: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          '& .MuiPaginationItem-root': { color: 'white' },
-          '& .Mui-selected': { backgroundColor: 'custom.500' },
-        }}
-      />
+      <Paginator total={totalPages} page={page} onChange={handlePageChange} />
       {isDeleteSelectedModalOpen && (
         <ConfirmationModal
           open={isDeleteSelectedModalOpen}
