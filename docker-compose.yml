@@ -29,15 +29,36 @@ services:
     networks:
       - tai-network
 
+  tai-mailhog:
+    container_name: tai-mailhog
+    image: mailhog/mailhog:latest
+    ports:
+      - '${TAI_MAILHOG_SERVER_PORT}:1025'
+      - '${TAI_MAILHOG_UI_PORT}:8025'
+    environment:
+      - 'MH_STORAGE=maildir'
+      - 'MH_MAILDIR_PATH=/home/mailhog'
+    volumes:
+      - ./.volumes/mail/mailhog-volume:/home/mailhog
+      - ./.volumes/mail/mailhog.conf:/etc/supervisor/conf.d
+      - ./.volumes/mail/mailhog-auth.txt:/etc/mailhog-auth.txt
+    healthcheck:
+      test: [ "CMD", "echo | telnet 127.0.0.1 8025" ]
+      interval: 1m30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - tai-network
+
   tai-server:
     container_name: tai-server
     build:
       context: ./tai-server
       dockerfile: Dockerfile
     ports:
-      - ${TAI_SERVER_PORT}:9672
+      - ${TAI_SERVER_PORT}:9674
     environment:
-      TAI_PORT: 9672
+      TAI_PORT: 9674
       TAI_DB_HOST: tai-mysql-db
       TAI_DB_NAME: library-db
       TAI_DB_USERNAME: root
@@ -45,8 +66,13 @@ services:
       TAI_CLIENT_URL: http://localhost:9673
       TAI_SERVER_XMS: 1024m
       TAI_SERVER_XMX: 1024m
+      TAI_MAIL_HOST: tai-mailhog
+      TAI_MAIL_PORT: 1025
+      TAI_MAIL_USERNAME: admin
+      TAI_MAIL_PASSWORD: admin
     depends_on:
       - tai-mysql-db
+      - tai-mailhog
     networks:
       - tai-network
 
@@ -58,7 +84,7 @@ services:
       args:
         TAI_CONTEXT: development
     ports:
-      - ${TAI_CLIENT_PORT}:9673
+      - ${TAI_CLIENT_PORT}:9675
     networks:
       - tai-network
 

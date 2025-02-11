@@ -6,8 +6,9 @@ This monorepo includes library management app build in React SPA (client) and Ja
 
 | Service name   | Local address                 | Remote address                                           | Docker image                                           |
 |----------------|-------------------------------|----------------------------------------------------------|--------------------------------------------------------|
-| Client (React) | [9673](http://localhost:9673) | [tai.miloszgilga.pl](https://tai.miloszgilga.pl)         | [source](https://hub.docker.com/r/milosz08/tai-client) |
-| Server (Java)  | [9672](http://localhost:9672) | [api.tai.miloszgilga.pl](https://api.tai.miloszgilga.pl) | [source](https://hub.docker.com/r/milosz08/tai-server) |
+| Client (React) | [9675](http://localhost:9675) | [tai.miloszgilga.pl](https://tai.miloszgilga.pl)         | [source](https://hub.docker.com/r/milosz08/tai-client) |
+| Server (Java)  | [9674](http://localhost:9674) | [api.tai.miloszgilga.pl](https://api.tai.miloszgilga.pl) | [source](https://hub.docker.com/r/milosz08/tai-server) |
+| Mailhog UI     | [9673](http://localhost:9673) | -                                                        | -                                                      |
 | PHPMyAdmin     | [9671](http://localhost:9671) | -                                                        | -                                                      |
 
 Postman REST API collection: [link](https://www.postman.com/navigation-architect-44725773/tai/collection/ufvyq5e/tai-rest-api).
@@ -24,12 +25,12 @@ Postman REST API collection: [link](https://www.postman.com/navigation-architect
 ## Prerequisites
 
 To run client, you must have:
-* Free `9673` port at your machine.
+* Free `9674` port at your machine.
 * Node (at least v20) - *only for development installation*.
 * Yarn (see `setup client` section) - *only for development installation*.
 
 To run server, you must have:
-* Free `9670`, `9671` (optionally) and `9672` ports at your machine.
+* Free `9670`, `9671` (optionally), `9672` with `9673` (mailhog) and `9675` ports at your machine.
 * At least Java 17 - *only for development installation*.
 * Docker and docker compose - *only for development installation*.
 
@@ -51,15 +52,16 @@ $ docker compose up -d
 
 This command should create 4 docker containers:
 
-| Container name | Port | Description      |
-|----------------|------|------------------|
-| tai-mysql-db   | 9670 | MySQL database   |
-| tai-phpmyadmin | 9671 | Database client  |
-| tai-server     | 9672 | Application API  |
-| tai-client     | 9673 | React SPA client |
+| Container name | Port(s)    | Description               |
+|----------------|------------|---------------------------|
+| tai-mysql-db   | 9670       | MySQL database            |
+| tai-phpmyadmin | 9671       | Database client           |
+| tai-mailhog    | 9672, 9673 | Mailhog client and server |
+| tai-server     | 9674       | Application API           |
+| tai-client     | 9675       | React SPA client          |
 
 > NOTE: If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To omit, create only
-> MySQL db container via: `$ docker compose up -d tai-mysql-db tai-server tai-client`.
+> MySQL db container via: `$ docker compose up -d tai-mysql-db tai-mailhog tai-server tai-client`.
 
 ## Setup client (for development)
 
@@ -91,18 +93,19 @@ $ yarn run preview
 1. Go to project root directory and type:
 
 ```bash
-$ docker compose up -d tai-mysql-db tai-phpmyadmin
+$ docker compose up -d tai-mysql-db tai-phpmyadmin tai-mailhog
 ```
 
 This command should create 2 docker containers:
 
-| Container name | Port | Description     |
-|----------------|------|-----------------|
-| tai-mysql-db   | 9670 | MySQL database  |
-| tai-phpmyadmin | 9671 | Database client |
+| Container name | Port(s)    | Description               |
+|----------------|------------|---------------------------|
+| tai-mysql-db   | 9670       | MySQL database            |
+| tai-phpmyadmin | 9671       | Database client           |
+| tai-mailhog    | 9672, 9673 | Mailhog client and server |
 
 > NOTE: If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To omit, create only
-> MySQL db container via: `$ docker compose up -d tai-mysql-db`.
+> MySQL db container via: `$ docker compose up -d tai-mysql-db tai-mailhog`.
 
 2. Go to server directory (`$ cd tai-server`) and type (for UNIX):
 
@@ -138,4 +141,5 @@ application is running and waiting for http requests.
 * Vite,
 * Java 17, Spring Boot 3,
 * Spring Data JPA, Liquibase, MySQL,
+* Mailhog, JavaMail, Thymeleaf (mail templates),
 * Docker containers.
