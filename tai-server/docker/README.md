@@ -34,6 +34,7 @@ docker run -d \
   -e TAI_MAIL_PASSWORD=<SMTP server password, empty> \
   -e TAI_MAIL_SSL_ENABLED=<SMTP enable SSL, false> \
   -e TAI_MAIL_AUTH_ENABLED=<SMTP enable Auth, false> \
+  -e TAI_MAIL_FROM_ADDRESS=<SMTP sender address> \
   milosz08/tai-server:latest
 ```
 
@@ -62,6 +63,7 @@ services:
       TAI_MAIL_PASSWORD: <SMTP server password, empty>
       TAI_MAIL_SSL_ENABLED: <SMTP enable SSL, false>
       TAI_MAIL_AUTH_ENABLED: <SMTP enable Auth, false>
+      TAI_MAIL_FROM_ADDRESS: <SMTP sender address>
     networks:
       - tai-network
 
