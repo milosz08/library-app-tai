@@ -13,6 +13,7 @@ spring:
   liquibase:
     contexts: lq_prod
   mail:
+    protocol: ${TAI_MAIL_PROTOCOL:smtp}
     port: ${TAI_MAIL_PORT:587}
     username: ${TAI_MAIL_USERNAME}
     password: ${TAI_MAIL_PASSWORD}

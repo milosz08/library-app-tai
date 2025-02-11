@@ -27,6 +27,7 @@ docker run -d \
   -e TAI_CLIENT_URL=<client url (for CORS)> \
   -e TAI_SERVER_XMS=1024m \
   -e TAI_SERVER_XMX=1024m \
+  -e TAI_MAIL_PROTOCOL=<mail protocol, smtps> \
   -e TAI_MAIL_HOST=<SMTP server host> \
   -e TAI_MAIL_PORT=<SMTP server port, 587> \
   -e TAI_MAIL_USERNAME=<SMTP server username, empty> \
@@ -54,6 +55,7 @@ services:
       TAI_CLIENT_URL: <client url (for CORS)>
       TAI_SERVER_XMS: 1024m
       TAI_SERVER_XMX: 1024m
+      TAI_MAIL_PROTOCOL: <mail protocol, smtps>
       TAI_MAIL_HOST: <SMTP server host>
       TAI_MAIL_PORT: <SMTP server port, 587>
       TAI_MAIL_USERNAME: <SMTP server username, empty>
