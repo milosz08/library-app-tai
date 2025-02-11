@@ -20,7 +20,7 @@ docker build \
 ```bash
 docker run -d \
   --name tai-client \
-  -p 9673:9673 \
+  -p 9675:9675 \
   milosz08/tai-client:latest
 ```
 
@@ -32,7 +32,7 @@ services:
     container_name: tai-client
     image: milosz08/tai-client:latest
     ports:
-      - '9673:9673'
+      - '9675:9675'
     networks:
       - tai-network
 

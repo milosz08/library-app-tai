@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vite --port 9673",
+    "dev": "vite --port 9675",
     "build": "npx vite build",
     "lint": "npx eslint . --ext js,jsx,cjs,mjs --report-unused-disable-directives --max-warnings 0",
     "preview": "npx vite preview --port 9674"
