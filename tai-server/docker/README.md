@@ -18,8 +18,8 @@ docker build -t milosz08/tai-server .
 ```bash
 docker run -d \
   --name tai-server \
-  -p 9672:9672 \
-  -e TAI_PORT=<internal docker port, 9672> \
+  -p 9674:9674 \
+  -e TAI_PORT=<internal docker port, 9674> \
   -e TAI_DB_HOST=<database host> \
   -e TAI_DB_NAME=<database name> \
   -e TAI_DB_USERNAME=<database username> \
@@ -38,9 +38,9 @@ services:
     container_name: tai-server
     image: milosz08/tai-server:latest
     ports:
-      - '9672:9672'
+      - '9674:9674'
     environment:
-      TAI_PORT: <internal docker port, 9672>
+      TAI_PORT: <internal docker port, 9674>
       TAI_DB_HOST: <database host>
       TAI_DB_NAME: <database name>
       TAI_DB_USERNAME: <database username>
