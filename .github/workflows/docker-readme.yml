@@ -23,4 +23,4 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: milosz08/library-app-tai
           readme-filepath: ./docker/README.md
-          short-description: "Library management (Java with Spring Boot and React)"
+          short-description: "Library management (Java with Spring Boot and React)."
