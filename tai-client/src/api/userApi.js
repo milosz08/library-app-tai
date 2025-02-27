@@ -2,7 +2,7 @@ import axiosInstance from './axiosConfig';
 
 export const details = () => {
   return axiosInstance
-    .get('/@me')
+    .get('/v1/@me')
     .then(response => response.data)
     .catch(() => {
       return { error: 'Nie udało się pobrać danych użytkownika.' };
@@ -11,7 +11,7 @@ export const details = () => {
 
 export const deleteAccount = () => {
   return axiosInstance
-    .delete('/@me')
+    .delete('/v1/@me')
     .then(response => response)
     .catch(error => {
       const errorMessage =
@@ -23,7 +23,7 @@ export const deleteAccount = () => {
 
 export const updatePersonalDetails = personalDetails => {
   return axiosInstance
-    .patch('/@me', personalDetails)
+    .patch('/v1/@me', personalDetails)
     .then(response => response.data)
     .catch(error => {
       const errors = error.response?.data || {};
@@ -44,7 +44,7 @@ export const updatePersonalDetails = personalDetails => {
 
 export const updateAddressDetails = addressDetails => {
   return axiosInstance
-    .patch('/@me/address', addressDetails)
+    .patch('/v1/@me/address', addressDetails)
     .then(response => response.data)
     .catch(error => {
       const errors = error.response?.data || {};
