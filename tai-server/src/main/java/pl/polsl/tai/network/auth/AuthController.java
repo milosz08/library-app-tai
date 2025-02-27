@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import pl.polsl.tai.network.auth.dto.LoginReqDto;
 import pl.polsl.tai.network.auth.dto.LoginResDto;
 import pl.polsl.tai.network.auth.dto.RegisterReqDto;
 import pl.polsl.tai.network.auth.dto.RevalidateSessionResDto;
-import pl.polsl.tai.security.LoggedUser;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -47,9 +45,9 @@ class AuthController {
     return ResponseEntity.noContent().build();
   }
 
-	@PatchMapping("/session/revalidate")
-	ResponseEntity<RevalidateSessionResDto> revalidateSession(@AuthenticationPrincipal LoggedUser loggedUser) {
-		return ResponseEntity.ok(authService.revalidateSession(loggedUser));
-	}
+  @PatchMapping("/session/revalidate")
+  ResponseEntity<RevalidateSessionResDto> revalidateSession() {
+    return ResponseEntity.ok(authService.revalidateSession());
+  }
 }
 

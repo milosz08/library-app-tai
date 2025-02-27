@@ -78,10 +78,10 @@ export const sessionRevalidate = () => {
   return axiosInstance
     .patch('/v1/auth/session/revalidate')
     .then(response => {
-      if (response.status === 200 || response.status === 204) {
-        const { role, roleName } = response.data;
+      if (response.status === 200) {
+        const { authenticated, role, roleName } = response.data;
         return {
-          success: true,
+          success: authenticated,
           role: role || null,
           roleName: roleName || null,
         };
