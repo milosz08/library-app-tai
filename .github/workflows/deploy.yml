@@ -71,7 +71,7 @@ jobs:
           context: .
           file: Dockerfile.pipeline
           push: true
-          tags: milosz08/tai-server:latest
+          tags: milosz08/library-app-tai:latest
 
       - name: Logout from Docker Hub
         run: docker logout
