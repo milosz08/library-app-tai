@@ -12,9 +12,6 @@ on:
       - "Dockerfile.pipeline"
       - "pom.xml"
 
-env:
-  SUBPROJECT_ROOT: "tai-server"
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -84,7 +81,7 @@ jobs:
     needs: build
     env:
       PM2_API_NAME: "LibraryAppTAI"
-      SERVER_OUTPUT: "/opt/library-app-tai"
+      SERVER_OUTPUT: "/opt/public/library-app-tai"
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
