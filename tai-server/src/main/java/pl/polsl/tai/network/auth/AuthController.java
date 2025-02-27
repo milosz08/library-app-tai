@@ -16,7 +16,7 @@ import pl.polsl.tai.network.auth.dto.RevalidateSessionResDto;
 import pl.polsl.tai.security.LoggedUser;
 
 @RestController
-@RequestMapping("/v1/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 class AuthController {
   private final AuthService authService;

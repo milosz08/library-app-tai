@@ -1,12 +1,12 @@
-name: Update Dockerhub server README
+name: Update Dockerhub README
 
 on:
   push:
     branches:
       - master
     paths:
-      - ".github/workflows/docker-readme-server.yml"
-      - "tai-server/docker/README.md"
+      - "docker-readme.yml"
+      - "docker/README.md"
 
 jobs:
   update:
@@ -21,6 +21,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: milosz08/tai-server
-          readme-filepath: ./tai-server/docker/README.md
-          short-description: "Java (Spring Boot) server image for library management app (TAI)."
+          repository: milosz08/library-app-tai
+          readme-filepath: ./docker/README.md
+          short-description: "Library management (Java with Spring Boot and React)"

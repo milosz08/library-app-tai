@@ -37,9 +37,6 @@ management:
         include: "*"
 
 application:
-  cors:
-    urls:
-      - http://localhost:9675
   mail:
     from: noreply-dev@tai.miloszgilga.pl
     client-url: http://localhost:9675

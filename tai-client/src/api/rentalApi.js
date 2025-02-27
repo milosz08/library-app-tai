@@ -2,7 +2,7 @@ import axiosInstance from './axiosConfig';
 
 export const fetchRentalBooks = (page, size, title) => {
   return axiosInstance
-    .get('/rental/rented', { params: { page, size, title } })
+    .get('/v1/rental/rented', { params: { page, size, title } })
     .then(response => ({
       data: response.data.rows,
       totalResults: response.data.totalResults,
@@ -18,7 +18,7 @@ export const fetchRentalBooks = (page, size, title) => {
 
 export const fetchRentedDetails = id => {
   return axiosInstance
-    .get('/rental/rented/' + id)
+    .get('/v1/rental/rented/' + id)
     .then(response => ({ success: true, data: response.data }))
     .catch(error => {
       return {
@@ -32,7 +32,7 @@ export const fetchRentedDetails = id => {
 
 export const rentBook = (bookId, count) => {
   return axiosInstance
-    .patch('/rental/loan', {
+    .patch('/v1/rental/loan', {
       bookId,
       count,
     })
@@ -47,7 +47,7 @@ export const rentBook = (bookId, count) => {
 
 export const returnBook = (bookId, count) => {
   return axiosInstance
-    .delete('/rental/return', {
+    .delete('/v1/rental/return', {
       data: {
         bookId,
         count,

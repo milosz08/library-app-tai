@@ -2,7 +2,7 @@ import axiosInstance from './axiosConfig';
 
 export const fetchEmployers = (page, size, email) => {
   return axiosInstance
-    .get('/employer', { params: { page, size, email } })
+    .get('/v1/employer', { params: { page, size, email } })
     .then(response => ({
       data: response.data.rows,
       totalResults: response.data.totalResults,
@@ -18,7 +18,7 @@ export const fetchEmployers = (page, size, email) => {
 
 export const createEmployer = form => {
   return axiosInstance
-    .post('/employer', form)
+    .post('/v1/employer', form)
     .then(response => {
       if (response.status === 204) {
         return { success: true };
@@ -46,7 +46,7 @@ export const createEmployer = form => {
 
 export const updateEmployer = (id, form) => {
   return axiosInstance
-    .patch('/employer/' + id, form)
+    .patch('/v1/employer/' + id, form)
     .then(() => {
       return { success: true };
     })
@@ -69,22 +69,22 @@ export const updateEmployer = (id, form) => {
 };
 
 export const deleteEmployer = id => {
-  return axiosInstance.delete('/employer/' + id);
+  return axiosInstance.delete('/v1/employer/' + id);
 };
 
 export const deleteAllEmployers = () => {
-  return axiosInstance.delete('/employer');
+  return axiosInstance.delete('/v1/employer');
 };
 
 export const deleteSelectedEmployers = ids => {
-  return axiosInstance.delete('/employer/selected', {
+  return axiosInstance.delete('/v1/employer/selected', {
     data: { ids },
   });
 };
 
 export const changePasswordOnFirstAccess = (token, form) => {
   return axiosInstance
-    .patch('/employer/first/access/' + token + '/password', form)
+    .patch('/v1/employer/first/access/' + token + '/password', form)
     .then(response => {
       if (response.status === 204) {
         return { success: true, message: 'Hasło zostało pomyślnie zmienione.' };
@@ -112,7 +112,7 @@ export const changePasswordOnFirstAccess = (token, form) => {
 
 export const regenerateFirstAccess = id => {
   return axiosInstance
-    .patch('/employer/' + id + '/first/access/regenerate')
+    .patch('/v1/employer/' + id + '/first/access/regenerate')
     .then(response => {
       if (response.status === 204) {
         return { success: true };

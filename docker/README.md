@@ -1,14 +1,13 @@
-# TAI Server
+# Library app TAI
 
-Java (Spring Boot) server image for library management app (TAI).
+Library management app written in Java with Spring Boot (server) and React (client).
 
 [GitHub repository](https://github.com/milosz08/library-app-tai)
-| [Server app](https://github.com/milosz08/library-app-tai/tree/master/tai-server)
 
 ## Build image
 
 ```bash
-docker build -t milosz08/tai-server .
+docker build -t milosz08/library-app-tai .
 ```
 
 ## Create container
@@ -17,14 +16,12 @@ docker build -t milosz08/tai-server .
 
 ```bash
 docker run -d \
-  --name tai-server \
-  -p 9674:9674 \
-  -e TAI_PORT=<internal docker port, 9674> \
+  --name tai-app \
+  -p 8080:8080 \
   -e TAI_DB_HOST=<database host> \
   -e TAI_DB_NAME=<database name> \
   -e TAI_DB_USERNAME=<database username> \
   -e TAI_DB_PASSWORD=<database password> \
-  -e TAI_CLIENT_URL=<client url (for CORS)> \
   -e TAI_SERVER_XMS=1024m \
   -e TAI_SERVER_XMX=1024m \
   -e TAI_MAIL_PROTOCOL=<mail protocol, smtps> \
@@ -35,25 +32,23 @@ docker run -d \
   -e TAI_MAIL_SSL_ENABLED=<SMTP enable SSL, false> \
   -e TAI_MAIL_AUTH_ENABLED=<SMTP enable Auth, false> \
   -e TAI_MAIL_FROM_ADDRESS=<SMTP sender address> \
-  milosz08/tai-server:latest
+  milosz08/library-app-tai:latest
 ```
 
 * Using `docker-compose.yml` file:
 
 ```yaml
 services:
-  tai-server:
-    container_name: tai-server
-    image: milosz08/tai-server:latest
+  tai-app:
+    container_name: tai-app
+    image: milosz08/library-app-tai:latest
     ports:
-      - '9674:9674'
+      - '8080:8080'
     environment:
-      TAI_PORT: <internal docker port, 9674>
       TAI_DB_HOST: <database host>
       TAI_DB_NAME: <database name>
       TAI_DB_USERNAME: <database username>
       TAI_DB_PASSWORD: <database password>
-      TAI_CLIENT_URL: <client url (for CORS)>
       TAI_SERVER_XMS: 1024m
       TAI_SERVER_XMX: 1024m
       TAI_MAIL_PROTOCOL: <mail protocol, smtps>

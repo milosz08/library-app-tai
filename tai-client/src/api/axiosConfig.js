@@ -2,12 +2,10 @@ import axios from 'axios';
 import { executeLogout } from '~/utils/authManager';
 import { fetchCsrfToken } from './csrfApi';
 
-const apiUrl = import.meta.env.VITE_SERVER_URL;
-
 let csrfTokenCache = null;
 
 const axiosInstance = axios.create({
-  baseURL: apiUrl,
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
   },

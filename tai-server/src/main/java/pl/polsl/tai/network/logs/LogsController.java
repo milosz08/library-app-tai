@@ -11,7 +11,7 @@ import pl.polsl.tai.network.logs.dto.LogRowResDto;
 import pl.polsl.tai.security.LoggedUser;
 
 @RestController
-@RequestMapping("/v1/logs")
+@RequestMapping("/api/v1/logs")
 @RequiredArgsConstructor
 class LogsController {
   private final LogsService logsService;

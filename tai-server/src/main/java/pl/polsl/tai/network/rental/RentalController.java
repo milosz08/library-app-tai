@@ -14,7 +14,7 @@ import pl.polsl.tai.network.rental.dto.ReturnBookReqDto;
 import pl.polsl.tai.security.LoggedUser;
 
 @RestController
-@RequestMapping("/v1/rental")
+@RequestMapping("/api/v1/rental")
 @RequiredArgsConstructor
 class RentalController {
   private final RentalService rentalService;

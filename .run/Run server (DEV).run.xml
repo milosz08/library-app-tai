@@ -1,8 +1,14 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run Server" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+  <configuration default="false" name="Run server (DEV)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="dev" />
     <module name="tai-server" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="pl.polsl.tai.TaiApplication" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="pl.polsl.tai.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

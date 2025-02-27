@@ -2,7 +2,7 @@ import axiosInstance from './axiosConfig';
 
 export const fetchBooks = (page, size, title) => {
   return axiosInstance
-    .get('/book', { params: { page, size, title } })
+    .get('/v1/book', { params: { page, size, title } })
     .then(response => ({
       data: response.data.rows,
       totalResults: response.data.totalResults,
@@ -17,7 +17,7 @@ export const fetchBooks = (page, size, title) => {
 
 export const fetchBookDetails = id => {
   return axiosInstance
-    .get('/book/' + id)
+    .get('/v1/book/' + id)
     .then(response => ({ success: true, data: response.data }))
     .catch(error => {
       return {
@@ -30,7 +30,7 @@ export const fetchBookDetails = id => {
 
 export const addBook = bookData => {
   return axiosInstance
-    .post('/book', bookData)
+    .post('/v1/book', bookData)
     .then(response => {
       if (response.status === 204) {
         return { success: true };
@@ -64,7 +64,7 @@ export const addBook = bookData => {
 
 export const updateBook = (id, form) => {
   return axiosInstance
-    .patch('/book/' + id, form)
+    .patch('/v1/book/' + id, form)
     .then(() => {
       return { success: true };
     })
@@ -108,7 +108,7 @@ const parseAuthorErrors = errors => {
 
 export const deleteBook = async id => {
   try {
-    await axiosInstance.delete(`/book/${id}`);
+    await axiosInstance.delete(`/v1/book/${id}`);
     return { message: 'Pomyślnie usunięto książkę.', type: 'success' };
   } catch (e) {
     return {

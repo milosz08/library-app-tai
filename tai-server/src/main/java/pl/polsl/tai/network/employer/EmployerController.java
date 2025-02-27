@@ -15,7 +15,7 @@ import pl.polsl.tai.security.LoggedUser;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/employer")
+@RequestMapping("/api/v1/employer")
 @RequiredArgsConstructor
 class EmployerController {
   private final EmployerService employerService;

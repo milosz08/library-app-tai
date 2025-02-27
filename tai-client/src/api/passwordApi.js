@@ -2,7 +2,7 @@ import axiosInstance from './axiosConfig';
 
 export const resetPassword = email => {
   return axiosInstance
-    .patch('/forgot/password/request', { email })
+    .patch('/v1/forgot/password/request', { email })
     .then(response => ({ success: true, message: response.data.token }))
     .catch(error => {
       const errorMessage =
@@ -13,7 +13,7 @@ export const resetPassword = email => {
 
 export const renewPassword = (token, form) => {
   return axiosInstance
-    .patch('/forgot/password/renew/' + token, {
+    .patch('/v1/forgot/password/renew/' + token, {
       newPassword: form.newPassword,
       confirmedNewPassword: form.confirmedNewPassword,
     })

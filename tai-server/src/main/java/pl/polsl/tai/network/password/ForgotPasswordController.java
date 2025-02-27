@@ -8,7 +8,7 @@ import pl.polsl.tai.network.password.dto.ChangePasswordReqDto;
 import pl.polsl.tai.network.password.dto.RequestChangePasswordReqDto;
 
 @RestController
-@RequestMapping("/v1/forgot/password")
+@RequestMapping("/api/v1/forgot/password")
 @RequiredArgsConstructor
 class ForgotPasswordController {
   private final ForgotPasswordService forgotPasswordService;

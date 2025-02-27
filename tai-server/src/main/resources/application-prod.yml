@@ -1,5 +1,4 @@
 server:
-  port: ${TAI_PORT:9076}
   servlet:
     session:
       cookie:
@@ -25,9 +24,6 @@ management:
         include: health
 
 application:
-  cors:
-    urls:
-      - ${TAI_CLIENT_URL:https://tai.miloszgilga.pl}
   mail:
     from: ${TAI_MAIL_FROM_ADDRESS}
     client-url: ${TAI_CLIENT_URL:https://tai.miloszgilga.pl}

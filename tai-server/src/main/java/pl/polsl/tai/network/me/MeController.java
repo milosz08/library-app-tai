@@ -13,7 +13,7 @@ import pl.polsl.tai.network.me.dto.*;
 import pl.polsl.tai.security.LoggedUser;
 
 @RestController
-@RequestMapping("/v1/@me")
+@RequestMapping("/api/v1/@me")
 @RequiredArgsConstructor
 class MeController {
   private final MeService meService;

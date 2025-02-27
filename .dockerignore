@@ -1,0 +1,8 @@
+tai-server/target/
+tai-client/target/
+tai-client/dist/
+tai-client/node_modules/
+
+tai-client/.eslintignore
+tai-client/.eslintrc.json
+tai-client/.prettierrc.json

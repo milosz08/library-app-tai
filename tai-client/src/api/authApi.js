@@ -2,7 +2,7 @@ import axiosInstance from './axiosConfig';
 
 export const register = form => {
   return axiosInstance
-    .post('/auth/register', form)
+    .post('/v1/auth/register', form)
     .then(response => {
       if (response.status === 204) {
         return { success: true };
@@ -35,7 +35,7 @@ export const register = form => {
 
 export const login = (email, password) => {
   return axiosInstance
-    .post('/auth/login', { email, password })
+    .post('/v1/auth/login', { email, password })
     .then(response => {
       if (response.status === 200) {
         return {
@@ -52,12 +52,12 @@ export const login = (email, password) => {
 };
 
 export const logout = () => {
-  return axiosInstance.delete('/auth/logout');
+  return axiosInstance.delete('/v1/auth/logout');
 };
 
 export const activateAccount = token => {
   return axiosInstance
-    .patch('/auth/activate/' + token)
+    .patch('/v1/auth/activate/' + token)
     .then(response => {
       if (response.status >= 200 && response.status < 300) {
         return { success: true };
@@ -76,7 +76,7 @@ export const activateAccount = token => {
 
 export const sessionRevalidate = () => {
   return axiosInstance
-    .patch('/auth/session/revalidate')
+    .patch('/v1/auth/session/revalidate')
     .then(response => {
       if (response.status === 200 || response.status === 204) {
         const { role, roleName } = response.data;

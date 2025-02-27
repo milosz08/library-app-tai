@@ -1,9 +1,7 @@
 .volumes/**/*volume/
-
-tai-client/node_modules/
-tai-client/dist/
-
-tai-server/.bin/
-tai-server/.logs/
-tai-server/target/
-tai-server/.idea/
+.idea/
+.bin/
+.log/
+target/
+out/
+node_modules/
