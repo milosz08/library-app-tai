@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: output-jar
-          path: target/library-app-tai.jar
+          path: .bin/library-app-tai.jar
           retention-days: 1
 
   docker:
@@ -115,7 +115,7 @@ jobs:
           port: ${{ env.SSH_PORT }}
           key: ${{ env.SSH_KEY }}
           passphrase: ${{ env.SSH_PASSPHRASE }}
-          source: "library-app-tai.jar"
+          source: "output-jar.jar"
           target: ${{ env.SERVER_OUTPUT }}
           rm: true
 
