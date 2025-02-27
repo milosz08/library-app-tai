@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title th:text="${title}"></title>
+  <meta charset="UTF-8">
+  <title th:text="${title}"></title>
 </head>
 <body>
 
 <h2>Witaj, <span th:text="${name}"></span>!</h2>
 
 <p>
-	Wykryto nowe logowanie na Twoje konto, ale konto nie zostało jeszcze aktywowane. W celu aktywacji konta przeklej lub
-	przepisz token:
+  Wykryto nowe logowanie na Twoje konto, ale konto nie zostało jeszcze aktywowane. W celu aktywacji
+  konta przeklej lub przepisz token:
 </p>
 <p><strong th:text="${token}"></strong></p>
 <p>w odpowiednie pole lub kliknij link:</p>
 <p><a th:href="${activationLink}" th:text="${activationLink}"></a></p>
-<p>Czas, po którym token ulegnie wygaśnięciu&nbsp;<strong th:text="${tokenExpiration}"></strong>.</p>
+<p>
+  Czas, po którym token ulegnie wygaśnięciu&nbsp;<strong th:text="${tokenExpiration}"></strong>.
+</p>
 
 <hr>
 <i>Czas serwera (UTC): <span th:text="${now}"></span></i>

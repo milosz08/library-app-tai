@@ -16,16 +16,16 @@ import java.util.Locale;
 @Component
 public class FixedOneLocaleFilter extends OncePerRequestFilter {
 
-	@Value("${application.locale}")
-	private String locale;
+  @Value("${application.locale}")
+  private String locale;
 
-	@Override
-	protected void doFilterInternal(
-		@NotNull HttpServletRequest req,
-		@NotNull HttpServletResponse res,
-		FilterChain filterChain
-	) throws ServletException, IOException {
-		LocaleContextHolder.setLocale(Locale.forLanguageTag(locale));
-		filterChain.doFilter(req, res);
-	}
+  @Override
+  protected void doFilterInternal(
+    @NotNull HttpServletRequest req,
+    @NotNull HttpServletResponse res,
+    FilterChain filterChain
+  ) throws ServletException, IOException {
+    LocaleContextHolder.setLocale(Locale.forLanguageTag(locale));
+    filterChain.doFilter(req, res);
+  }
 }

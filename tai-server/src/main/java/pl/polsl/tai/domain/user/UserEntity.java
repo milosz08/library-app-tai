@@ -20,38 +20,39 @@ import java.util.List;
 @AllArgsConstructor
 public class UserEntity extends EntityBase implements Serializable {
 
-	private String firstName;
+  private String firstName;
 
-	private String lastName;
+  private String lastName;
 
-	private String email;
+  private String email;
 
-	private String password;
+  private String password;
 
-	@Column(insertable = false)
-	private Boolean active;
+  @Column(insertable = false)
+  private Boolean active;
 
-	@ManyToOne
-	@JoinColumn
-	private RoleEntity role;
+  @ManyToOne
+  @JoinColumn
+  private RoleEntity role;
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private AddressEntity address;
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  private AddressEntity address;
 
-	@ManyToMany(mappedBy = "users")
-	private List<BookEntity> books = new ArrayList<>();
+  @ManyToMany(mappedBy = "users")
+  @Builder.Default
+  private List<BookEntity> books = new ArrayList<>();
 
-	public void attachAddress(AddressEntity address) {
-		this.address = address;
-		address.setUser(this);
-	}
+  public void attachAddress(AddressEntity address) {
+    this.address = address;
+    address.setUser(this);
+  }
 
-	@Override
-	public String toString() {
-		return "{" +
-			"firstName=" + firstName +
-			", lastName=" + lastName +
-			", email=" + email +
-			'}';
-	}
+  @Override
+  public String toString() {
+    return "{" +
+      "firstName=" + firstName +
+      ", lastName=" + lastName +
+      ", email=" + email +
+      '}';
+  }
 }

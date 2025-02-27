@@ -13,14 +13,14 @@ import lombok.Setter;
 @MappedSuperclass
 @NoArgsConstructor
 public abstract class EntityBase {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-	@Override
-	public String toString() {
-		return "{" +
-			"id=" + id +
-			'}';
-	}
+  @Override
+  public String toString() {
+    return "{" +
+      "id=" + id +
+      '}';
+  }
 }

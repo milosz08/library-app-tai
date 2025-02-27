@@ -19,33 +19,33 @@ import pl.polsl.tai.security.LoggedUser;
 @RequestMapping("/v1/auth")
 @RequiredArgsConstructor
 class AuthController {
-	private final AuthService authService;
-	private final SecurityContextRepository securityContextRepository;
+  private final AuthService authService;
+  private final SecurityContextRepository securityContextRepository;
 
-	@PostMapping("/login")
-	ResponseEntity<LoginResDto> login(
-		@RequestBody @Valid LoginReqDto reqDto,
-		HttpServletRequest request,
-		HttpServletResponse response
-	) {
-		final LoginResDto resDto = authService.login(reqDto);
-		if (resDto.activated()) {
-			securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
-		}
-		return ResponseEntity.ok(resDto);
-	}
+  @PostMapping("/login")
+  ResponseEntity<LoginResDto> login(
+    @RequestBody @Valid LoginReqDto reqDto,
+    HttpServletRequest request,
+    HttpServletResponse response
+  ) {
+    final LoginResDto resDto = authService.login(reqDto);
+    if (resDto.activated()) {
+      securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
+    }
+    return ResponseEntity.ok(resDto);
+  }
 
-	@PostMapping("/register")
-	ResponseEntity<Void> register(@RequestBody @Valid RegisterReqDto reqDto) {
-		authService.register(reqDto);
-		return ResponseEntity.noContent().build();
-	}
+  @PostMapping("/register")
+  ResponseEntity<Void> register(@RequestBody @Valid RegisterReqDto reqDto) {
+    authService.register(reqDto);
+    return ResponseEntity.noContent().build();
+  }
 
-	@PatchMapping("/activate/{token}")
-	ResponseEntity<Void> activateAccount(@PathVariable String token) {
-		authService.activateAccount(token);
-		return ResponseEntity.noContent().build();
-	}
+  @PatchMapping("/activate/{token}")
+  ResponseEntity<Void> activateAccount(@PathVariable String token) {
+    authService.activateAccount(token);
+    return ResponseEntity.noContent().build();
+  }
 
 	@PatchMapping("/session/revalidate")
 	ResponseEntity<RevalidateSessionResDto> revalidateSession(@AuthenticationPrincipal LoggedUser loggedUser) {

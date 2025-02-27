@@ -17,42 +17,42 @@ import pl.polsl.tai.security.LoggedUser;
 @RequestMapping("/v1/rental")
 @RequiredArgsConstructor
 class RentalController {
-	private final RentalService rentalService;
+  private final RentalService rentalService;
 
-	@GetMapping("/rented")
-	ResponseEntity<PageableResDto<RentedBookRowResDto, BookEntity>> getPageableRentedBooks(
-		@RequestParam(required = false) String title,
-		@RequestParam(required = false) Integer page,
-		@RequestParam(required = false) Integer size,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		return ResponseEntity.ok(rentalService.getPageableRentedBooks(title, page, size, loggedUser));
-	}
+  @GetMapping("/rented")
+  ResponseEntity<PageableResDto<RentedBookRowResDto, BookEntity>> getPageableRentedBooks(
+    @RequestParam(required = false) String title,
+    @RequestParam(required = false) Integer page,
+    @RequestParam(required = false) Integer size,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(rentalService.getPageableRentedBooks(title, page, size, loggedUser));
+  }
 
-	@GetMapping("/rented/{bookId}")
-	ResponseEntity<RentedBookDetailsResDto> getRentedBookDetails(
-		@PathVariable Long bookId,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		return ResponseEntity.ok(rentalService.getRentedBookDetails(bookId, loggedUser));
-	}
+  @GetMapping("/rented/{bookId}")
+  ResponseEntity<RentedBookDetailsResDto> getRentedBookDetails(
+    @PathVariable Long bookId,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(rentalService.getRentedBookDetails(bookId, loggedUser));
+  }
 
-	@PatchMapping("/loan")
-	ResponseEntity<Void> loanBook(
-		@Valid @RequestBody LoanBookReqDto reqDto,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		rentalService.loanBook(reqDto, loggedUser);
-		return ResponseEntity.noContent().build();
-	}
+  @PatchMapping("/loan")
+  ResponseEntity<Void> loanBook(
+    @Valid @RequestBody LoanBookReqDto reqDto,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    rentalService.loanBook(reqDto, loggedUser);
+    return ResponseEntity.noContent().build();
+  }
 
-	@DeleteMapping("/return")
-	ResponseEntity<Void> returnBook(
-		@Valid @RequestBody ReturnBookReqDto reqDto,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		rentalService.returnBook(reqDto, loggedUser);
-		return ResponseEntity.noContent().build();
-	}
+  @DeleteMapping("/return")
+  ResponseEntity<Void> returnBook(
+    @Valid @RequestBody ReturnBookReqDto reqDto,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    rentalService.returnBook(reqDto, loggedUser);
+    return ResponseEntity.noContent().build();
+  }
 }
 

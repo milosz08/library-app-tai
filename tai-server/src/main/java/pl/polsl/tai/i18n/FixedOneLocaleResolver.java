@@ -12,17 +12,17 @@ import java.util.Locale;
 @Component
 class FixedOneLocaleResolver extends AcceptHeaderLocaleResolver {
 
-	@Value("${application.locale}")
-	private String locale;
+  @Value("${application.locale}")
+  private String locale;
 
-	@Override
-	public @NotNull Locale resolveLocale(@NotNull HttpServletRequest req) {
-		final Locale localeObj = createLocale();
-		LocaleContextHolder.setLocale(localeObj);
-		return localeObj;
-	}
+  @Override
+  public @NotNull Locale resolveLocale(@NotNull HttpServletRequest req) {
+    final Locale localeObj = createLocale();
+    LocaleContextHolder.setLocale(localeObj);
+    return localeObj;
+  }
 
-	private Locale createLocale() {
-		return Locale.forLanguageTag(locale);
-	}
+  private Locale createLocale() {
+    return Locale.forLanguageTag(locale);
+  }
 }

@@ -11,13 +11,13 @@ import pl.polsl.tai.security.LoggedUser;
 import java.util.List;
 
 interface BookService {
-	PageableResDto<BookRowResDto, BookEntity> getPageableBooks(String title, Integer page, Integer size);
+  PageableResDto<BookRowResDto, BookEntity> getPageableBooks(String title, Integer page, Integer size);
 
-	BookDetailsResDto getBookDetails(Long bookId);
+  BookDetailsResDto getBookDetails(Long bookId);
 
-	void createBook(AddEditBookReqDto reqDto, LoggedUser loggedUser);
+  void createBook(AddEditBookReqDto reqDto, LoggedUser loggedUser);
 
-	void updateBook(Long bookId, AddEditBookReqDto reqDto, LoggedUser loggedUser);
+  void updateBook(Long bookId, AddEditBookReqDto reqDto, LoggedUser loggedUser);
 
-	DeleteResultResDto deleteBooks(List<Long> bookIds, LoggedUser loggedUser);
+  DeleteResultResDto deleteBooks(List<Long> bookIds, LoggedUser loggedUser);
 }

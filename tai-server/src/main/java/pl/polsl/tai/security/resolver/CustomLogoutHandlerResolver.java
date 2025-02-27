@@ -13,14 +13,14 @@ import pl.polsl.tai.log.LogPersistService;
 @Component
 @RequiredArgsConstructor
 public class CustomLogoutHandlerResolver implements LogoutSuccessHandler {
-	private final LogPersistService logPersistService;
+  private final LogPersistService logPersistService;
 
-	@Override
-	public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) {
-		if (auth != null) {
-			log.info("User: {} was logged out.", auth.getName());
-			logPersistService.info("Użytkownik: %s wylogował się z serwisu.", auth.getName());
-		}
-		res.setStatus(HttpServletResponse.SC_NO_CONTENT);
-	}
+  @Override
+  public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) {
+    if (auth != null) {
+      log.info("User: {} was logged out.", auth.getName());
+      logPersistService.info("Użytkownik: %s wylogował się z serwisu.", auth.getName());
+    }
+    res.setStatus(HttpServletResponse.SC_NO_CONTENT);
+  }
 }

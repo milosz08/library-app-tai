@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title th:text="${title}"></title>
+  <meta charset="UTF-8">
+  <title th:text="${title}"></title>
 </head>
 <body>
 
 <h2>Witaj, <span th:text="${name}"></span>!</h2>
 
 <p>
-	Administrator utworzył Twoje konto w systemie. System wygenerował początkowe hasło, które musi zostać zmienione przed
-	pierwszym logowaniem. W celu rozpoczęcia aktywacji nowego konta przeklej lub przepisz token:
+  Administrator utworzył Twoje konto w systemie. System wygenerował początkowe hasło, które musi
+  zostać zmienione przed pierwszym logowaniem. W celu rozpoczęcia aktywacji nowego konta przeklej
+  lub przepisz token:
 </p>
 <p><strong th:text="${token}"></strong></p>
 <p>w odpowiednie pole lub kliknij link:</p>
 <p><a th:href="${activationLink}" th:text="${activationLink}"></a></p>
-<p>Czas, po którym token ulegnie wygaśnięciu&nbsp;<strong th:text="${tokenExpiration}"></strong>.</p>
-<p>Twoje pierwsze hasło utworzone przez system to:&nbsp;<strong th:text="${firstPassword}"></strong>.</p>
+<p>
+  Czas, po którym token ulegnie wygaśnięciu&nbsp;<strong th:text="${tokenExpiration}"></strong>.
+</p>
+<p>
+  Twoje pierwsze hasło utworzone przez system to:&nbsp;<strong th:text="${firstPassword}"></strong>.
+</p>
 
 <hr>
 <i>Czas serwera (UTC): <span th:text="${now}"></span></i>

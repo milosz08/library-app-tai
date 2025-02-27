@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 public class SelectedIdsDto {
-	@NotNull(message = "Pole identyfikatorów musi istnieć")
-	@NotEmpty(message = "Należy podać przynajmniej jeden identyfikator.")
-	private List<Long> ids;
+  @NotNull(message = "Pole identyfikatorów musi istnieć")
+  @NotEmpty(message = "Należy podać przynajmniej jeden identyfikator.")
+  private List<Long> ids;
 }

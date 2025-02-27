@@ -18,69 +18,74 @@ import java.util.List;
 @RequestMapping("/v1/employer")
 @RequiredArgsConstructor
 class EmployerController {
-	private final EmployerService employerService;
+  private final EmployerService employerService;
 
-	@GetMapping
-	ResponseEntity<PageableResDto<EmployerRowResDto, UserEntity>> getPageableEmployers(
-		@RequestParam(required = false) String email,
-		@RequestParam(required = false) Integer page,
-		@RequestParam(required = false) Integer size
-	) {
-		return ResponseEntity.ok(employerService.getPageableEmployers(email, page, size));
-	}
+  @GetMapping
+  ResponseEntity<PageableResDto<EmployerRowResDto, UserEntity>> getPageableEmployers(
+    @RequestParam(required = false) String email,
+    @RequestParam(required = false) Integer page,
+    @RequestParam(required = false) Integer size
+  ) {
+    return ResponseEntity.ok(employerService.getPageableEmployers(email, page, size));
+  }
 
-	@PostMapping
-	ResponseEntity<Void> createEmployer(
-		@RequestBody @Valid AddEmployerReqDto reqDto,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		employerService.createEmployer(reqDto, loggedUser);
-		return ResponseEntity.noContent().build();
-	}
+  @PostMapping
+  ResponseEntity<Void> createEmployer(
+    @RequestBody @Valid AddEmployerReqDto reqDto,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    employerService.createEmployer(reqDto, loggedUser);
+    return ResponseEntity.noContent().build();
+  }
 
-	@PatchMapping("/{employerId}")
-	ResponseEntity<UpdateEmployerResDto> updateEmployer(
-		@PathVariable Long employerId,
-		@RequestBody @Valid UpdateEmployerReqDto reqDto,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		return ResponseEntity.ok(employerService.updateEmployer(employerId, reqDto, loggedUser));
-	}
+  @PatchMapping("/{employerId}")
+  ResponseEntity<UpdateEmployerResDto> updateEmployer(
+    @PathVariable Long employerId,
+    @RequestBody @Valid UpdateEmployerReqDto reqDto,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(employerService.updateEmployer(employerId, reqDto, loggedUser));
+  }
 
-	@PatchMapping("/{employerId}/first/access/regenerate")
-	ResponseEntity<Void> firstAccessRegenerateToken(
-		@PathVariable Long employerId,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		employerService.firstAccessRegenerateToken(employerId, loggedUser);
-		return ResponseEntity.noContent().build();
-	}
+  @PatchMapping("/{employerId}/first/access/regenerate")
+  ResponseEntity<Void> firstAccessRegenerateToken(
+    @PathVariable Long employerId,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    employerService.firstAccessRegenerateToken(employerId, loggedUser);
+    return ResponseEntity.noContent().build();
+  }
 
-	@PatchMapping("/first/access/{token}/password")
-	ResponseEntity<Void> firstAccessUpdatePassword(
-		@PathVariable String token,
-		@Valid @RequestBody FirstAccessUpdatePasswordReqDto reqDto
-	) {
-		employerService.firstAccessUpdatePassword(token, reqDto);
-		return ResponseEntity.noContent().build();
-	}
+  @PatchMapping("/first/access/{token}/password")
+  ResponseEntity<Void> firstAccessUpdatePassword(
+    @PathVariable String token,
+    @Valid @RequestBody FirstAccessUpdatePasswordReqDto reqDto
+  ) {
+    employerService.firstAccessUpdatePassword(token, reqDto);
+    return ResponseEntity.noContent().build();
+  }
 
-	@DeleteMapping("/{employerId}")
-	ResponseEntity<Void> deleteEmployer(@PathVariable Long employerId, @AuthenticationPrincipal LoggedUser loggedUser) {
-		employerService.deleteEmployers(List.of(employerId), loggedUser);
-		return ResponseEntity.noContent().build();
-	}
+  @DeleteMapping("/{employerId}")
+  ResponseEntity<Void> deleteEmployer(
+    @PathVariable Long employerId,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    employerService.deleteEmployers(List.of(employerId), loggedUser);
+    return ResponseEntity.noContent().build();
+  }
 
-	@DeleteMapping("/selected")
-	ResponseEntity<DeleteResultResDto> deleteSelectedEmployers(
-		@Valid @RequestBody SelectedIdsDto employerIdsDto,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		return ResponseEntity.ok(employerService.deleteEmployers(employerIdsDto.getIds(), loggedUser));
-	}
+  @DeleteMapping("/selected")
+  ResponseEntity<DeleteResultResDto> deleteSelectedEmployers(
+    @Valid @RequestBody SelectedIdsDto employerIdsDto,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(employerService.deleteEmployers(employerIdsDto.getIds(), loggedUser));
+  }
 
-	@DeleteMapping
-	ResponseEntity<DeleteResultResDto> deleteAllEmployers(@AuthenticationPrincipal LoggedUser loggedUser) {
-		return ResponseEntity.ok(employerService.deleteEmployers(List.of(), loggedUser));
-	}
+  @DeleteMapping
+  ResponseEntity<DeleteResultResDto> deleteAllEmployers(
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(employerService.deleteEmployers(List.of(), loggedUser));
+  }
 }

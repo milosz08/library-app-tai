@@ -14,27 +14,27 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class CustomAccessDeniedResolver extends ResponseResolverBase implements AccessDeniedHandler {
-	private final LogPersistService logPersistService;
+  private final LogPersistService logPersistService;
 
-	public CustomAccessDeniedResolver(ObjectMapper objectMapper, LogPersistService logPersistService) {
-		super(objectMapper);
-		this.logPersistService = logPersistService;
-	}
+  public CustomAccessDeniedResolver(ObjectMapper objectMapper, LogPersistService logPersistService) {
+    super(objectMapper);
+    this.logPersistService = logPersistService;
+  }
 
-	@Override
-	public void handle(
-		HttpServletRequest req,
-		HttpServletResponse res,
-		AccessDeniedException ex
-	) throws IOException {
-		final String path = req.getServletPath();
-		log.error("Exception at: {} invoked. Cause: {}", path, ex.getMessage());
-		logPersistService.error("Wystąpiła próba nieuprawnionego dostęp do chronionego zasobu: %s.", path);
-		sendResponse(res, "Nieautoryzowany dostęp do zasobu.");
-	}
+  @Override
+  public void handle(
+    HttpServletRequest req,
+    HttpServletResponse res,
+    AccessDeniedException ex
+  ) throws IOException {
+    final String path = req.getServletPath();
+    log.error("Exception at: {} invoked. Cause: {}", path, ex.getMessage());
+    logPersistService.error("Wystąpiła próba nieuprawnionego dostęp do chronionego zasobu: %s.", path);
+    sendResponse(res, "Nieautoryzowany dostęp do zasobu.");
+  }
 
-	@Override
-	protected int status() {
-		return HttpServletResponse.SC_FORBIDDEN;
-	}
+  @Override
+  protected int status() {
+    return HttpServletResponse.SC_FORBIDDEN;
+  }
 }

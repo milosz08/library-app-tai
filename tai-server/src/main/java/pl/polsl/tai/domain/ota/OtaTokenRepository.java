@@ -11,19 +11,19 @@ import java.util.Optional;
 
 @Repository
 public interface OtaTokenRepository extends JpaRepository<OtaTokenEntity, Long> {
-	boolean existsByToken(String token);
+  boolean existsByToken(String token);
 
-	@Query(value = """
-		from OtaTokenEntity e join fetch e.user u
-		where e.token = :token and e.expires > :now and e.used = false and e.type = :type
-		""")
-	Optional<OtaTokenEntity> findAndValidateTokenByType(
-		@Param("token") String token,
-		@Param("type") OtaType type,
-		@Param("now") LocalDateTime now
-	);
+  @Query(value = """
+    from OtaTokenEntity e join fetch e.user u
+    where e.token = :token and e.expires > :now and e.used = false and e.type = :type
+    """)
+  Optional<OtaTokenEntity> findAndValidateTokenByType(
+    @Param("token") String token,
+    @Param("type") OtaType type,
+    @Param("now") LocalDateTime now
+  );
 
-	@Modifying
-	@Query("delete from OtaTokenEntity e where e.expires < :now and e.used = false")
-	void deleteAllByExpiresBeforeAndUsedIsFalse(@Param("now") LocalDateTime now);
+  @Modifying
+  @Query("delete from OtaTokenEntity e where e.expires < :now and e.used = false")
+  void deleteAllByExpiresBeforeAndUsedIsFalse(@Param("now") LocalDateTime now);
 }

@@ -8,14 +8,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @Getter
 @RequiredArgsConstructor
 public enum UserRole {
-	CUSTOMER("klient"),
-	EMPLOYER("pracownik"),
-	ADMIN("administrator"),
-	;
+  CUSTOMER("klient"),
+  EMPLOYER("pracownik"),
+  ADMIN("administrator"),
+  ;
 
-	private final String localeName;
+  private final String localeName;
 
-	public GrantedAuthority toAuthority() {
-		return new SimpleGrantedAuthority(name());
-	}
+  public GrantedAuthority toAuthority() {
+    return new SimpleGrantedAuthority(name());
+  }
 }

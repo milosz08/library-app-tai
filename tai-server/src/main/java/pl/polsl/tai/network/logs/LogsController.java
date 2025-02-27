@@ -14,32 +14,37 @@ import pl.polsl.tai.security.LoggedUser;
 @RequestMapping("/v1/logs")
 @RequiredArgsConstructor
 class LogsController {
-	private final LogsService logsService;
+  private final LogsService logsService;
 
-	@GetMapping
-	ResponseEntity<PageableResDto<LogRowResDto, LogEntity>> getNewestPageableLogs(
-		@RequestParam(required = false) Integer page,
-		@RequestParam(required = false) Integer size
-	) {
-		return ResponseEntity.ok(logsService.getNewestPageableLogs(page, size));
-	}
+  @GetMapping
+  ResponseEntity<PageableResDto<LogRowResDto, LogEntity>> getNewestPageableLogs(
+    @RequestParam(required = false) Integer page,
+    @RequestParam(required = false) Integer size
+  ) {
+    return ResponseEntity.ok(logsService.getNewestPageableLogs(page, size));
+  }
 
-	@DeleteMapping("/{logId}")
-	ResponseEntity<Void> deleteLogById(@PathVariable Long logId, @AuthenticationPrincipal LoggedUser loggedUser) {
-		logsService.deleteLogById(logId, loggedUser);
-		return ResponseEntity.noContent().build();
-	}
+  @DeleteMapping("/{logId}")
+  ResponseEntity<Void> deleteLogById(
+    @PathVariable Long logId,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    logsService.deleteLogById(logId, loggedUser);
+    return ResponseEntity.noContent().build();
+  }
 
-	@DeleteMapping("/chunk/{size}")
-	ResponseEntity<DeletedLogRowsCountResDto> deleteLogsInChunk(
-		@PathVariable Integer size,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		return ResponseEntity.ok(logsService.deleteLogsChunk(size, loggedUser));
-	}
+  @DeleteMapping("/chunk/{size}")
+  ResponseEntity<DeletedLogRowsCountResDto> deleteLogsInChunk(
+    @PathVariable Integer size,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(logsService.deleteLogsChunk(size, loggedUser));
+  }
 
-	@DeleteMapping
-	ResponseEntity<DeletedLogRowsCountResDto> deleteAllLogs(@AuthenticationPrincipal LoggedUser loggedUser) {
-		return ResponseEntity.ok(logsService.deleteAllLogs(loggedUser));
-	}
+  @DeleteMapping
+  ResponseEntity<DeletedLogRowsCountResDto> deleteAllLogs(
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(logsService.deleteAllLogs(loggedUser));
+  }
 }

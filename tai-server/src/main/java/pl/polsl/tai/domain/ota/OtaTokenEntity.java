@@ -17,28 +17,28 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OtaTokenEntity extends EntityBase implements Serializable {
 
-	@Column(updatable = false)
-	private String token;
+  @Column(updatable = false)
+  private String token;
 
-	@Column(updatable = false)
-	private LocalDateTime expires;
+  @Column(updatable = false)
+  private LocalDateTime expires;
 
-	@Column(insertable = false)
-	private Boolean used;
+  @Column(insertable = false)
+  private Boolean used;
 
-	@Enumerated(EnumType.STRING)
-	private OtaType type;
+  @Enumerated(EnumType.STRING)
+  private OtaType type;
 
-	@JoinColumn
-	@ManyToOne
-	private UserEntity user;
+  @JoinColumn
+  @ManyToOne
+  private UserEntity user;
 
-	@Override
-	public String toString() {
-		return "{" +
-			"token=" + token +
-			", expires=" + expires +
-			", used=" + used +
-			'}';
-	}
+  @Override
+  public String toString() {
+    return "{" +
+      "token=" + token +
+      ", expires=" + expires +
+      ", used=" + used +
+      '}';
+  }
 }

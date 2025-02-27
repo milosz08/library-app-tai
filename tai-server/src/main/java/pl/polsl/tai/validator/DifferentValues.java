@@ -11,9 +11,9 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = ValuesDifferentValidator.class)
 @Documented
 public @interface DifferentValues {
-	String message();
+  String message();
 
-	Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 }

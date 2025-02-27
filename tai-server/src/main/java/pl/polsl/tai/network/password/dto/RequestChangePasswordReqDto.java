@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RequestChangePasswordReqDto {
-	@NotBlank(message = "Adres email jest wymagany.")
-	@Email(message = "Adres email jest niepoprawny.")
-	private String email;
+  @NotBlank(message = "Adres email jest wymagany.")
+  @Email(message = "Adres email jest niepoprawny.")
+  private String email;
 }

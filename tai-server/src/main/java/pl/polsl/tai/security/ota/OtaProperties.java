@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "application.ota")
 public class OtaProperties {
-	private int length;
-	private long shortExpiredMin;
-	private long longExpiredHours;
+  private int length;
+  private long shortExpiredMin;
+  private long longExpiredHours;
 }

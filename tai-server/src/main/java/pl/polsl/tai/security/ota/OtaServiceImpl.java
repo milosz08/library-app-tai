@@ -17,32 +17,33 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 class OtaServiceImpl implements OtaService {
-	private final OtaTokenRepository otaTokenRepository;
-	private final OtaProperties otaProperties;
+  private final OtaTokenRepository otaTokenRepository;
+  private final OtaProperties otaProperties;
 
-	@Override
-	public GeneratedOta generateToken(OtaType otaType, Duration duration, UserEntity user) {
-		final long expiredSeconds = duration.toSeconds();
-		String token;
-		do {
-			token = SecureRandomGenerator.generate(otaProperties.getLength());
-		} while (otaTokenRepository.existsByToken(token));
+  @Override
+  public GeneratedOta generateToken(OtaType otaType, Duration duration, UserEntity user) {
+    final long expiredSeconds = duration.toSeconds();
+    String token;
+    do {
+      token = SecureRandomGenerator.generate(otaProperties.getLength());
+    } while (otaTokenRepository.existsByToken(token));
 
-		final OtaTokenEntity otaToken = OtaTokenEntity.builder()
-			.token(token)
-			.expires(LocalDateTime.now().plusSeconds(expiredSeconds))
-			.type(otaType)
-			.user(user)
-			.build();
+    final OtaTokenEntity otaToken = OtaTokenEntity.builder()
+      .token(token)
+      .expires(LocalDateTime.now().plusSeconds(expiredSeconds))
+      .type(otaType)
+      .user(user)
+      .build();
 
-		log.info("Generated ota token with type: {} and time: {} for user: {}.", otaType.name(), expiredSeconds, user);
-		return new GeneratedOta(otaToken, expiredSeconds);
-	}
+    log.info("Generated ota token with type: {} and time: {} for user: {}.", otaType.name(),
+      expiredSeconds, user);
+    return new GeneratedOta(otaToken, expiredSeconds);
+  }
 
-	@Override
-	public OtaTokenEntity validateToken(OtaType otaType, String token) {
-		return otaTokenRepository
-			.findAndValidateTokenByType(token, otaType, LocalDateTime.now())
-			.orElseThrow(() -> new RestServerException("Podano nieprawidłowy token."));
-	}
+  @Override
+  public OtaTokenEntity validateToken(OtaType otaType, String token) {
+    return otaTokenRepository
+      .findAndValidateTokenByType(token, otaType, LocalDateTime.now())
+      .orElseThrow(() -> new RestServerException("Podano nieprawidłowy token."));
+  }
 }

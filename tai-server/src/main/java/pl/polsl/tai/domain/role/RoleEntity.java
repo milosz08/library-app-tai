@@ -18,13 +18,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class RoleEntity extends EntityBase implements Serializable {
 
-	@Enumerated(EnumType.STRING)
-	private UserRole name;
+  @Enumerated(EnumType.STRING)
+  private UserRole name;
 
-	@Override
-	public String toString() {
-		return "{" +
-			"name=" + name.name() +
-			'}';
-	}
+  @Override
+  public String toString() {
+    return "{" +
+      "name=" + name.name() +
+      '}';
+  }
 }

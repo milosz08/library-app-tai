@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title th:text="${title}"></title>
+  <meta charset="UTF-8">
+  <title th:text="${title}"></title>
 </head>
 <body>
 
@@ -12,7 +12,9 @@
 <p><strong th:text="${token}"></strong></p>
 <p>w odpowiednie pole lub kliknij link:</p>
 <p><a th:href="${activationLink}" th:text="${activationLink}"></a></p>
-<p>Czas, po którym token ulegnie wygaśnięciu&nbsp;<strong th:text="${tokenExpiration}"></strong>.</p>
+<p>
+  Czas, po którym token ulegnie wygaśnięciu&nbsp;<strong th:text="${tokenExpiration}"></strong>.
+</p>
 
 <hr>
 <i>Czas serwera (UTC): <span th:text="${now}"></span></i>

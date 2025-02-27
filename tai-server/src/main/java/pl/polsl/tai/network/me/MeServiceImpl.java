@@ -17,57 +17,62 @@ import pl.polsl.tai.security.LoggedUser;
 @Service
 @RequiredArgsConstructor
 class MeServiceImpl implements MeService {
-	private final LogPersistService logPersistService;
+  private final LogPersistService logPersistService;
 
-	private final UserRepository userRepository;
-	private final BookRepository bookRepository;
+  private final UserRepository userRepository;
+  private final BookRepository bookRepository;
 
-	@Override
-	public MeDetailsResDto getMeDetails(LoggedUser loggedUser) {
-		final UserEntity user = loggedUser.userEntity();
-		return new MeDetailsResDto(user);
-	}
+  @Override
+  public MeDetailsResDto getMeDetails(LoggedUser loggedUser) {
+    final UserEntity user = loggedUser.userEntity();
+    return new MeDetailsResDto(user);
+  }
 
-	@Override
-	@Transactional
-	public UpdatedUserDetailsResDto updateDetails(UpdateUserDetailsReqDto reqDto, LoggedUser loggedUser) {
-		final UserEntity user = loggedUser.userEntity();
+  @Override
+  @Transactional
+  public UpdatedUserDetailsResDto updateDetails(
+    UpdateUserDetailsReqDto reqDto,
+    LoggedUser loggedUser
+  ) {
+    final UserEntity user = loggedUser.userEntity();
 
-		user.setFirstName(reqDto.getFirstName());
-		user.setLastName(reqDto.getLastName());
+    user.setFirstName(reqDto.getFirstName());
+    user.setLastName(reqDto.getLastName());
 
-		final var resDto = new UpdatedUserDetailsResDto(user);
-		log.info("Updated user: {} details. Details: {}.", user.getEmail(), resDto);
-		logPersistService.info("Użytkownik: %s zmienił imię i/lub nazwisko swojego konta.", user.getEmail());
-		return resDto;
-	}
+    final var resDto = new UpdatedUserDetailsResDto(user);
+    log.info("Updated user: {} details. Details: {}.", user.getEmail(), resDto);
+    logPersistService.info("Użytkownik: %s zmienił imię i/lub nazwisko swojego konta.",
+      user.getEmail());
+    return resDto;
+  }
 
-	@Override
-	@Transactional
-	public UserAddressDto updateAddress(UpdateUserAddressReqDto reqDto, LoggedUser loggedUser) {
-		final UserEntity user = loggedUser.userEntity();
-		final AddressEntity address = user.getAddress();
+  @Override
+  @Transactional
+  public UserAddressDto updateAddress(UpdateUserAddressReqDto reqDto, LoggedUser loggedUser) {
+    final UserEntity user = loggedUser.userEntity();
+    final AddressEntity address = user.getAddress();
 
-		address.setStreet(reqDto.getStreet());
-		address.setCity(reqDto.getCity());
-		address.setApartmentNumber(reqDto.getApartmentNumber());
-		address.setBuildingNumber(reqDto.getBuildingNumber());
+    address.setStreet(reqDto.getStreet());
+    address.setCity(reqDto.getCity());
+    address.setApartmentNumber(reqDto.getApartmentNumber());
+    address.setBuildingNumber(reqDto.getBuildingNumber());
 
-		final var resDto = new UserAddressDto(address);
-		log.info("Updated customer: {} address. New address: {}.", user.getEmail(), address);
-		logPersistService.info("Klient: %s zmienił dane adresowe swojego konta.", user.getEmail());
-		return resDto;
-	}
+    final var resDto = new UserAddressDto(address);
+    log.info("Updated customer: {} address. New address: {}.", user.getEmail(), address);
+    logPersistService.info("Klient: %s zmienił dane adresowe swojego konta.", user.getEmail());
+    return resDto;
+  }
 
-	@Override
-	public void deleteAccount(LoggedUser loggedUser) {
-		final UserEntity user = loggedUser.userEntity();
-		if (bookRepository.countAllRentedByUserId(user.getId()) > 0) {
-			throw new RestServerException("Nie możesz usunąć konta, gdy masz wypożyczoną przynajmniej jedną książkę.");
-		}
-		userRepository.delete(user);
+  @Override
+  public void deleteAccount(LoggedUser loggedUser) {
+    final UserEntity user = loggedUser.userEntity();
+    if (bookRepository.countAllRentedByUserId(user.getId()) > 0) {
+      throw new RestServerException("Nie możesz usunąć konta, gdy masz wypożyczoną przynajmniej " +
+        "jedną książkę.");
+    }
+    userRepository.delete(user);
 
-		log.info("Customer: {} removed account.", user);
-		logPersistService.info("Klient: %s usunął swoje konto.", user.getEmail());
-	}
+    log.info("Customer: {} removed account.", user);
+    logPersistService.info("Klient: %s usunął swoje konto.", user.getEmail());
+  }
 }

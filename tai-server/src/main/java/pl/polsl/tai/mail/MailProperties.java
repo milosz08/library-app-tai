@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "application.mail")
 public class MailProperties {
-	private String from;
-	private String clientUrl;
+  private String from;
+  private String clientUrl;
 }

@@ -19,19 +19,19 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class AuthorEntity extends EntityBase implements Serializable {
 
-	private String firstName;
+  private String firstName;
 
-	private String lastName;
+  private String lastName;
 
-	@ManyToOne
-	@JoinColumn
-	private BookEntity book;
+  @ManyToOne
+  @JoinColumn
+  private BookEntity book;
 
-	@Override
-	public String toString() {
-		return "{" +
-			"firstName=" + firstName +
-			", lastName=" + lastName +
-			'}';
-	}
+  @Override
+  public String toString() {
+    return "{" +
+      "firstName=" + firstName +
+      ", lastName=" + lastName +
+      '}';
+  }
 }

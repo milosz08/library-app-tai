@@ -12,16 +12,16 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
-	Optional<UserEntity> findByEmail(String email);
+  Optional<UserEntity> findByEmail(String email);
 
-	Optional<UserEntity> findByIdAndRole_Name(Long userId, UserRole role);
+  Optional<UserEntity> findByIdAndRole_Name(Long userId, UserRole role);
 
-	List<UserEntity> findAllByIdInAndRole_Name(List<Long> userIds, UserRole role);
+  List<UserEntity> findAllByIdInAndRole_Name(List<Long> userIds, UserRole role);
 
-	List<UserEntity> findAllByRole_Name(UserRole role);
+  List<UserEntity> findAllByRole_Name(UserRole role);
 
-	boolean existsByEmail(String email);
+  boolean existsByEmail(String email);
 
-	@Query("from UserEntity u left join fetch u.books where u.id = :userId")
-	Optional<UserEntity> findUserAndFetchBooks(@Param("userId") Long userId);
+  @Query("from UserEntity u left join fetch u.books where u.id = :userId")
+  Optional<UserEntity> findUserAndFetchBooks(@Param("userId") Long userId);
 }

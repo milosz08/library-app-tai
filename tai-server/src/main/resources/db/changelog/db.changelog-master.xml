@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-	<include file="./migrations/2024-11-05-00000__create-users-table.sql" relativeToChangelogFile="true"/>
-	<include file="./migrations/2024-11-05-00001__create-ota-tokens-table.sql" relativeToChangelogFile="true"/>
-	<include file="./migrations/2024-11-05-00002__insert-default-user.sql" relativeToChangelogFile="true"/>
-	<include file="./migrations/2024-12-04-00000__create-logs-table.sql" relativeToChangelogFile="true"/>
-	<include file="./migrations/2024-12-05-00000__add-ota-enum-type.sql" relativeToChangelogFile="true"/>
-	<include file="./migrations/2024-12-05-00001__update-ota-cascade.sql" relativeToChangelogFile="true"/>
-	<include file="./migrations/2024-12-08-00000__update-address-cascade.sql" relativeToChangelogFile="true"/>
-	<include file="./migrations/2024-12-08-00001__create-books-table.sql" relativeToChangelogFile="true"/>
-	<include file="./migrations/2024-12-08-00002__add-default-books.sql" relativeToChangelogFile="true"/>
+  <!-- @formatter:off-->
+  <include file="./migrations/2024-11-05-00000__create-users-table.sql" relativeToChangelogFile="true"/>
+  <include file="./migrations/2024-11-05-00001__create-ota-tokens-table.sql" relativeToChangelogFile="true"/>
+  <include file="./migrations/2024-11-05-00002__insert-default-user.sql" relativeToChangelogFile="true"/>
+  <include file="./migrations/2024-12-04-00000__create-logs-table.sql" relativeToChangelogFile="true"/>
+  <include file="./migrations/2024-12-05-00000__add-ota-enum-type.sql" relativeToChangelogFile="true"/>
+  <include file="./migrations/2024-12-05-00001__update-ota-cascade.sql" relativeToChangelogFile="true"/>
+  <include file="./migrations/2024-12-08-00000__update-address-cascade.sql" relativeToChangelogFile="true"/>
+  <include file="./migrations/2024-12-08-00001__create-books-table.sql" relativeToChangelogFile="true"/>
+  <include file="./migrations/2024-12-08-00002__add-default-books.sql" relativeToChangelogFile="true"/>
+  <!-- @formatter:on-->
 
 </databaseChangeLog>

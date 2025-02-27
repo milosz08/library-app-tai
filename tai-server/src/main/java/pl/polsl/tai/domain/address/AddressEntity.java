@@ -19,25 +19,25 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class AddressEntity extends EntityBase implements Serializable {
 
-	private String street;
+  private String street;
 
-	private String buildingNumber;
+  private String buildingNumber;
 
-	private String apartmentNumber;
+  private String apartmentNumber;
 
-	private String city;
+  private String city;
 
-	@OneToOne
-	@JoinColumn
-	private UserEntity user;
+  @OneToOne
+  @JoinColumn
+  private UserEntity user;
 
-	@Override
-	public String toString() {
-		return "{" +
-			"street=" + street +
-			", buildingNumber=" + buildingNumber +
-			", apartmentNumber=" + apartmentNumber +
-			", city=" + city +
-			'}';
-	}
+  @Override
+  public String toString() {
+    return "{" +
+      "street=" + street +
+      ", buildingNumber=" + buildingNumber +
+      ", apartmentNumber=" + apartmentNumber +
+      ", city=" + city +
+      '}';
+  }
 }

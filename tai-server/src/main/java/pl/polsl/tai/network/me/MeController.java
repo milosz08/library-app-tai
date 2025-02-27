@@ -16,39 +16,39 @@ import pl.polsl.tai.security.LoggedUser;
 @RequestMapping("/v1/@me")
 @RequiredArgsConstructor
 class MeController {
-	private final MeService meService;
+  private final MeService meService;
 
-	@GetMapping
-	ResponseEntity<MeDetailsResDto> details(@AuthenticationPrincipal LoggedUser loggedUser) {
-		return ResponseEntity.ok(meService.getMeDetails(loggedUser));
-	}
+  @GetMapping
+  ResponseEntity<MeDetailsResDto> details(@AuthenticationPrincipal LoggedUser loggedUser) {
+    return ResponseEntity.ok(meService.getMeDetails(loggedUser));
+  }
 
-	@PatchMapping
-	ResponseEntity<UpdatedUserDetailsResDto> updateDetails(
-		@RequestBody @Valid UpdateUserDetailsReqDto reqDto,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		return ResponseEntity.ok(meService.updateDetails(reqDto, loggedUser));
-	}
+  @PatchMapping
+  ResponseEntity<UpdatedUserDetailsResDto> updateDetails(
+    @RequestBody @Valid UpdateUserDetailsReqDto reqDto,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(meService.updateDetails(reqDto, loggedUser));
+  }
 
-	@PatchMapping("/address")
-	ResponseEntity<UserAddressDto> updateAddress(
-		@RequestBody @Valid UpdateUserAddressReqDto reqDto,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		return ResponseEntity.ok(meService.updateAddress(reqDto, loggedUser));
-	}
+  @PatchMapping("/address")
+  ResponseEntity<UserAddressDto> updateAddress(
+    @RequestBody @Valid UpdateUserAddressReqDto reqDto,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(meService.updateAddress(reqDto, loggedUser));
+  }
 
-	@DeleteMapping
-	ResponseEntity<Void> deleteAccount(
-		@AuthenticationPrincipal LoggedUser loggedUser,
-		HttpServletRequest req,
-		HttpServletResponse res,
-		Authentication authentication
-	) {
-		meService.deleteAccount(loggedUser);
-		final var handler = new SecurityContextLogoutHandler();
-		handler.logout(req, res, authentication);
-		return ResponseEntity.noContent().build();
-	}
+  @DeleteMapping
+  ResponseEntity<Void> deleteAccount(
+    @AuthenticationPrincipal LoggedUser loggedUser,
+    HttpServletRequest req,
+    HttpServletResponse res,
+    Authentication authentication
+  ) {
+    meService.deleteAccount(loggedUser);
+    final var handler = new SecurityContextLogoutHandler();
+    handler.logout(req, res, authentication);
+    return ResponseEntity.noContent().build();
+  }
 }

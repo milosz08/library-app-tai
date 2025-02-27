@@ -7,9 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginReqDto {
-	@NotNull(message = "Pole adresu email musi istnieć.")
-	private String email;
+  @NotNull(message = "Pole adresu email musi istnieć.")
+  private String email;
 
-	@NotNull(message = "Pole hasła musi istnieć.")
-	private String password;
+  @NotNull(message = "Pole hasła musi istnieć.")
+  private String password;
 }

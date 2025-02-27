@@ -49,8 +49,8 @@ class SecurityConfig {
 	private final RenewCookieFilter renewCookieFilter;
 	private final CustomLogoutHandlerResolver logoutHandlerResolver;
 
-	@Value("${application.session.cookie.name}")
-	private String sessionCookieName;
+  @Value("${application.session.cookie.name}")
+  private String sessionCookieName;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -119,45 +119,48 @@ class SecurityConfig {
 		return http.build();
 	}
 
-	private String[] mapRoles(UserRole... roles) {
-		return Arrays.stream(roles).map(UserRole::name).toArray(String[]::new);
-	}
+  private String[] mapRoles(UserRole... roles) {
+    return Arrays.stream(roles).map(UserRole::name).toArray(String[]::new);
+  }
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder(10);
-	}
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder(10);
+  }
 
-	@Bean
-	GrantedAuthorityDefaults grantedAuthorityDefaults() {
-		return new GrantedAuthorityDefaults("");
-	}
+  @Bean
+  GrantedAuthorityDefaults grantedAuthorityDefaults() {
+    return new GrantedAuthorityDefaults("");
+  }
 
-	@Bean
-	AuthenticationManager authenticationManager(MessageSource messageSource, UserDetailsService userDetailsService) {
-		final DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		provider.setMessageSource(messageSource);
-		provider.setPasswordEncoder(passwordEncoder());
-		provider.setUserDetailsService(userDetailsService);
-		return new ProviderManager(provider);
-	}
+  @Bean
+  AuthenticationManager authenticationManager(
+    MessageSource messageSource,
+    UserDetailsService userDetailsService
+  ) {
+    final DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    provider.setMessageSource(messageSource);
+    provider.setPasswordEncoder(passwordEncoder());
+    provider.setUserDetailsService(userDetailsService);
+    return new ProviderManager(provider);
+  }
 
-	@Bean
-	AuthenticationManager loginPageAuthenticationManager(
-		MessageSource messageSource,
-		UserDetailsService userDetailsService
-	) {
-		final DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		provider.setMessageSource(messageSource);
-		provider.setPasswordEncoder(passwordEncoder());
-		provider.setUserDetailsService(userDetailsService);
-		provider.setPreAuthenticationChecks(new LoginAuthenticationCheck());
-		provider.setPostAuthenticationChecks(new LoginAuthenticationCheck());
-		return new ProviderManager(provider);
-	}
+  @Bean
+  AuthenticationManager loginPageAuthenticationManager(
+    MessageSource messageSource,
+    UserDetailsService userDetailsService
+  ) {
+    final DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    provider.setMessageSource(messageSource);
+    provider.setPasswordEncoder(passwordEncoder());
+    provider.setUserDetailsService(userDetailsService);
+    provider.setPreAuthenticationChecks(new LoginAuthenticationCheck());
+    provider.setPostAuthenticationChecks(new LoginAuthenticationCheck());
+    return new ProviderManager(provider);
+  }
 
-	@Bean
-	SecurityContextRepository securityContextRepository() {
-		return new HttpSessionSecurityContextRepository();
-	}
+  @Bean
+  SecurityContextRepository securityContextRepository() {
+    return new HttpSessionSecurityContextRepository();
+  }
 }

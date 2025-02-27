@@ -20,57 +20,62 @@ import java.util.List;
 @RequestMapping("/v1/book")
 @RequiredArgsConstructor
 class BookController {
-	private final BookService bookService;
+  private final BookService bookService;
 
-	@GetMapping
-	ResponseEntity<PageableResDto<BookRowResDto, BookEntity>> getPageableBooks(
-		@RequestParam(required = false) String title,
-		@RequestParam(required = false) Integer page,
-		@RequestParam(required = false) Integer size
-	) {
-		return ResponseEntity.ok(bookService.getPageableBooks(title, page, size));
-	}
+  @GetMapping
+  ResponseEntity<PageableResDto<BookRowResDto, BookEntity>> getPageableBooks(
+    @RequestParam(required = false) String title,
+    @RequestParam(required = false) Integer page,
+    @RequestParam(required = false) Integer size
+  ) {
+    return ResponseEntity.ok(bookService.getPageableBooks(title, page, size));
+  }
 
-	@GetMapping("/{bookId}")
-	ResponseEntity<BookDetailsResDto> getBookDetails(@PathVariable Long bookId) {
-		return ResponseEntity.ok(bookService.getBookDetails(bookId));
-	}
+  @GetMapping("/{bookId}")
+  ResponseEntity<BookDetailsResDto> getBookDetails(@PathVariable Long bookId) {
+    return ResponseEntity.ok(bookService.getBookDetails(bookId));
+  }
 
-	@PostMapping
-	ResponseEntity<Void> createBook(
-		@Valid @RequestBody AddEditBookReqDto reqDto,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		bookService.createBook(reqDto, loggedUser);
-		return ResponseEntity.noContent().build();
-	}
+  @PostMapping
+  ResponseEntity<Void> createBook(
+    @Valid @RequestBody AddEditBookReqDto reqDto,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    bookService.createBook(reqDto, loggedUser);
+    return ResponseEntity.noContent().build();
+  }
 
-	@PatchMapping("/{bookId}")
-	ResponseEntity<Void> updateBook(
-		@PathVariable Long bookId,
-		@Valid @RequestBody AddEditBookReqDto reqDto,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		bookService.updateBook(bookId, reqDto, loggedUser);
-		return ResponseEntity.noContent().build();
-	}
+  @PatchMapping("/{bookId}")
+  ResponseEntity<Void> updateBook(
+    @PathVariable Long bookId,
+    @Valid @RequestBody AddEditBookReqDto reqDto,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    bookService.updateBook(bookId, reqDto, loggedUser);
+    return ResponseEntity.noContent().build();
+  }
 
-	@DeleteMapping("/{bookId}")
-	ResponseEntity<Void> deleteBook(@PathVariable Long bookId, @AuthenticationPrincipal LoggedUser loggedUser) {
-		bookService.deleteBooks(List.of(bookId), loggedUser);
-		return ResponseEntity.noContent().build();
-	}
+  @DeleteMapping("/{bookId}")
+  ResponseEntity<Void> deleteBook(
+    @PathVariable Long bookId,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    bookService.deleteBooks(List.of(bookId), loggedUser);
+    return ResponseEntity.noContent().build();
+  }
 
-	@DeleteMapping("/selected")
-	ResponseEntity<DeleteResultResDto> deleteSelectedBooks(
-		@Valid @RequestBody SelectedIdsDto bookIdsDto,
-		@AuthenticationPrincipal LoggedUser loggedUser
-	) {
-		return ResponseEntity.ok(bookService.deleteBooks(bookIdsDto.getIds(), loggedUser));
-	}
+  @DeleteMapping("/selected")
+  ResponseEntity<DeleteResultResDto> deleteSelectedBooks(
+    @Valid @RequestBody SelectedIdsDto bookIdsDto,
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(bookService.deleteBooks(bookIdsDto.getIds(), loggedUser));
+  }
 
-	@DeleteMapping
-	ResponseEntity<DeleteResultResDto> deleteAllBooks(@AuthenticationPrincipal LoggedUser loggedUser) {
-		return ResponseEntity.ok(bookService.deleteBooks(List.of(), loggedUser));
-	}
+  @DeleteMapping
+  ResponseEntity<DeleteResultResDto> deleteAllBooks(
+    @AuthenticationPrincipal LoggedUser loggedUser
+  ) {
+    return ResponseEntity.ok(bookService.deleteBooks(List.of(), loggedUser));
+  }
 }

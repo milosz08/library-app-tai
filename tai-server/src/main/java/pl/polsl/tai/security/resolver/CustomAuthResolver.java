@@ -13,22 +13,22 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class CustomAuthResolver extends ResponseResolverBase implements AuthenticationEntryPoint {
-	public CustomAuthResolver(ObjectMapper objectMapper) {
-		super(objectMapper);
-	}
+  public CustomAuthResolver(ObjectMapper objectMapper) {
+    super(objectMapper);
+  }
 
-	@Override
-	public void commence(
-		HttpServletRequest req,
-		HttpServletResponse res,
-		AuthenticationException ex
-	) throws IOException {
-		log.error("Authentication exception: {}.", ex.getMessage());
-		sendResponse(res, ex.getMessage());
-	}
+  @Override
+  public void commence(
+    HttpServletRequest req,
+    HttpServletResponse res,
+    AuthenticationException ex
+  ) throws IOException {
+    log.error("Authentication exception: {}.", ex.getMessage());
+    sendResponse(res, ex.getMessage());
+  }
 
-	@Override
-	protected int status() {
-		return HttpServletResponse.SC_UNAUTHORIZED;
-	}
+  @Override
+  protected int status() {
+    return HttpServletResponse.SC_UNAUTHORIZED;
+  }
 }

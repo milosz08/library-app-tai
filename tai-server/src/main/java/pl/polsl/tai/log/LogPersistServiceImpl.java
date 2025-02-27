@@ -13,23 +13,23 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class LogPersistServiceImpl implements LogPersistService {
-	private final LogRepository logRepository;
+  private final LogRepository logRepository;
 
-	private void log(Level level, String message, Object... args) {
-		final String formattedMessage = String.format(message, args);
-		final LocalDateTime executedTime = LocalDateTime.now();
+  private void log(Level level, String message, Object... args) {
+    final String formattedMessage = String.format(message, args);
+    final LocalDateTime executedTime = LocalDateTime.now();
 
-		final LogEntity logEntity = new LogEntity(formattedMessage, level, executedTime);
-		final LogEntity persistedLog = logRepository.save(logEntity);
+    final LogEntity logEntity = new LogEntity(formattedMessage, level, executedTime);
+    final LogEntity persistedLog = logRepository.save(logEntity);
 
-		log.debug("Persist log: {} into DB.", persistedLog);
-	}
+    log.debug("Persist log: {} into DB.", persistedLog);
+  }
 
-	public void info(String message, Object... args) {
-		log(Level.INFO, message, args);
-	}
+  public void info(String message, Object... args) {
+    log(Level.INFO, message, args);
+  }
 
-	public void error(String message, Object... args) {
-		log(Level.ERROR, message, args);
-	}
+  public void error(String message, Object... args) {
+    log(Level.ERROR, message, args);
+  }
 }

@@ -7,11 +7,11 @@ import pl.polsl.tai.network.auth.dto.RevalidateSessionResDto;
 import pl.polsl.tai.security.LoggedUser;
 
 interface AuthService {
-	LoginResDto login(LoginReqDto reqDto);
+  LoginResDto login(LoginReqDto reqDto);
 
-	void register(RegisterReqDto reqDto);
+  void register(RegisterReqDto reqDto);
 
-	void activateAccount(String token);
+  void activateAccount(String token);
 
 	RevalidateSessionResDto revalidateSession(LoggedUser loggedUser);
 }

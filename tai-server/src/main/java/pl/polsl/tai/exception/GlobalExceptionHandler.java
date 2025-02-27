@@ -20,54 +20,54 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 class GlobalExceptionHandler {
-	@ExceptionHandler(NoResourceFoundException.class)
-	ResponseEntity<Void> handleNotFound() {
-		return ResponseEntity.notFound().build();
-	}
+  @ExceptionHandler(NoResourceFoundException.class)
+  ResponseEntity<Void> handleNotFound() {
+    return ResponseEntity.notFound().build();
+  }
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
-		final List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-		if (fieldErrors.isEmpty()) {
-			final ObjectError error = ex.getBindingResult().getAllErrors().get(0);
-			log.error("Invalid method argument exception. Cause: {}", error);
-			return ResponseEntity.badRequest().body(new ErrorDto(error.getDefaultMessage()));
-		}
-		final Map<String, String> errors = new HashMap<>();
-		for (final FieldError fieldError : fieldErrors) {
-			errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-		}
-		log.error("Invalid method argument exception. Cause(s): {}", errors);
-		return ResponseEntity.badRequest().body(errors);
-	}
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    final List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+    if (fieldErrors.isEmpty()) {
+      final ObjectError error = ex.getBindingResult().getAllErrors().get(0);
+      log.error("Invalid method argument exception. Cause: {}", error);
+      return ResponseEntity.badRequest().body(new ErrorDto(error.getDefaultMessage()));
+    }
+    final Map<String, String> errors = new HashMap<>();
+    for (final FieldError fieldError : fieldErrors) {
+      errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+    }
+    log.error("Invalid method argument exception. Cause(s): {}", errors);
+    return ResponseEntity.badRequest().body(errors);
+  }
 
-	@ExceptionHandler(AuthenticationException.class)
-	ResponseEntity<?> handleAuthenticationException(AuthenticationException ex) throws AuthenticationException {
-		throw ex;
-	}
+  @ExceptionHandler(AuthenticationException.class)
+  ResponseEntity<?> handleAuthenticationException(AuthenticationException ex) throws AuthenticationException {
+    throw ex;
+  }
 
-	@ExceptionHandler(AccessDeniedException.class)
-	ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) throws AccessDeniedException {
-		throw ex;
-	}
+  @ExceptionHandler(AccessDeniedException.class)
+  ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) throws AccessDeniedException {
+    throw ex;
+  }
 
-	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-	ResponseEntity<Void> handleHttpRequestMethodNotSupported() {
-		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
-	}
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  ResponseEntity<Void> handleHttpRequestMethodNotSupported() {
+    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+  }
 
-	@ExceptionHandler(RestServerException.class)
-	ResponseEntity<ErrorDto> handleRestServerException(RestServerException ex) {
-		log.error("Server rest exception. Cause: {}", ex.getMessage());
-		return new ResponseEntity<>(new ErrorDto(ex.getMessage()), ex.getStatus());
-	}
+  @ExceptionHandler(RestServerException.class)
+  ResponseEntity<ErrorDto> handleRestServerException(RestServerException ex) {
+    log.error("Server rest exception. Cause: {}", ex.getMessage());
+    return new ResponseEntity<>(new ErrorDto(ex.getMessage()), ex.getStatus());
+  }
 
-	@ExceptionHandler(Exception.class)
-	ResponseEntity<ErrorDto> handleUnknownException(Exception ex) {
-		log.error("Unknown server exception. Cause: {}", ex.getMessage());
-		return new ResponseEntity<>(
-			new ErrorDto(RestServerException.UNEXPECTED_EXCEPTION_MESSAGE),
-			HttpStatus.INTERNAL_SERVER_ERROR
-		);
-	}
+  @ExceptionHandler(Exception.class)
+  ResponseEntity<ErrorDto> handleUnknownException(Exception ex) {
+    log.error("Unknown server exception. Cause: {}", ex.getMessage());
+    return new ResponseEntity<>(
+      new ErrorDto(RestServerException.UNEXPECTED_EXCEPTION_MESSAGE),
+      HttpStatus.INTERNAL_SERVER_ERROR
+    );
+  }
 }

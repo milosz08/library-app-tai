@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaRepositories
 @SpringBootApplication
 public class TaiApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(TaiApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(TaiApplication.class, args);
+  }
 }

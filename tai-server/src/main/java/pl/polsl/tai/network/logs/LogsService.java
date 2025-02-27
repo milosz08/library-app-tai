@@ -7,11 +7,11 @@ import pl.polsl.tai.network.logs.dto.LogRowResDto;
 import pl.polsl.tai.security.LoggedUser;
 
 interface LogsService {
-	PageableResDto<LogRowResDto, LogEntity> getNewestPageableLogs(Integer page, Integer size);
+  PageableResDto<LogRowResDto, LogEntity> getNewestPageableLogs(Integer page, Integer size);
 
-	void deleteLogById(Long logId, LoggedUser loggedUser);
+  void deleteLogById(Long logId, LoggedUser loggedUser);
 
-	DeletedLogRowsCountResDto deleteLogsChunk(Integer chunkSize, LoggedUser loggedUser);
+  DeletedLogRowsCountResDto deleteLogsChunk(Integer chunkSize, LoggedUser loggedUser);
 
-	DeletedLogRowsCountResDto deleteAllLogs(LoggedUser loggedUser);
+  DeletedLogRowsCountResDto deleteAllLogs(LoggedUser loggedUser);
 }

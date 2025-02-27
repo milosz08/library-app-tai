@@ -15,17 +15,17 @@ import java.util.List;
 @Setter
 @MatchValues(message = "Nowe hasło oraz potwierdzenie nowego hasła nie są takie same.")
 public class ChangePasswordReqDto implements MatchValuesDto {
-	@NotBlank(message = "Nowe hasło jest wymagane.")
-	@Size(max = 100, message = "Nowe Hasło może mieć maksymalnie 100 znaków.")
-	@Pattern(regexp = Regex.PASSWORD_REQ, message = "Nowe hasło musi zawierać co najmniej 8 znaków, jedną wielką " +
-		"literę, jedną cyfrę i znak specjalny (spośród #?!@$%^&*).")
-	private String newPassword;
+  @NotBlank(message = "Nowe hasło jest wymagane.")
+  @Size(max = 100, message = "Nowe Hasło może mieć maksymalnie 100 znaków.")
+  @Pattern(regexp = Regex.PASSWORD_REQ, message = "Nowe hasło musi zawierać co najmniej 8 " +
+    "znaków, jedną wielką literę, jedną cyfrę i znak specjalny (spośród #?!@$%^&*).")
+  private String newPassword;
 
-	@NotBlank(message = "Potwierdzenie nowego hasła jest wymagane.")
-	private String confirmedNewPassword;
+  @NotBlank(message = "Potwierdzenie nowego hasła jest wymagane.")
+  private String confirmedNewPassword;
 
-	@Override
-	public List<String> getMatchValues() {
-		return List.of(newPassword, confirmedNewPassword);
-	}
+  @Override
+  public List<String> getMatchValues() {
+    return List.of(newPassword, confirmedNewPassword);
+  }
 }

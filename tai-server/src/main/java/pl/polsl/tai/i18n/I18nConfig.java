@@ -17,26 +17,26 @@ import java.util.Locale;
 @Configuration
 class I18nConfig implements WebMvcConfigurer {
 
-	@Value("${application.locale}")
-	private String locale;
+  @Value("${application.locale}")
+  private String locale;
 
-	@Bean
-	LocaleResolver localeResolver(FixedOneLocaleResolver fixedOneLocaleResolver) {
-		fixedOneLocaleResolver.setDefaultLocale(createLocale());
-		fixedOneLocaleResolver.setSupportedLocales(List.of(createLocale()));
-		return fixedOneLocaleResolver;
-	}
+  @Bean
+  LocaleResolver localeResolver(FixedOneLocaleResolver fixedOneLocaleResolver) {
+    fixedOneLocaleResolver.setDefaultLocale(createLocale());
+    fixedOneLocaleResolver.setSupportedLocales(List.of(createLocale()));
+    return fixedOneLocaleResolver;
+  }
 
-	@Primary
-	@Bean
-	MessageSource messageSource() {
-		final ResourceBundleMessageSource messageSource = new SpringSecurityMessageSource();
-		messageSource.setDefaultEncoding(String.valueOf(StandardCharsets.UTF_8));
-		messageSource.setDefaultLocale(createLocale());
-		return messageSource;
-	}
+  @Primary
+  @Bean
+  MessageSource messageSource() {
+    final ResourceBundleMessageSource messageSource = new SpringSecurityMessageSource();
+    messageSource.setDefaultEncoding(String.valueOf(StandardCharsets.UTF_8));
+    messageSource.setDefaultLocale(createLocale());
+    return messageSource;
+  }
 
-	private Locale createLocale() {
-		return new Locale(locale);
-	}
+  private Locale createLocale() {
+    return new Locale(locale);
+  }
 }

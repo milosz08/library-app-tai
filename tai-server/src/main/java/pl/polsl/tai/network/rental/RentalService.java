@@ -9,11 +9,11 @@ import pl.polsl.tai.network.rental.dto.ReturnBookReqDto;
 import pl.polsl.tai.security.LoggedUser;
 
 interface RentalService {
-	PageableResDto<RentedBookRowResDto, BookEntity> getPageableRentedBooks(String title, Integer page, Integer size, LoggedUser loggedUser);
+  PageableResDto<RentedBookRowResDto, BookEntity> getPageableRentedBooks(String title, Integer page, Integer size, LoggedUser loggedUser);
 
-	RentedBookDetailsResDto getRentedBookDetails(Long bookId, LoggedUser loggedUser);
+  RentedBookDetailsResDto getRentedBookDetails(Long bookId, LoggedUser loggedUser);
 
-	void loanBook(LoanBookReqDto reqDto, LoggedUser loggedUser);
+  void loanBook(LoanBookReqDto reqDto, LoggedUser loggedUser);
 
-	void returnBook(ReturnBookReqDto reqDto, LoggedUser loggedUser);
+  void returnBook(ReturnBookReqDto reqDto, LoggedUser loggedUser);
 }

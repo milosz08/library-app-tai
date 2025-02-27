@@ -9,15 +9,15 @@ import pl.polsl.tai.security.LoggedUser;
 import java.util.List;
 
 interface EmployerService {
-	PageableResDto<EmployerRowResDto, UserEntity> getPageableEmployers(String email, Integer page, Integer size);
+  PageableResDto<EmployerRowResDto, UserEntity> getPageableEmployers(String email, Integer page, Integer size);
 
-	void createEmployer(AddEmployerReqDto reqDto, LoggedUser loggedUser);
+  void createEmployer(AddEmployerReqDto reqDto, LoggedUser loggedUser);
 
-	UpdateEmployerResDto updateEmployer(Long employerId, UpdateEmployerReqDto reqDto, LoggedUser loggedUser);
+  UpdateEmployerResDto updateEmployer(Long employerId, UpdateEmployerReqDto reqDto, LoggedUser loggedUser);
 
-	void firstAccessRegenerateToken(Long employerId, LoggedUser loggedUser);
+  void firstAccessRegenerateToken(Long employerId, LoggedUser loggedUser);
 
-	void firstAccessUpdatePassword(String token, FirstAccessUpdatePasswordReqDto reqDto);
+  void firstAccessUpdatePassword(String token, FirstAccessUpdatePasswordReqDto reqDto);
 
-	DeleteResultResDto deleteEmployers(List<Long> employerIds, LoggedUser loggedUser);
+  DeleteResultResDto deleteEmployers(List<Long> employerIds, LoggedUser loggedUser);
 }

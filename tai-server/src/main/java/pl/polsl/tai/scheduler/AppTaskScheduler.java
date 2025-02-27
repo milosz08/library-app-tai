@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Component
 @RequiredArgsConstructor
 class AppTaskScheduler {
-	private final OtaTokenRepository otaTokenRepository;
+  private final OtaTokenRepository otaTokenRepository;
 
-	// co 1h
-	@Scheduled(cron = "0 0 * * * *")
-	@Transactional
-	void deleteUnusedOtaTokens() {
-		otaTokenRepository.deleteAllByExpiresBeforeAndUsedIsFalse(LocalDateTime.now());
-	}
+  // co 1h
+  @Scheduled(cron = "0 0 * * * *")
+  @Transactional
+  void deleteUnusedOtaTokens() {
+    otaTokenRepository.deleteAllByExpiresBeforeAndUsedIsFalse(LocalDateTime.now());
+  }
 }

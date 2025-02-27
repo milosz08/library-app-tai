@@ -8,10 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoanBookReqDto {
-	@NotNull(message = "Identyfikator książki musi istnieć.")
-	private Long bookId;
+  @NotNull(message = "Identyfikator książki musi istnieć.")
+  private Long bookId;
 
-	@NotNull(message = "Ilość wypożyczonych książek musi istnieć.")
-	@Min(value = 1, message = "Ilość wypożyczonych książek musi być większa bądź równa 1.")
-	private Long count;
+  @NotNull(message = "Ilość wypożyczonych książek musi istnieć.")
+  @Min(value = 1, message = "Ilość wypożyczonych książek musi być większa bądź równa 1.")
+  private Long count;
 }

@@ -29,52 +29,55 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 class ForgotPasswordServiceImpl implements ForgotPasswordService {
-	private final OtaService otaService;
-	private final LogPersistService logPersistService;
-	private final OtaProperties otaProperties;
-	private final PasswordEncoder passwordEncoder;
-	private final MailService mailService;
-	private final MailProperties mailProperties;
+  private final OtaService otaService;
+  private final LogPersistService logPersistService;
+  private final OtaProperties otaProperties;
+  private final PasswordEncoder passwordEncoder;
+  private final MailService mailService;
+  private final MailProperties mailProperties;
 
-	private final UserRepository userRepository;
-	private final OtaTokenRepository otaTokenRepository;
+  private final UserRepository userRepository;
+  private final OtaTokenRepository otaTokenRepository;
 
-	@Override
-	public void sendRequestToChangePassword(RequestChangePasswordReqDto reqDto) {
-		final Optional<UserEntity> optionalUser = userRepository.findByEmail(reqDto.getEmail());
+  @Override
+  public void sendRequestToChangePassword(RequestChangePasswordReqDto reqDto) {
+    final Optional<UserEntity> optionalUser = userRepository.findByEmail(reqDto.getEmail());
 
-		if (optionalUser.isPresent()) {
-			final Duration expiredDuration = Duration.ofMinutes(otaProperties.getShortExpiredMin());
-			final GeneratedOta ota = otaService.generateToken(OtaType.RESET_PASSWORD, expiredDuration, optionalUser.get());
-			otaTokenRepository.save(ota.entity());
+    if (optionalUser.isPresent()) {
+      final Duration expiredDuration = Duration.ofMinutes(otaProperties.getShortExpiredMin());
+      final GeneratedOta ota = otaService
+        .generateToken(OtaType.RESET_PASSWORD, expiredDuration, optionalUser.get());
+      otaTokenRepository.save(ota.entity());
 
-			final String token = ota.entity().getToken();
-			final UserEntity user = optionalUser.get();
+      final String token = ota.entity().getToken();
+      final UserEntity user = optionalUser.get();
 
-			final String changePasswordLink = String.format("%s/przypomnij-haslo/%s", mailProperties.getClientUrl(), token);
+      final String changePasswordLink = String.format("%s/przypomnij-haslo/%s",
+        mailProperties.getClientUrl(), token);
 
-			final Context context = new Context();
-			context.setVariable("name", user.getFirstName() + " " + user.getLastName());
-			context.setVariable("token", token);
-			context.setVariable("changePasswordLink", changePasswordLink);
-			context.setVariable("tokenExpiration", DateTime.formatSeconds(ota.expiredSeconds()));
+      final Context context = new Context();
+      context.setVariable("name", user.getFirstName() + " " + user.getLastName());
+      context.setVariable("token", token);
+      context.setVariable("changePasswordLink", changePasswordLink);
+      context.setVariable("tokenExpiration", DateTime.formatSeconds(ota.expiredSeconds()));
 
-			mailService.send(user.getEmail(), "Zmiana hasła", context, MailTemplate.FORGOT_PASSWORD);
-			log.info("Sent request to change password for user: {}.", optionalUser.get());
-		}
-	}
+      mailService.send(user.getEmail(), "Zmiana hasła", context, MailTemplate.FORGOT_PASSWORD);
+      log.info("Sent request to change password for user: {}.", optionalUser.get());
+    }
+  }
 
-	@Override
-	@Transactional
-	public void changePassword(String token, ChangePasswordReqDto reqDto) {
-		final OtaTokenEntity otaToken = otaService.validateToken(OtaType.RESET_PASSWORD, token);
+  @Override
+  @Transactional
+  public void changePassword(String token, ChangePasswordReqDto reqDto) {
+    final OtaTokenEntity otaToken = otaService.validateToken(OtaType.RESET_PASSWORD, token);
 
-		final UserEntity user = otaToken.getUser();
-		user.setPassword(passwordEncoder.encode(reqDto.getNewPassword()));
+    final UserEntity user = otaToken.getUser();
+    user.setPassword(passwordEncoder.encode(reqDto.getNewPassword()));
 
-		otaToken.setUsed(true);
+    otaToken.setUsed(true);
 
-		log.info("User: {} changed password.", user);
-		logPersistService.info("Użytkownik z adresem email: %s zaktualizował swoje hasło.", user.getEmail());
-	}
+    log.info("User: {} changed password.", user);
+    logPersistService.info("Użytkownik z adresem email: %s zaktualizował swoje hasło.",
+      user.getEmail());
+  }
 }
