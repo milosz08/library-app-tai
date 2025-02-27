@@ -112,7 +112,7 @@ jobs:
           port: ${{ env.SSH_PORT }}
           key: ${{ env.SSH_KEY }}
           passphrase: ${{ env.SSH_PASSPHRASE }}
-          source: "output-jar.jar"
+          source: "library-app-tai.jar"
           target: ${{ env.SERVER_OUTPUT }}
           rm: true
 
