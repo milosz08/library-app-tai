@@ -100,14 +100,14 @@ This command should create 2 docker containers:
 
 * Go to server directory (`$ cd tai-server`) and type (for UNIX):
 
-```
+```bash
 $ ./mvnw clean install
 $ ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 or for Windows:
 
-```
+```bash
 $ mvnw.cmd clean install
 $ mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
 ```
