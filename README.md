@@ -50,7 +50,7 @@ This command should create 4 docker containers:
 
 > NOTE: If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To
 > omit, create only MySQL db container
-> via: `$ docker compose up -d tai-mysql-db tai-mailhog tai-server tai-client`.
+> via: `$ docker compose up -d tai-mysql-db tai-mailhog tai-app`.
 
 ## Setup (for development)
 
