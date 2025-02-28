@@ -102,14 +102,14 @@ This command should create 2 docker containers:
 
 ```
 $ ./mvnw clean install
-$ ./mvnw spring-boot:run
+$ ./mvnw spring-boot:run -Dspring.profiles.active=dev
 ```
 
 or for Windows:
 
 ```
 $ mvnw.cmd clean install
-$ mvnw.cmd spring-boot:run
+$ mvnw.cmd spring-boot:run -Dspring.profiles.active=dev
 ```
 
 * Check application state via endpoint: [/actuator/health](http://localhost:9674/actuator/health).
