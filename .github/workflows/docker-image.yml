@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - "docker-image.yml"
+      - ".github/workflows/docker-image.yml"
       - "docker/entrypoint"
       - "tai-client/**"
       - "tai-server/**"
