@@ -68,7 +68,7 @@ $ yarn run dev
 $ yarn run preview
 ```
 
-Development server should be available at `9675` TCP port.
+Development server should be available at [9675](http://localhost:9675) TCP port.
 
 2. Setup server:
 
