@@ -80,11 +80,11 @@ $ docker compose up -d tai-mysql-db tai-phpmyadmin tai-mailhog
 
 This command should create 2 docker containers:
 
-| Container name | Port(s)    | Description               |
-|----------------|------------|---------------------------|
-| tai-mysql-db   | 9670       | MySQL database            |
-| tai-phpmyadmin | 9671       | Database client           |
-| tai-mailhog    | 9672, 9673 | Mailhog client and server |
+| Container name | Port(s)                                                      | Description               |
+|----------------|--------------------------------------------------------------|---------------------------|
+| tai-mysql-db   | [9670](http://localhost:9670)                                | MySQL database            |
+| tai-phpmyadmin | [9671](http://localhost:9671)                                | Database client           |
+| tai-mailhog    | [9672](http://localhost:9672), [9673](http://localhost:9673) | Mailhog client and server |
 
 > NOTE: If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To
 > omit, create only
