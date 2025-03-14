@@ -3,16 +3,8 @@
 This monorepo includes library management app build in React SPA (client) and Java Spring Boot (
 server).
 
-### Services:
-
-| Service name       | Local address                 | Remote address                                   | Docker image                                                |
-|--------------------|-------------------------------|--------------------------------------------------|-------------------------------------------------------------|
-| App (Java + React) | [9674](http://localhost:9674) | [tai.miloszgilga.pl](https://tai.miloszgilga.pl) | [source](https://hub.docker.com/r/milosz08/library-app-tai) |
-| Mailhog UI         | [9673](http://localhost:9673) | -                                                | -                                                           |
-| PHPMyAdmin         | [9671](http://localhost:9671) | -                                                | -                                                           |
-
-Postman REST API
-collection: [link](https://www.postman.com/navigation-architect-44725773/tai/collection/ufvyq5e/tai-rest-api).
+[[Docker image](https://hub.docker.com/r/milosz08/library-app-tai)] |
+[[Postman REST API](https://www.postman.com/navigation-architect-44725773/tai/collection/ufvyq5e/tai-rest-api)]
 
 ## Table of content
 
@@ -41,12 +33,12 @@ $ docker compose up -d
 
 This command should create 4 docker containers:
 
-| Container name | Port(s)    | Description                |
-|----------------|------------|----------------------------|
-| tai-mysql-db   | 9670       | MySQL database             |
-| tai-phpmyadmin | 9671       | Database client            |
-| tai-mailhog    | 9672, 9673 | Mailhog client and server  |
-| tai-app        | 9674       | Application (Java + React) |
+| Container name | Port(s)                                                      | Description                |
+|----------------|--------------------------------------------------------------|----------------------------|
+| tai-mysql-db   | [9670](http://localhost:9670)                                | MySQL database             |
+| tai-phpmyadmin | [9671](http://localhost:9671)                                | Database client            |
+| tai-mailhog    | [9672](http://localhost:9672), [9673](http://localhost:9673) | Mailhog client and server  |
+| tai-app        | [9674](http://localhost:9674)                                | Application (Java + React) |
 
 > NOTE: If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To
 > omit, create only MySQL db container
