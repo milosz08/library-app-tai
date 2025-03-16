@@ -1,10 +1,10 @@
 # Library management app
 
-This monorepo includes library management app build in React SPA (client) and Java Spring Boot (
-server).
-
 [[Docker image](https://hub.docker.com/r/milosz08/library-app-tai)] |
 [[Postman REST API](https://www.postman.com/navigation-architect-44725773/tai/collection/ufvyq5e/tai-rest-api)]
+
+This monorepo includes library management app build in React SPA (client) and Java Spring Boot
+(server).
 
 ## Table of content
 

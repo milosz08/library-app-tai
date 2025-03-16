@@ -42,7 +42,7 @@ RUN sed -i \
 
 RUN chmod +x entrypoint
 
-LABEL maintainer="Miłosz Gilga <personal@miloszgilga.pl>"
+LABEL maintainer="Miłosz Gilga <miloszgilga@gmail.pl>"
 
 EXPOSE 8080
 ENTRYPOINT [ "./entrypoint" ]
