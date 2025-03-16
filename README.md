@@ -40,9 +40,9 @@ This command should create 4 docker containers:
 | tai-mailhog    | [9672](http://localhost:9672), [9673](http://localhost:9673) | Mailhog client and server  |
 | tai-app        | [9674](http://localhost:9674)                                | Application (Java + React) |
 
-> NOTE: If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To
-> omit, create only MySQL db container
-> via: `$ docker compose up -d tai-mysql-db tai-mailhog tai-app`.
+> [!TIP]
+> If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To omit,
+> create only MySQL db container via: `$ docker compose up -d tai-mysql-db tai-mailhog tai-app`.
 
 ## Setup (for development)
 
@@ -54,7 +54,8 @@ This command should create 4 docker containers:
 $ yarn install --frozen-lockfile
 ```
 
-> NOTE: If you do not have yarn, install via: `npm i -g yarn`.
+> [!TIP]
+> If you do not have yarn, install via: `npm i -g yarn`.
 
 * Run client via:
 
@@ -86,9 +87,9 @@ This command should create 2 docker containers:
 | tai-phpmyadmin | [9671](http://localhost:9671)                                | Database client           |
 | tai-mailhog    | [9672](http://localhost:9672), [9673](http://localhost:9673) | Mailhog client and server |
 
-> NOTE: If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To
-> omit, create only
-> MySQL db container via: `$ docker compose up -d tai-mysql-db tai-mailhog`.
+> [!TIP]
+> If you have already MySQL db client, you can omit creating `tai-phpmyadmin` container. To omit,
+> create only MySQL db container via: `$ docker compose up -d tai-mysql-db tai-mailhog`.
 
 * Go to server directory (`$ cd tai-server`) and type (for UNIX):
 
