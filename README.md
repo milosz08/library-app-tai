@@ -79,7 +79,7 @@ Development server should be available at [9675](http://localhost:9675) TCP port
 $ docker compose up -d tai-mysql-db tai-phpmyadmin tai-mailhog
 ```
 
-This command should create 2 docker containers:
+This command should create 3 docker containers:
 
 | Container name | Port(s)                                                      | Description               |
 |----------------|--------------------------------------------------------------|---------------------------|
